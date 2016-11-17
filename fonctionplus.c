@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+//
 int De[5] = {5,2,5,2,2};
 
 int isBrelan(){
