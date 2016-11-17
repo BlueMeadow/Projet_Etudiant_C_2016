@@ -33,6 +33,7 @@ void Garde(){
 	//	printf("%i",Garder[i]);
 	//}
 	//printf("%i",Garder[i]);
+	
 }
 int main(){
 	Garde();
