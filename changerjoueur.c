@@ -2,11 +2,12 @@
 #include <stdlib.h>
 
 int ChangerJoueur(){
-	return joueur = joueur%nb_joueur+1;
+	return joueur = (joueur+1)%nb_joueur;
 	
 }
 int main(){
 	int joueur =0;
 	joueur=ChangerJoueur(joueur);
 	//printf("%i\n",joueur);
+	
 }
