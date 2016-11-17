@@ -51,7 +51,7 @@ int calcul_score(){
 				break;
 			}
 		case 13://case chance
-			total=De[0]+De[1]+De[2]+De[3]+De[4]+De[5];
+			total= De[0]+De[1]+De[2]+De[3]+De[4]+De[5];
 			Score[13]=total;
 			break;
 		
