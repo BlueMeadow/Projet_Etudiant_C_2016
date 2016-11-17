@@ -19,5 +19,4 @@ int Partie (int nb){
 		}
 		ChangerJoueur();
 	}
-	
 }
