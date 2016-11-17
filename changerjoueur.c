@@ -3,6 +3,7 @@
 
 int ChangerJoueur(){
 	return joueur = joueur%nb_joueur+1;
+	
 }
 int main(){
 	int joueur =0;
