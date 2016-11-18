@@ -1,11 +1,13 @@
-void QuiCommence(){
+int QuiCommence(int nb_joueur){
 	int joueur;
+	int com[4]={0,0,0,0};
 	int max=0;
 	int retient;
-	for(joueur=1;joueur<nb_joueur;joueur++){
-		lancer();
-		if(max<lancer){
-			max=lancer;
+	for(joueur=0;joueur<nb_joueur;joueur++){
+		com[joueur] = rand()%6+1;
+		printf("Les dés sont %i.\n", com[joueur]);
+		if(max<com[joueur]){
+			max=com[joueur];
 			retient=joueur;
 		}
 	}
