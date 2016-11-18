@@ -21,6 +21,7 @@ int QuiCommence(int nb_joueur){
 	printf("le joueur %i ayant fais le plus gros score c'est lui qui commence.\n",retient);
 	return retient;
 }
+
 int main(){
 	QuiCommence(4);
 }
