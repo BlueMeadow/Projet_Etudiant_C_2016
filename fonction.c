@@ -35,7 +35,6 @@ int isPtSuite(){
 	}
 	return 0;
 }	
-
 int isGdSuite(){
 	int i;
 	int j;
