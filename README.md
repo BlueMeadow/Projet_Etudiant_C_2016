@@ -8,6 +8,6 @@ Simon: Affichage
 
 Benoit: Affichage, fonctions de gestion de score,
 
-Nathan: Début algorithme jeu, fonctions de gestion de score.
+Nathan: Début algorithme jeu, fonctions de gestion de score. COmmence à voir la biblio SDL.
 
 Reste à faire: Cohérence avec toutes les fonctions ci-dessus, Intergace graphique de console à consolider, gestion de profil joueur.  
