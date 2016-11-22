@@ -1,5 +1,13 @@
 #include <stdio.h>
-//
+
+/**
+* \fn fonctionplus.c
+* \brief Permet de connaitre le résultat de la combinaison des 5 dés
+* \author Nathan Oualet
+*/
+
+
+
 int De[5] = {5,2,5,2,2};
 
 int isBrelan(){
