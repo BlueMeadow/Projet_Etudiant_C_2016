@@ -40,5 +40,5 @@ int QuiCommence(int nb_joueur){
 	return retient;
 }
 int main(){
-	QuiCommence(4);
+	QuiCommence(3);
 }
