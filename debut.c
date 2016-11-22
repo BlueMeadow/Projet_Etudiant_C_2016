@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-//
+
+/**
+* \file debut.c
+* \brief Permet de savoir le nombre de joueurs de la partie.
+* \version 1.0
+*/
+
+
 /*	Programme principal */
 int main(void){	
 	
