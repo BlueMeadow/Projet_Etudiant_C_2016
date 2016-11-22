@@ -3,7 +3,12 @@ int calcul_score(){
 	int total=0;
 	switch(Categorie){//choix score a utiliser
 		
-		case 1://fonction qui calcule le score pour les dé de un a six
+		case 1 :
+		case 2 :
+		case 3 :
+		case 4 :
+		case 5 :
+		case 6 ://fonction qui calcule le score pour les dé de un a six
 			int i;
 			int occ[6]={0,0,0,0,0,0};
 			for(i=0;i<5;i++){
