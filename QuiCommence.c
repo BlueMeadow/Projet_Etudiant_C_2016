@@ -9,6 +9,9 @@ int QuiCommence(int nb_joueur){
 	int max=0;
 	int retient;
 	int occ=1;
+	int x =2;
+	int y=2;
+	wclear(ZoneMessage);
 	srand(time(NULL)); // initialisation de rand
 	for(joueur=0;joueur<nb_joueur;joueur++){
 		if(com[joueur]>0){
@@ -33,6 +36,7 @@ int QuiCommence(int nb_joueur){
 		}
 	}
 	retient++;
+	mvwprintw(ZoneMessage, y, x, "le joueur %i commence",retient);
 	return retient;
 }
 int main(){
