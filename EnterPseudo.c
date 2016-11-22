@@ -11,21 +11,25 @@ void EnterPseudo(){
 	//char pseudo[10];
 	int nbre_joueurs = 4;
 	int compteur = 1;
+	int x=2;
+	int y=2;
 	
 	fic1 = fopen("fichierPseudo.txt","w");
 	
 	do{
+		wclear(ZoneMessage);
 		// On demande l'âge
-		printf("Quel est votre pseudo (10 caractères maximum) ? ");
+		mvwprintw(ZoneMessage, y, x,"Quel est votre pseudo (10 caractères maximum) ? ");
 		scanf("%s", nom);
 		
 		if ( strlen(nom) <= 10){
 			// On l'écrit dans le fichier
+			wclear(ZoneMessage);
 			fprintf(fic1, "Le joueur numéro %i s'appelle %s.\n", compteur, nom);
 			compteur++;
 	 	}
 	 	else{
-	 		printf("Veuillez respecter les conditions d'écriture, s'il vous plaît.\n");
+	 		mvwprintw(ZoneMessage, y, x, "Veuillez respecter les conditions d'écriture, s'il vous plaît.\n");
 	 	}
 	 			
 		
