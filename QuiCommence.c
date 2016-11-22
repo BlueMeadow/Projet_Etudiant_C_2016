@@ -13,15 +13,12 @@ int QuiCommence(int nb_joueur){
 	for(joueur=0;joueur<nb_joueur;joueur++){
 		if(com[joueur]>0){
 			com[joueur] = rand()%6+1;
-			printf("Le joueur %i a %i. ", joueur+1,com[joueur]);
 		}
 		if(max==com[joueur]){
 			occ++;
-			printf("le joueur %i a le meme score ",joueur+1);
 		}
 		if(max<com[joueur]){
 			max=com[joueur];
-			printf("le max est %i ",max);
 			retient=joueur;
 			occ=1;
 		}
@@ -36,7 +33,6 @@ int QuiCommence(int nb_joueur){
 		}
 	}
 	retient++;
-	printf("le joueur %i commence.\n",retient);
 	return retient;
 }
 int main(){
