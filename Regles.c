@@ -15,7 +15,7 @@ void ReglesPage1(WINDOW *localwin, int y, int x){
 	mvwprintw(localwin, y+1, x,  "+------------+------------------------------------------------+");
 	mvwprintw(localwin, y+2, x,  "|  As à Six  | Vous multipliez le nombre d’occurrences d’une  |");
 	mvwprintw(localwin, y+3, x,  "|            | valeur par cette valeur et l’écrivez dans la   |");                                              
-	mvwprintw(localwin, y+4, x,  "|            | case correspondante. i.e. Vous obtenez 5 Deux,	|");                                              
+	mvwprintw(localwin, y+4, x,  "|            | case correspondante. i.e. Vous obtenez 5 Deux, |");                                              
 	mvwprintw(localwin, y+5, x,  "|            | vous inscrivez 10 dans la case.                |");                                             
 	mvwprintw(localwin, y+6, x,  "|            |                                                |");                                               
 	mvwprintw(localwin, y+7, x,  "+------------+------------------------------------------------+");                                          
