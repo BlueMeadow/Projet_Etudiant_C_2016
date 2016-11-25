@@ -1,41 +1,67 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-int Garder[5]={0,0,0,0,0};
-void Garde(){
-	int fini=0;
-	int i;
-	int choix;
-	while(fini=0){
-		printf("choisissez les dés a garder");
-		switch(Choix){
-			case 1:
-				Garder[0]=1;
+void Garder (WINDOW *localwin, int Garde[5])
+{
+	int y, x, ch;
+	y = 5; //indice d'ordonnée
+	x = 14; // indice d'abscisse
+	keypad(localwin, TRUE); //Permet l'utilisation des touches directionnelles
+	
+	wmove(localwin, y, x);
+	wrefresh(localwin);
+	do 
+	{
+		ch = wgetch(localwin);
+		switch (ch)
+		{
+			case KEY_UP:  
+				if ( y == 5 )
+				/* Si on est en haut, on passe en bas */
+				{
+					y = 25;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				else 
+				/* Sinon on monte d'une case */
+				{
+					y-=5;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
 				break;
-			case 2:
-				Garder[1]=1;
+			case KEY_DOWN:
+				if ( y == 25 )
+				/* Si on est en bas, on remonte en haut */
+				{
+					y = 5;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				else 
+				/* Sinon on descend d'une case */
+				{
+					y+=5;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
 				break;
-			case 3:
-				Garder[2]=1;
-				break;
-			case 4:
-				Garder[3]=1;
-				break;
-			case 5:
-				Garder[4]=1;
-				break;
-			case 6:
-				fini=1;
+			case 32: 
+				/* La touche espace sert à indiquer si on veut garder le de ou non */
+				if ( Garde[y/5-1] == 0 )
+				{
+					waddch(localwin, 'G');
+					Garde[y/5-1] = 1;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				else
+				{
+					waddch(localwin, ' ');
+					Garde[y/5-1] = 0;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
 				break;
 		}
-	}
-	//for(i=0;i<4;i++){
-	//	printf("%i",Garder[i]);
-	//}
-	//printf("%i",Garder[i]);
-	
+	} while ( ch != 10 );	
+	/* On valide la selection avec la touche entree */
 }
-int main(){
-	Garde();
-}
-		
