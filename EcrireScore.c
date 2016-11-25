@@ -26,6 +26,7 @@ void EcrireScore(int joueur){
 }
 
 int main(){
+	MiseEnPlace();
 	EcrireScore(1);
 }
 	
