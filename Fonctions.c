@@ -2,20 +2,18 @@
 
 /**
 * \fn fonctionplus.c
-* \brief Permet de connaitre le résultat de la combinaison des 5 dés
+* \brief Permet de connaitre le rÃ©sultat de la combinaison des 5 dÃ©s
 * \author Nathan Oualet
 */
 
 
 
-int De[5] = {5,2,5,2,2};
-
-
+int De[5] = {1,2,3,4,5};
 
 void TabOccurences(){
 
-	//parcourt les 5 dés lancés, on incremente le nombre de valeurs trouvés
-	// dans le tableau d'occurences correspondant à la valeur du dé
+	//parcourt les 5 dÃ©s lancÃ©s, on incremente le nombre de valeurs trouvÃ©s
+	// dans le tableau d'occurences correspondant Ã  la valeur du dÃ©
 
 	int tabOccu[6] = {0,0,0,0,0,0};
 
@@ -28,7 +26,6 @@ void TabOccurences(){
 			case 5: tabOccu[4]++; break;
 			case 6: tabOccu[5]++; break;
 		}
-
 	}
 }
 
@@ -41,7 +38,8 @@ int isBrelan(){
 		for( j = 4; i<j; j--){
 			valeuri = De[i];
 			valeurj = De[j];
-
+			
+			//s'il trouve trois dÃ©s identiques, la condition s'arrete, et retourne le rÃ©sultat
 			if (cptvalide==3) break;
 
 			if (valeuri == valeurj){
@@ -57,14 +55,19 @@ int isBrelan(){
 int isCarre(){
 	int i;
 	int j;
+	
 	int total = 0;
-	for(i=0;i<5;i++){
-		for(j=0;j<5;j++){
-			if(De[i]==De[j] && i!=j){//i!=j pour qu'il ne compte pas si les deux sont sur la meme case
+	
+	for( i = 0; i < 5 ; i++){
+		
+		for( j=0; j<5; j++){
+			
+			if(De[i] == De[j] && i != j ){
+				//i!=j pour qu'il ne compte pas si les deux sont sur la meme case
 				total++;
 			}
 		}
-		if(total==3){
+		if(total == 3){
 			return 1;
 
 		}
@@ -76,6 +79,8 @@ int isCarre(){
 
 
 int isFull(){
+	
+	int tabOccu[6] = {0,0,0,0,0,0};
 
 	TabOccurences();
 
@@ -102,9 +107,14 @@ int isFull(){
 
 }
 
+//Calcul de la petit suite
+
 int isPtSuite(){
+	
 	int i;
 	int j;
+	
+	int tabOccu[6] = {0,0,0,0,0,0};
 
 	TabOccurences();
 
@@ -121,21 +131,27 @@ int isPtSuite(){
 }
 
 int isGdSuite(){
+	
 	int i;
 	int j;
+	
+	int tabOccu[6] = {0,0,0,0,0,0};
 
 	TabOccurences();
 
-	for(i=0;i<5;i++){//compte le nombre d'occurence
+	for( i = 0;i < 5; i++){
+		//compte le nombre d'occurence
 		tabOccu[De[i]-1]++;
 	}
-	for(j=0;j<1;j++){
-		if(tabOccu[0]==1){//pour trouver si il y a un 1
-			if(tabOccu[j]>0 && tabOccu[j+1] >0 && tabOccu[j+2]>0 && tabOccu[j+3]>0 && tabOccu[j+4]>0){
+	for( j=0; j<1; j++){
+		if(tabOccu[0] == 1){
+			//pour trouver si il y a un 1
+			if((tabOccu[j] > 0) && (tabOccu[j+1] > 0) && (tabOccu[j+2] > 0) && (tabOccu[j+3] > 0) && (tabOccu[j+4] > 0)){
 				return 1;
 			}
 		}else{
-			if(tabOccu[j+1]>0 && tabOccu[j+2] >0 && tabOccu[j+3]>0 && tabOccu[j+4]>0 && tabOccu[j+5]>0){//pour trouver si il y a un six
+			if((tabOccu[j+1] > 0) && (tabOccu[j+2] > 0) && (tabOccu[j+3] > 0) && (tabOccu[j+4] > 0) && (tabOccu[j+5] > 0)){
+				//pour trouver si il y a un six
 				return 1;
 			}
 		}
@@ -143,10 +159,12 @@ int isGdSuite(){
 	return 0;
 }
 int isYahtzee(){
+	
+	int tabOccu[6] = {0,0,0,0,0,0};
 
 	TabOccurences();
 
-	//on parcourt la tab Occurences, si on trouve 5 dans tabOccu, on trouve un Yahtzee - 5 dés de même valeur-.
+	//on parcourt la tab Occurences, si on trouve 5 dans tabOccu, on trouve un Yahtzee donc 5 dÃ©s de mÃªme valeur.
 
 	for (int i=0; i < 6; i++){
 		if ( tabOccu[i] == 5){
@@ -157,13 +175,19 @@ int isYahtzee(){
 }
 
 int main(){
-//test des fonctions précédentes.
+//test des fonctions prÃ©cÃ©dentes.
 
 	int valBrelan = isBrelan();
 
 	int valYaht = isYahtzee();
 
 	int valFull = isFull();
+	
+	int valCarre = isCarre();
+	
+	int valPetit = isPtSuite();
+	
+	int valGrand = isGdSuite();
 
 	if (valBrelan == 1){
 
@@ -188,6 +212,30 @@ int main(){
 		printf("pas de Full.\n");
 
 	}
+	
+	if ( valCarre == 1){
+		printf("Vous avec un Carre.\n");
+	}
+	else{
+		printf("pas de Carre.\n");
 
+	}
+	
+	if ( valPetit == 1){
+		
+		printf("Vous avec une petite Suite.\n");
+	}
+	else{
+		printf("pas de petite suite.\n");
+
+	}
+	
+	if ( valGrand == 1){
+		printf("Vous avec une grande suite.\n");
+	}
+	else{
+		printf("pas de grande suite.\n");
+
+	}
 
 }
