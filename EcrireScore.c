@@ -3,10 +3,11 @@
 #include <ncurses.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 
 int tabOccurences[6]={0}; 
 int Score[4][13]={{0}};
-int De[5]={2,2,3,4,6};
+int De[5]={0,0,0,0,0};
 int Garde[5]={0};
 char pseudo_j1[30] = "J1";
 char pseudo_j2[30] = "J2";
@@ -20,6 +21,91 @@ char pseudos[50];
 /*
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 */
+
+void Garder (WINDOW *localwin, int Garde[5])
+{
+	int y, x, ch;
+	y = 5; //indice d'ordonnée
+	x = 14; // indice d'abscisse
+	keypad(localwin, TRUE); //Permet l'utilisation des touches directionnelles
+	
+	wmove(localwin, y, x);
+	wrefresh(localwin);
+	do 
+	{
+		ch = wgetch(localwin);
+		switch (ch)
+		{
+			case KEY_UP:  
+				if ( y == 5 )
+				/* Si on est en haut, on passe en bas */
+				{
+					y = 25;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				else 
+				/* Sinon on monte d'une case */
+				{
+					y-=5;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				break;
+			case KEY_DOWN:
+				if ( y == 25 )
+				/* Si on est en bas, on remonte en haut */
+				{
+					y = 5;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				else 
+				/* Sinon on descend d'une case */
+				{
+					y+=5;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				break;
+			case 32: 
+				/* La touche espace sert à indiquer si on veut garder le de ou non */
+				if ( Garde[y/5-1] == 0 )
+				{
+					waddch(localwin, 'G');
+					Garde[y/5-1] = 1;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				else
+				{
+					waddch(localwin, ' ');
+					Garde[y/5-1] = 0;
+					wmove(localwin, y, x);
+					wrefresh(localwin);
+				}
+				break;
+		}
+	} while ( ch != 10 );	
+	/* On valide la selection avec la touche entree */
+}
+
+void Lancer()
+{
+	//initialisation des valeurs aléatoires, à chaque tirage
+	srand(time(0));
+	int ch;
+	do
+	{
+		ch = getch();
+	} while (ch != 10);
+	for(int i = 0; i < 5; i++){
+		if(Garde[i] == 0){	
+			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
+			De[i] = rand()%6+1;
+		}
+	}
+}
 
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {	WINDOW *localwin;
@@ -502,9 +588,22 @@ void EcrireScore(int joueur)
 }
 
 int main(){
+	
 	char ch;
-	CalculOccurences();
 	MiseEnPlace();
+	int i;
+	for(i = 0; i < 2 ;i++){
+		Lancer();
+		AffichageDe(De ,ZoneDe);
+		Garder(ZoneDe, Garde);
+		mvwprintw(ZoneMessage,2 ,2 ,"voulez vous relancer ? [O/N]");
+		do{
+			ch=getch();
+		}
+		while(tolower(ch) != 'o' && tolower(ch) != 'n');
+		if (tolower(ch) == 'n') break;
+	}
+	CalculOccurences();
 	EcrireScore(3);
 	do
 	{
