@@ -35,8 +35,7 @@ void ReglesPage1(WINDOW *localwin, int y, int x){
 }
 
 void ReglesPage2(WINDOW *localwin, int y, int x){
-	
-	
+		
 	int x = 2;
 	int y = 2;
 	
