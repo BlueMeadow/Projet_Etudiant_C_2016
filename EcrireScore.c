@@ -26,6 +26,7 @@ void EcrireScore(int joueur){
 }
 
 int main(){
-	EcrireScore(1){
+	EcrireScore(1);
+}
 	
 	
