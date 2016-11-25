@@ -4,9 +4,8 @@
 * \fn fonctionplus.c
 * \brief Permet de connaitre le résultat de la combinaison des 5 dés
 * \author Nathan Oualet
+* \version 1.0
 */
-
-
 
 int De[5] = {1,2,3,4,5};
 
