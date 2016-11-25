@@ -10,6 +10,7 @@
 
 int De[5]={0};                                  /* Tableau de dés */
 int Garde[5]={0};                               /* Tableau booléen, sert à savoir si on garde les dés ou si on les relance */
+int Score[4][13];                               /* Tableau conservant les scores de chaque joueur */
 int Occurence[6]={0};                           /* Tableau content le nombre d'occurences de chaque valeur de dé */
 char pseudo_j1[10] = "J1";                      /* Pseudo du joueur 1 */
 char pseudo_j2[10] = "J2";                      /* Pseudo du joueur 2 */
