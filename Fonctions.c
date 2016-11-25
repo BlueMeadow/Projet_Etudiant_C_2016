@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 /**
 * \fn fonctionplus.c
 * \brief Permet de connaitre le résultat de la combinaison des 5 dés
