@@ -9,21 +9,21 @@
 
 int De[5] = {1,2,3,4,5};
 
-void TabOccurences(){
+void CalculOccurences(){
 
 	//parcourt les 5 dés lancés, on incremente le nombre de valeurs trouvés
 	// dans le tableau d'occurences correspondant à la valeur du dé
 
-	int tabOccu[6] = {0,0,0,0,0,0};
+	int tabOccurences[6] = {0,0,0,0,0,0};
 
 	for( int i = 0; i < 5; i++){
 		switch(De[i]){
-			case 1: tabOccu[0]++; break;
-			case 2: tabOccu[1]++; break;
-			case 3: tabOccu[2]++; break;
-			case 4: tabOccu[3]++; break;
-			case 5: tabOccu[4]++; break;
-			case 6: tabOccu[5]++; break;
+			case 1: tabOccurences[0]++; break;
+			case 2: tabOccurences[1]++; break;
+			case 3: tabOccurences[2]++; break;
+			case 4: tabOccurences[3]++; break;
+			case 5: tabOccurences[4]++; break;
+			case 6: tabOccurences[5]++; break;
 		}
 	}
 }
@@ -79,9 +79,9 @@ int isCarre(){
 
 int isFull(){
 	
-	int tabOccu[6] = {0,0,0,0,0,0};
+	int tabOccurences[6] = {0,0,0,0,0,0};
 
-	TabOccurences();
+	CalculOccurences();
 
 	int cpt3 = 0 , cpt2 = 0;
 
@@ -89,10 +89,10 @@ int isFull(){
 
 	for (int j = 0; j < 6; j++){
 
-		if ( tabOccu[j]==3){
+		if ( tabOccurences[j]==3){
 			cpt3++;
 		}
-		else if( tabOccu[j] == 2){
+		else if( tabOccurences[j] == 2){
 			cpt2++;
 		}
 	}
@@ -113,9 +113,9 @@ int isPtSuite(){
 	int i;
 	int j;
 	
-	int tabOccu[6] = {0,0,0,0,0,0};
+	int tabOccurences[6] = {0,0,0,0,0,0};
 
-	TabOccurences();
+	CalculOccurences();
 
 	for(i=0;i<5;i++){
 		tabOccu[De[i]-1]++;
@@ -134,22 +134,22 @@ int isGdSuite(){
 	int i;
 	int j;
 	
-	int tabOccu[6] = {0,0,0,0,0,0};
+	int tabOccurences[6] = {0,0,0,0,0,0};
 
-	TabOccurences();
+	CalculOccurences();
 
 	for( i = 0;i < 5; i++){
 		//compte le nombre d'occurence
-		tabOccu[De[i]-1]++;
+		tabOccurences[De[i]-1]++;
 	}
 	for( j=0; j<1; j++){
-		if(tabOccu[0] == 1){
+		if(tabOccurences[0] == 1){
 			//pour trouver si il y a un 1
-			if((tabOccu[j] > 0) && (tabOccu[j+1] > 0) && (tabOccu[j+2] > 0) && (tabOccu[j+3] > 0) && (tabOccu[j+4] > 0)){
+			if((tabOccurences[j] > 0) && (tabOccurences[j+1] > 0) && (tabOccurences[j+2] > 0) && (tabOccurences[j+3] > 0) && (tabOccurences[j+4] > 0)){
 				return 1;
 			}
 		}else{
-			if((tabOccu[j+1] > 0) && (tabOccu[j+2] > 0) && (tabOccu[j+3] > 0) && (tabOccu[j+4] > 0) && (tabOccu[j+5] > 0)){
+			if((tabOccurences[j+1] > 0) && (tabOccurences[j+2] > 0) && (tabOccurences[j+3] > 0) && (tabOccurences[j+4] > 0) && (tabOccurences[j+5] > 0)){
 				//pour trouver si il y a un six
 				return 1;
 			}
@@ -159,14 +159,14 @@ int isGdSuite(){
 }
 int isYahtzee(){
 	
-	int tabOccu[6] = {0,0,0,0,0,0};
+	int tabOccurences[6] = {0,0,0,0,0,0};
 
-	TabOccurences();
+	CalculOccurences();
 
 	//on parcourt la tab Occurences, si on trouve 5 dans tabOccu, on trouve un Yahtzee donc 5 dés de même valeur.
 
 	for (int i=0; i < 6; i++){
-		if ( tabOccu[i] == 5){
+		if ( tabOccurences[i] == 5){
 			return 1;
 		}
 	}
