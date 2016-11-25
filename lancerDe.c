@@ -6,11 +6,12 @@
 int De[5] = {0, 0 , 0 , 0, 0};
 
 int main(){
-	//pour que se soit vraiment aleatoire
+	//initialisation des valeurs aléatoires, à chaque tirage
 	srand(time(0));
+	
 	for(int i = 0; i < 5; i++){
 		if(garder[i] == 0){	
-			//choisie un chiffre entre 1 et 6 
+			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
 			De[i] = rand()%6+1;
 			printf("Les dés sont %i.\n", De[i]);
 		}
