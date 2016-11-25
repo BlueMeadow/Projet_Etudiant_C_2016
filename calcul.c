@@ -1,5 +1,5 @@
 int occ[6]={0,0,0,0,0,0};
-int calcul_score(){
+int Calcul_Score(){
 	int total=0;
 	switch(Categorie){//choix score a utiliser
 		
