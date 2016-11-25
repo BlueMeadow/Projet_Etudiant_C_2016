@@ -9,6 +9,7 @@ void aide(int isAide){//demande d'entrer 1 si on veut l'aide
 	mvwprintw(ZoneAide, 2, 13, "AIDE");
 	attrof(A_BOLD);
 	y++;
+	//si l'aide est choisie 
 	if(isAide){
 		if(isBrelan()){
 			mvwprintw(ZoneAide, y, x, "il y a un brelan dans les dés lancer");
@@ -35,6 +36,7 @@ void aide(int isAide){//demande d'entrer 1 si on veut l'aide
 			y++;
 		}
 	}
+	//si l'aide n'est pas choisie
 	else{
 		mvwprintw(ZoneAide, y, x, "l'aide n'est pas activée");
 	}
