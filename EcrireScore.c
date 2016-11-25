@@ -4,15 +4,14 @@
 #include <string.h>
 #include <ctype.h>
 
-int tabOccurence[6]={0}; 
-int Score[4][13];
-int De[5]={1,2,3,4,5};
+int tabOccurences[6]={0}; 
+int Score[4][13]={{0}};
+int De[5]={2,2,3,4,6};
 int Garde[5]={0};
 char pseudo_j1[30] = "J1";
 char pseudo_j2[30] = "J2";
 char pseudo_j3[30] = "J3";
 char pseudo_j4[30] = "J4";
-int Categorie;
 WINDOW *ZoneDe;
 WINDOW *ZoneMessage;
 WINDOW *ZoneAide;
@@ -183,7 +182,7 @@ void MiseEnPlace()
 	ZoneDe = create_newwin(31, 19, 3, 3);
 	ZoneScore = create_newwin(25,70,3,22);
 	ZoneMessage = create_newwin(10,70,28,22);
-	FicheDeScore(ZoneScore,1,2);
+	FicheDeScore(ZoneScore,2,2);
 	AffichageDe(De, ZoneDe);
 }
 
@@ -262,66 +261,11 @@ void ChoixCategorie (int *Categorie, WINDOW *localwin)
 		/* Entrée valide le choix */
 }
 
-int CalculScore(int * joueur)
-{
-	int i;
-	int total=0;
-	switch(Categorie){
-	/* choix score a utiliser */		
-		case 1 :
-		case 2 :
-		case 3 :
-		case 4 :
-		case 5 :
-		case 6 :
-		/* fonction qui calcule le score pour les dés de un a six */
-			Score[*joueur][Categorie] = total;
-			break;			
-		case 7:
-			if(isBrelan())
-				Score[*joueur][Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
-			break;
-			
-		case 8:
-			if(isCarre())
-				Score[*joueur][Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
-			break;
-			
-		case 9:
-			if(isFull())
-				Score[*joueur][Categorie] = 25;
-			break;
-			
-		case 10:
-			if(isPtSuite())
-				Score[*joueur][Categorie] = 30;
-			break;
-			
-		case 11:
-			if(isGdSuite())
-				Score[*joueur][Categorie] = 40;
-			break;
-			
-		case 12:
-			if(isYahtzee())
-				Score[*joueur][Categorie] = 50;
-			break;
-			
-		case 13:
-			Score[*joueur][Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
-			break;
-		
-		
-	}
-}	
-
 void CalculOccurences()
 {
 
 	//parcourt les 5 dés lancés, on incremente le nombre de valeurs trouvés
 	// dans le tableau d'occurences correspondant à la valeur du dé
-
-	int tabOccurences[6] = {0,0,0,0,0,0};
 
 	for( int i = 0; i < 5; i++){
 		switch(De[i]){
@@ -426,11 +370,11 @@ int isPtSuite()
 	CalculOccurences();
 
 	for(i=0;i<5;i++){
-		tabOccu[De[i]-1]++;
+		tabOccurences[De[i]-1]++;
 	}
 
 	for(j=0;j<=2;j++){
-		if(tabOccu[j] > 0 && tabOccu[j+1] > 0 && tabOccu[j+2] > 0 && tabOccu[j+3] > 0)
+		if(tabOccurences[j] > 0 && tabOccurences[j+1] > 0 && tabOccurences[j+2] > 0 && tabOccurences[j+3] > 0)
 			return 1;
 
 	}
@@ -468,9 +412,8 @@ int isGdSuite()
 }
 
 int isYahtzee()
-
+{
 	
-	int tabOccurences[6] = {0,0,0,0,0,0};
 
 	CalculOccurences();
 
@@ -484,33 +427,90 @@ int isYahtzee()
 	return 0;
 }
 
+void CalculScore(int joueur, int * Categorie)
+{
+	switch(*Categorie){
+	/* choix score a utiliser */		
+		case 1 :
+		case 2 :
+		case 3 :
+		case 4 :
+		case 5 :
+		case 6 :
+		/* fonction qui calcule le score pour les dés de un a six */
+			Score[joueur][*Categorie] = (*Categorie) * tabOccurences[*Categorie-1];
+			break;			
+		case 7:
+			if(isBrelan())
+				Score[joueur][*Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
+			break;
+			
+		case 8:
+			if(isCarre())
+				Score[joueur][*Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
+			break;
+			
+		case 9:
+			if(isFull())
+				Score[joueur][*Categorie] = 25;
+			break;
+			
+		case 10:
+			if(isPtSuite())
+				Score[joueur][*Categorie] = 30;
+			break;
+			
+		case 11:
+			if(isGdSuite())
+				Score[joueur][*Categorie] = 40;
+			break;
+			
+		case 12:
+			if(isYahtzee())
+				Score[joueur][*Categorie] = 50;
+			break;
+			
+		case 13:
+			Score[joueur][*Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
+			break;
+	}
+}	
+
 void EcrireScore(int joueur)
 {
-	int categorie = 0;
+	int categorie;
 	int x = 2;
 	int y = 2;
 	
 	mvwprintw(ZoneMessage ,y ,x ,"veuillez désigner la categorie choisie");
-	ChoixCategorie(&categorie ,ZoneMessage); 
-	CalculScore();
+	wrefresh(ZoneMessage);
+	ChoixCategorie(&categorie ,ZoneScore); 
+	CalculScore(joueur, &categorie);
 	
 	/* choix de la colonne */
-	x = 9 + 10 * joueur;
+	x = 24 + 10 * joueur;
 	/* choix de la ligne */
 	
 	if(categorie < 7)
-		y = categorie + 2;
+		y = categorie + 4;
 	else
-		y = categorie + 5;
+		y = categorie + 7;
 	
 	/*affiche le score */
-	mvwprintw(ZoneScore ,x ,y ,"%i" ,Score[joueur][categorie]);
+	mvwprintw(ZoneScore ,y ,x ,"%i" ,Score[joueur][categorie]);
+	wrefresh(ZoneScore);
 }
 
 int main(){
-	
+	char ch;
+	CalculOccurences();
 	MiseEnPlace();
-	EcrireScore(1);
+	EcrireScore(3);
+	do
+	{
+		ch = getch();
+	} while (ch != 'j');
+	endwin();
 }
 	
 	
