@@ -88,11 +88,49 @@ void ReglesPage3(WINDOW *localwin, int y, int x){
 	mvwprintw(localwin, y+16, x, "+-------------------------------------------------------------+");
 	mvwprintw(localwin, y+17, x, "| 1994 Hasbro International lnc. Tous droits réservés.        |");
 	mvwprintw(localwin, y+18, x, "+-------------------------------------------------------------+");
-		
-
-
-
 }
+
+void Essai_Defilement (){
+/* A faire dans une fenetre ayant moins de lignes que le texte que l'on veut afficher */
+	int x, y, ch;
+
+	x = 2;
+	y = 2;
+
+	do
+	{
+		ch = wgetch(ZoneMenu);
+		switch(ch)
+		{
+			case KEY_UP : if (y > 1) y--; break;
+			case KEY_DOWn : if (y < 52 - LINES) y++; break;
+		}
+		/* METTRE TOUTES LES LIGNES A AFFICHER ICI */
+		mvwprintw(localwin, y  , x,  "          	Rêgles du Yahtzee - Page 3   %s");
+        mvwprintw(localwin, y+1 , x, "+------------+------------------------------------------------+");
+        mvwprintw(localwin, y+2 , x, "|  Yahtzee   | Vous obtenez 5 dés identiques.                 |");
+        mvwprintw(localwin, y+3 , x, "|            | Vous marquez 50 points.                        |");
+        mvwprintw(localwin, y+4 , x, "|            |                                                |");
+        mvwprintw(localwin, y+5 , x, "+------------+------------------------------------------------+");
+        mvwprintw(localwin, y+6 , x, "+------------+------------------------------------------------+");
+        mvwprintw(localwin, y+7 , x, "|  Chance    | Vous additionnez la valeur de chaque dé et     |");
+        mvwprintw(localwin, y+8 , x, "|            | l'écrivez dans la case.                        |");
+        mvwprintw(localwin, y+9 , x, "|            |                                                |");
+        mvwprintw(localwin, y+10, x, "+------------+------------------------------------------------+");
+        mvwprintw(localwin, y+11, x, "+-------------------------------------------------------------+");
+        mvwprintw(localwin, y+12, x, "| Attention ! Plusieurs résultats peuvent correspondre à      |");
+        mvwprintw(localwin, y+13, x, "| plusieurs catégories mais vous ne pouvez remplir une case   |");
+        mvwprintw(localwin, y+14, x, "| qu'une seule fois, soyez stratégiques !                     |");
+        mvwprintw(localwin, y+15, x, "+-------------------------------------------------------------+");
+        mvwprintw(localwin, y+16, x, "+-------------------------------------------------------------+");
+        mvwprintw(localwin, y+17, x, "| 1994 Hasbro International lnc. Tous droits réservés.        |");
+        mvwprintw(localwin, y+18, x, "+-------------------------------------------------------------+");
+
+
+	} while (ch != 10) /* Entrée fait sortir de l'affichage des règles */
+	/* Retour au menu ici */
+}
+
 
 void Regles(){
 
