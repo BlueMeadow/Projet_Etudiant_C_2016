@@ -120,5 +120,5 @@ int main()
 }
 	
 
-	
+	//pour lancer le programme; gcc -o regles Regles.c -lncurses
 
