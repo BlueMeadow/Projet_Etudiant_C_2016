@@ -597,6 +597,7 @@ int main(){
 		AffichageDe(De ,ZoneDe);
 		Garder(ZoneDe, Garde);
 		mvwprintw(ZoneMessage,2 ,2 ,"voulez vous relancer ? [O/N]");
+		wrefresh(ZoneMessage);
 		do{
 			ch=getch();
 		}
