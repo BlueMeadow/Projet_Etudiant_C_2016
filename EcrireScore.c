@@ -104,7 +104,9 @@ void Lancer()
 			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
 			De[i] = rand()%6+1;
 		}
+		Garde[i]=0;
 	}
+	
 }
 
 WINDOW *create_newwin(int height, int width, int starty, int startx)
@@ -591,8 +593,10 @@ int main(){
 	
 	char ch;
 	MiseEnPlace();
-	int i;
-	for(i = 0; i < 2 ;i++){
+	int i=1;
+	do
+	{
+		if (i == 3) break;
 		Lancer();
 		AffichageDe(De ,ZoneDe);
 		Garder(ZoneDe, Garde);
@@ -603,7 +607,8 @@ int main(){
 		}
 		while(tolower(ch) != 'o' && tolower(ch) != 'n');
 		if (tolower(ch) == 'n') break;
-	}
+		i++;
+	}while(1);
 	CalculOccurences();
 	EcrireScore(3);
 	do
