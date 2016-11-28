@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <time.h>
 
+int NbJoueur;
 int De[5]={0};                                  /* Tableau de dés */
 int Garde[5]={0};                               /* Tableau booléen, sert à savoir si on garde les dés ou si on les relance */
 int Occurence[6]={0};                           /* Tableau content le nombre d'occurence de chaque valeur de dé */
