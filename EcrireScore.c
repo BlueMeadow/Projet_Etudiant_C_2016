@@ -22,7 +22,7 @@ char pseudos[50];
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 */
 
-void Garder (WINDOW *localwin, int Garde[5])
+void Garder(WINDOW *localwin, int Garde[5])
 {
 	int y, x, ch;
 	y = 5; //indice d'ordonnée
@@ -95,6 +95,9 @@ void Lancer()
 	//initialisation des valeurs aléatoires, à chaque tirage
 	srand(time(0));
 	int ch;
+	wclear(ZoneMessage);
+	mvwprintw(ZoneMessage, 2, 2, "Veuillez appuyer sur [ENTREE] pour lancer les dés.");
+	wrefresh(ZoneMessage);
 	do
 	{
 		ch = getch();
@@ -594,12 +597,13 @@ int main(){
 	char ch;
 	MiseEnPlace();
 	int i=1;
+	wclear(ZoneMessage);
+	Lancer();
+	AffichageDe(De ,ZoneDe);
 	do
 	{
 		if (i == 3) break;
-		Lancer();
-		AffichageDe(De ,ZoneDe);
-		Garder(ZoneDe, Garde);
+		wclear(ZoneMessage);
 		mvwprintw(ZoneMessage,2 ,2 ,"voulez vous relancer ? [O/N]");
 		wrefresh(ZoneMessage);
 		do{
@@ -607,7 +611,15 @@ int main(){
 		}
 		while(tolower(ch) != 'o' && tolower(ch) != 'n');
 		if (tolower(ch) == 'n') break;
+		wclear(ZoneMessage);
+		mvwprintw(ZoneMessage,2 ,2 ,"Sélectionnez les dés à garder avec [ESPACE].");
+		wrefresh(ZoneMessage);
+
+		Garder(ZoneDe, Garde);
+		Lancer();
+		AffichageDe(De ,ZoneDe);
 		i++;
+		
 	}while(1);
 	CalculOccurences();
 	EcrireScore(3);
@@ -616,6 +628,4 @@ int main(){
 		ch = getch();
 	} while (ch != 'j');
 	endwin();
-}
-	
-	
+}	
