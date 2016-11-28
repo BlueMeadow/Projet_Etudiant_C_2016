@@ -2,7 +2,7 @@ void Defilement (){
 /* A faire dans une fenetre ayant moins de lignes que le texte que l'on veut afficher */
 	int x, y, ch;
 	WINDOW * ZoneRegles;
-	ZoneRegles =  newwin(30, 10, 1, 1);	
+	ZoneRegles =  newwin(30, 64, 1, 1);	
 	wrefresh(ZoneRegles);
 	keypad(ZoneRegles, TRUE);
 	y = 1;
