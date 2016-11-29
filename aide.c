@@ -1,3 +1,11 @@
+/**
+* \file aide.c
+* \author Benoit COMBASTEIX
+* \version 1.0
+* \fn aide()
+* \return Retourne une ou plusieurs aides sur ce que vous avez obtenu selon votre demande
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 int De[5]={3,3,6,5,4};
