@@ -1,6 +1,13 @@
+/**
+* \file TabOccu.c
+* \author Nathan OUALET
+* \fn TabOccurences()
+* \return Calcul le nombre d'occurences d'un valeur dans la série de 5 dés lancés
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-//
+
 
 void TabOccurences(){
 
