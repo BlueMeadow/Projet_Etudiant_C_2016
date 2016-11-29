@@ -1,11 +1,18 @@
+/**
+* \file lancerDe.c
+* \author Nathan OUALET et Benoir Combasteix
+* \fn lancerDe()
+* \return Retourne une suite de 5 dés lancés au hasard
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//
+
 
 int De[5] = {0, 0 , 0 , 0, 0};
 
-int main(){
+int lancerDe(){
 	//initialisation des valeurs aléatoires, à chaque tirage
 	srand(time(0));
 	
@@ -16,4 +23,9 @@ int main(){
 			printf("Les dés sont %i.\n", De[i]);
 		}
 	}
+}
+
+int main(){
+	lancerDe();
+	
 }
