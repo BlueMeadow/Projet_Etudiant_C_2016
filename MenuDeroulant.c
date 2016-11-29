@@ -1,3 +1,12 @@
+/**
+* \file MenuDeroulant.c
+* \author Simon Fernandes et Benoit Combasteix
+* \version 1.0
+* \fn Defilement()
+* \return Permet de faire défiler un texte qui est plus grand que la console
+*/
+
+
 void Defilement (){
 /* A faire dans une fenetre ayant moins de lignes que le texte que l'on veut afficher */
 	int x, y, ch;
