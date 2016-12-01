@@ -4,11 +4,11 @@ Projet Jeux Yahtzee:
 
 Groupe: Benoit Combasteix, Simon Fernandes et Nathan OUALET.
 
-Simon: Affichage
+Simon: Affichage. Gestion Interface - Utilisateur.
 
 Benoit: Affichage, fonctions de gestion de score,
 
-Nathan: Début algorithme jeu, fonctions de gestion de score. COmmence à voir la biblio SDL.
+Nathan: Début algorithme jeu, fonctions de gestion de score. Commentaires Doxygen.
 
 Reste à faire: Cohérence avec toutes les fonctions ci-dessus, Intergace graphique de console à consolider, gestion de profil joueur.  
 
