@@ -8,7 +8,6 @@
 * \return
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -132,15 +131,15 @@ void Lancer()
 	{
 		ch = getch();
 	} while (ch != 10);
-	CalculOccurrences();
+
 	for(int i = 0; i < 5; i++){
 		if(Garde[i] == 0){	
 			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
 			De[i] = rand()%6+1;
 		}
+		CalculOccurrences();
 		Garde[i]=0;
 	}
-	
 }
 
 WINDOW *create_newwin(int height, int width, int starty, int startx)
@@ -441,7 +440,7 @@ int isCarre()
 				total++;
 			}
 		}
-		if(total == 3){
+		if(total > 2){
 			return 1;
 
 		}
@@ -452,29 +451,20 @@ int isCarre()
 
 int isFull()
 {
+	int i, cpt2 = 0, cpt3 = 0;
 
-
-	int cpt3 = 0 , cpt2 = 0;
-
-	//On a notre tableau d'occurrences, maintenant on va circuler dans le tab d'occurrences, pour voir s'il y a un full.
-
-	for (int j = 0; j < 6; j++){
-
-		if ( tabOccurrences[j]==3){
-			cpt3++;
-		}
-		else if( tabOccurrences[j] == 2){
-			cpt2++;
-		}
+	for( i = 0 ; i < 6 ; i++)
+	{
+		if( tabOccurrences[i] == 5 )
+			return 1;		
+		if( tabOccurrences[i] == 2 )
+			cpt2 = 1;
+		if( tabOccurrences[i] == 3 )
+			cpt3 = 1;
 	}
-
-	if ( (cpt3 == 1) && (cpt2 == 1) ){
+	if (cpt2 == 1 && cpt3 == 1)
 		return 1;
-	}
-	else{
-		return 0;
-	}
-
+	return 0;
 }
 
 //Calcul de la petit suite
@@ -484,12 +474,6 @@ int isPtSuite()
 	
 	int i;
 	int j;
-	
-	int tabOccurrences[6] = {0,0,0,0,0,0};
-
-	for(i=0;i<5;i++){
-		tabOccurrences[De[i]-1]++;
-	}
 
 	for(j=0;j<=2;j++){
 		if(tabOccurrences[j] > 0 && tabOccurrences[j+1] > 0 && tabOccurrences[j+2] > 0 && tabOccurrences[j+3] > 0)
@@ -505,13 +489,6 @@ int isGdSuite()
 	int i;
 	int j;
 	
-	int tabOccurrences[6] = {0,0,0,0,0,0};
-
-
-	for( i = 0;i < 5; i++){
-		//compte le nombre d'occurrence
-		tabOccurrences[De[i]-1]++;
-	}
 	for( j=0; j<1; j++){
 		if(tabOccurrences[0] == 1){
 			//pour trouver si il y a un 1
@@ -629,13 +606,72 @@ void EcrireScore(int joueur)
 int ChangerJoueur(int joueur, int nb_joueur){
 	return ((joueur+1)%nb_joueur);
 }
+
+void Aide(int i){//demande d'entrer 1 si on veut l'aide
+	int y=2;
+	int x=2;
+	int temp1=0, temp2=0;
+	mvwprintw(ZoneMessage, 3, 2,"rentre");		//test
+	wrefresh(ZoneMessage);			//test
+	attron(A_BOLD);
+	mvwprintw(ZoneAide, 2, 13, "AIDE");
+	attroff(A_BOLD);
+	wrefresh(ZoneAide);
+	y+=2;
+	if( i==1 ){
+		if(isBrelan()){
+			mvwprintw(ZoneAide, y, x, "Brelan de %i", temp1);
+			wrefresh(ZoneAide);
+			y+=2;
+		}
+		if(isCarre()){
+			mvwprintw(ZoneAide, y, x, "Carre de %i", temp1);
+			wrefresh(ZoneAide);
+			y+=2;
+		}
+		if(isFull()){
+			mvwprintw(ZoneAide, y, x, "Full : %i - %i", temp1, temp2);
+			wrefresh(ZoneAide);
+			y+=2;
+		}
+		if(isPtSuite()){
+			mvwprintw(ZoneAide, y, x, "Petite suite");
+			wrefresh(ZoneAide);
+			y+=2;
+		}
+		if(isGdSuite()){
+			mvwprintw(ZoneAide, y, x, "Grande suite");
+			wrefresh(ZoneAide);
+			y+=2;
+		}
+		if(isYahtzee()){
+			mvwprintw(ZoneAide, y, x, "YAHTZEE !");
+			wrefresh(ZoneAide);
+			y+=2;
+		}
+	}
+	else{
+		mvwprintw(ZoneAide, y, x, "L'aide n'est pas activée");
+		wrefresh(ZoneAide);
+	}
+}
+void Nettoyer(int DebutY, int DebutX, int FinY, int FinX, WINDOW * localwin){
+	char Nettoyeur[70];
+	int i;
+	Nettoyeur[0]=' ';	
+	for ( i = 0 ; i < (FinX-DebutX) ; i++)
+		strcat(Nettoyeur, " ");
+	for (i = DebutY ; i < FinY ; i++)
+		mvwprintw(localwin, DebutY, DebutX, "%s", Nettoyeur);
+	wrefresh(localwin);
+}
 int main(){
 	
 	int joueur=0;
 	int nb_joueur=2;
 	char ch;
 	int nb_tour=0;
-	int i=1;
+	int nb_lancers=1;
 	strcpy(pseudo_j[0], "J1");
 	strcpy(pseudo_j[1], "J2");
 	strcpy(pseudo_j[2], "J3");
@@ -644,13 +680,15 @@ int main(){
 	while(nb_tour < 13*nb_joueur){
 		attron(A_BOLD);
 		mvwprintw(ZoneMessage,1 ,2 ,"                                                                  ");
+		mvwprintw(ZoneMessage,3 ,2 ,"                                                                  ");
 		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", pseudo_j[joueur]);
 		attroff(A_BOLD);
 		Lancer();
 		AffichageDe(De ,ZoneDe);
+		Aide(1);
 		do
 		{
-			if (i == 3) break;
+			if (nb_lancers == 3) break;
 			mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
 			mvwprintw(ZoneMessage,2 ,2 ,"Voulez-vous relancer ? [O/N]");
 			wrefresh(ZoneMessage);
@@ -667,12 +705,14 @@ int main(){
 			Garder(ZoneDe, Garde);
 			Lancer();
 			AffichageDe(De ,ZoneDe);
-			i++;
+			Aide(1);
+			nb_lancers++;
 		
 		}while(1);
 		EcrireScore(joueur);
 		nb_tour++;
 		joueur=ChangerJoueur(joueur,nb_joueur);
+		nb_lancers = 1;
 	}
 	do
 	{
