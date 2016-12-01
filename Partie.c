@@ -1,3 +1,14 @@
+/**
+* \file Partie.c
+* \brief Programme rassemblant toutes les fonctions qui permettent de faire une ou plusieurs parties de Yahtzee
+* \author Benoit COMBASTEIX, Simon FERNANDES et Nathan OUALET
+* \version 1.0
+* \date 01 décembre 2016
+* \fn void Garder(WINDOW *localwin, int Garde[5])
+* \return
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
