@@ -1,3 +1,11 @@
+/**
+* \file ChoixCategorie.c
+* \brief Permet de sélectionner une catégorie entre les cases du tableau
+* \author Simon FERNANDES
+* \date 12 novembre 2016
+*/
+
+
 void ChoixCategorie (int *Categorie, WINDOW *localwin)
 {
 	int y, x;
