@@ -35,14 +35,15 @@ void EnterPseudo(){
 		for ( int i=0; i < nbjoueurs; i++){
 	
 			// On demande le pseudo 
-			printf("Quel est votre pseudo (moins de 10 caractères) ? ");
+			mvwprintw(localwin, y, x, "Quel est votre pseudo (moins de 10 caractères) ? ");
 			scanf("%s", pseudo_j[i]);
 		
 			if ( strlen(pseudo_j[i]) < 10){
 				// On l'écrit dans le fichier
 				
-				printf("%s ", pseudos);
-				printf("Bonne insertion.\n");
+				mvwprintw(localwin, y, x, "%s", pseudo_j[i]);
+				mvwprintw(localwin, y, x, "Bonne insertion. Bonjour %s !\n", pseudo_j[i]);
+				mvwprintw(localwin, y, x, "%s ", pseudos);
 				
 		 	}
 		 	else{
