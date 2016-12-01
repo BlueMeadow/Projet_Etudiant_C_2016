@@ -1,46 +1,70 @@
+/**
+* \file EnterPseudo.c
+* \version 2.0
+* \date 28 novembre 2016
+* \fn EnterPseudo()
+* \return Enregistre et affiche le pseudo des joueurs
+*/
+
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-void EntrerPseudo(){
 
-	FILE *fic1;
+char pseudos[40];
+
+
+void EnterPseudo(){
+
+	//char pseudo_j[0][10];                      /* Pseudo du joueur 1 */
+	//char pseudo_j[1][10];                      /* Pseudo du joueur 2 */
+	//char pseudo_j[2][10];                      /* Pseudo du joueur 3 */
+	//char pseudo_j[3][10];                      /* Pseudo du joueur 4 */
 	
-	char nom[10];
+	char pseudo_j[4][10];
 	
-	int nbre_joueurs = 4;
+	//char pseudos[40];                        /* Chaine de caractère contenant les pseudos des 4 joueurs avec le nombre d'espace nécesaire à un affichage correct */
+
+
+	
+	int nbjoueurs = 4;
 	int compteur = 1;
-	int x=2;
-	int y=2;
 	
-	fic1 = fopen("fichierPseudo.txt","w");
+
+		for ( int i=0; i < nbjoueurs; i++){
 	
-	do{
-		wclear(ZoneMessage);
-		// On demande le pseudo du joueur
-		mvwprintw(ZoneMessage, y, x,"Quel est votre pseudo (10 caractères maximum) ? ");
-		scanf("%s", nom);
+			// On demande le pseudo 
+			printf("Quel est votre pseudo (moins de 10 caractères) ? ");
+			scanf("%s", pseudo_j[i]);
 		
-		if ( strlen(nom) <= 10){
-			// Si les conditions d'écriture sont respectés, on écrit le pseudo dans le fichier
-			wclear(ZoneMessage);
-			fprintf(fic1, "Le joueur numéro %i s'appelle %s.\n", compteur, nom);
-			compteur++;
-	 	}
-	 	else{
-			//si les conditions ne sont pas respectés, on affiche un message d'erreur
-	 		mvwprintw(ZoneMessage, y, x, "Veuillez respecter les conditions d'écriture, s'il vous plaît.\n");
-	 	}
-	
-	}while(compteur <= nbre_joueurs);
-	//la demande de aisie de pseudo s'arrete lorsque tous les joueurs les ont.
-	
-	fclose(fic1);	
+			if ( strlen(pseudo_j[i]) < 10){
+				// On l'écrit dans le fichier
+				
+				printf("%s ", pseudos);
+				printf("Bonne insertion.\n");
+				
+		 	}
+		 	else{
+		 		printf("Veuillez respecter les conditions d'écriture, s'il vous plaît.\n");
+		 	}
+		 }
+
+
+
 }
 
 
 int main(){
+
+	//char pseudos[40]; 
 	
 	EnterPseudo();
+	
+	printf("%s", pseudos); 
+	
+	printf("Affichage\n");
+	
+	
 
 }
