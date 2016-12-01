@@ -1,3 +1,12 @@
+/**
+* \file Regles.c
+* \brief Affiche les rêgles du jeu Yahtzee
+* \author Nathan OUALET 
+* \date 27 novembre 2016
+* \version 1.0
+*/
+
+
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
