@@ -44,12 +44,6 @@ Chance : Vous additionnez la valeur de chaque dé et l'écrivez dans la case.
 Attention ! Plusieurs résultats peuvent correspondre à plusieurs catégories mais vous ne pouvez remplir une case qu'une seule fois, soyez stratégiques !
 
 
-
-
-
-
-
-
 Mode d’interaction : 
 Interface : Le jeu se déroule sur une interface texte. 
 Sont affichés les résultats des dés, le pseudo du joueur et sa fiche de score.
