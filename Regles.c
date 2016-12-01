@@ -4,6 +4,7 @@
 * \author Nathan OUALET 
 * \date 27 novembre 2016
 * \version 1.0
+* \bug Les bords du tableau ne sont pas cohérents entre eux. Nous pensons que c'est à cause d'UTF-8.
 */
 
 
