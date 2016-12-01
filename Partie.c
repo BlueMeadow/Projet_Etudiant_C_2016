@@ -16,14 +16,13 @@
 #include <ctype.h>
 #include <time.h>
 
-int tabOccurences[6]={0}; 
-int Score[4][13]={{0}};
+
+int tabOccurrences[6]={0}; 
+int Score[4][13]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 int De[5]={0,0,0,0,0};
 int Garde[5]={0};
-char pseudo_j1[30] = "J1";
-char pseudo_j2[30] = "J2";
-char pseudo_j3[30] = "J3";
-char pseudo_j4[30] = "J4";
+char pseudo_j[4][30];
+
 WINDOW *ZoneDe;
 WINDOW *ZoneMessage;
 WINDOW *ZoneAide;
@@ -100,19 +99,40 @@ void Garder(WINDOW *localwin, int Garde[5])
 	} while ( ch != 10 );	
 	/* On valide la selection avec la touche entree */
 }
+void CalculOccurrences()
+{
 
+	//parcourt les 5 dés lancés, on incremente le nombre de valeurs trouvés
+	// dans le tableau d'occurrences correspondant à la valeur du dé
+	int i;
+	for( i = 0; i < 6 ; i++)
+		tabOccurrences[i] = 0;
+
+	for( i = 0; i < 5 ; i++){
+		
+		switch(De[i]){
+			case 1: tabOccurrences[0]++; break;
+			case 2: tabOccurrences[1]++; break;
+			case 3: tabOccurrences[2]++; break;
+			case 4: tabOccurrences[3]++; break;
+			case 5: tabOccurrences[4]++; break;
+			case 6: tabOccurrences[5]++; break;
+		}
+	}
+}
 void Lancer()
 {
 	//initialisation des valeurs aléatoires, à chaque tirage
 	srand(time(0));
 	int ch;
-	wclear(ZoneMessage);
+	mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
 	mvwprintw(ZoneMessage, 2, 2, "Veuillez appuyer sur [ENTREE] pour lancer les dés.");
 	wrefresh(ZoneMessage);
 	do
 	{
 		ch = getch();
 	} while (ch != 10);
+	CalculOccurrences();
 	for(int i = 0; i < 5; i++){
 		if(Garde[i] == 0){	
 			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
@@ -139,17 +159,17 @@ void destroy_win(WINDOW *local_win);
 void ChainePseudo (char pseudos[50])
 {
 	int i, esp1, esp2, esp3, esp4;
-	esp1 = 10-strlen(pseudo_j1);
-	esp2 = 10-strlen(pseudo_j2);
-	esp3 = 10-strlen(pseudo_j3);
-	esp4 = 10-strlen(pseudo_j4);
-	strcat(pseudos, pseudo_j1);
+	esp1 = 10-strlen(pseudo_j[0]);
+	esp2 = 10-strlen(pseudo_j[1]);
+	esp3 = 10-strlen(pseudo_j[2]);
+	esp4 = 10-strlen(pseudo_j[3]);
+	strcat(pseudos, pseudo_j[0]);
 	for(i = 0 ; i <= esp1 ; i++) strcat(pseudos, " ");
-	strcat(pseudos, pseudo_j2);
+	strcat(pseudos, pseudo_j[1]);
 	for(i = 0 ; i < esp2 ; i++) strcat(pseudos, " ");
-	strcat(pseudos, pseudo_j3);
+	strcat(pseudos, pseudo_j[2]);
 	for(i = 0 ; i < esp3 ; i++) strcat(pseudos, " ");
-	strcat(pseudos, pseudo_j4);
+	strcat(pseudos, pseudo_j[3]);
 	for(i = 0 ; i < esp4-1 ; i++) strcat(pseudos, " ");
 	
 		
@@ -288,7 +308,7 @@ void MiseEnPlace()
 	AffichageDe(De, ZoneDe);
 }
 
-void ChoixCategorie (int *Categorie, WINDOW *localwin)
+void ChoixCategorie (int *Categorie, WINDOW *localwin,int joueur)
 {
 	int y, x;
 	y = 5; //indice d'ordonnée
@@ -360,32 +380,26 @@ void ChoixCategorie (int *Categorie, WINDOW *localwin)
 		if (y < 11) *Categorie = y - 4;
 		else *Categorie = y - 7;
 		if(Score[joueur][*Categorie] != -1){
-			wclear(ZoneMessage);
+			mvwprintw(ZoneMessage, 2, 2 ,"                                                                  ");
+			mvwprintw(ZoneMessage, 3, 2 ,"                                                                  ");
 			mvwprintw(ZoneMessage, 2, 2, "Cette categorie est déja prise.");
-			mvwprintw(ZoneMessage, 2, 3, "Choisissez en une autre.");
-			ch = '0';		
+			mvwprintw(ZoneMessage, 3, 2, "Choisissez en une autre.");
+			wrefresh(ZoneMessage);
+			ch = '0';
+			wmove(ZoneScore, y, x);
+			wrefresh(ZoneScore);		
+		}
+		else
+		{
+			mvwprintw(ZoneMessage, 2, 2 ,"                                                                  ");
+			mvwprintw(ZoneMessage, 3, 2 ,"                                                                  ");
+			wrefresh(ZoneMessage);
+			wmove(ZoneScore, y, x);
+			wrefresh(ZoneScore);	
 		}
 			
 	} while (ch != 10); 
 		/* Entrée valide le choix */
-}
-
-void CalculOccurences()
-{
-
-	//parcourt les 5 dés lancés, on incremente le nombre de valeurs trouvés
-	// dans le tableau d'occurences correspondant à la valeur du dé
-
-	for( int i = 0; i < 5; i++){
-		switch(De[i]){
-			case 1: tabOccurences[0]++; break;
-			case 2: tabOccurences[1]++; break;
-			case 3: tabOccurences[2]++; break;
-			case 4: tabOccurences[3]++; break;
-			case 5: tabOccurences[4]++; break;
-			case 6: tabOccurences[5]++; break;
-		}
-	}
 }
 
 int isBrelan()
@@ -438,21 +452,18 @@ int isCarre()
 
 int isFull()
 {
-	
-	int tabOccurences[6] = {0,0,0,0,0,0};
 
-	CalculOccurences();
 
 	int cpt3 = 0 , cpt2 = 0;
 
-	//On a notre tableau d'occurences, maintenant on va circuler dans le tab d'occurences, pour voir s'il y a un full.
+	//On a notre tableau d'occurrences, maintenant on va circuler dans le tab d'occurrences, pour voir s'il y a un full.
 
 	for (int j = 0; j < 6; j++){
 
-		if ( tabOccurences[j]==3){
+		if ( tabOccurrences[j]==3){
 			cpt3++;
 		}
-		else if( tabOccurences[j] == 2){
+		else if( tabOccurrences[j] == 2){
 			cpt2++;
 		}
 	}
@@ -474,16 +485,14 @@ int isPtSuite()
 	int i;
 	int j;
 	
-	int tabOccurences[6] = {0,0,0,0,0,0};
-
-	CalculOccurences();
+	int tabOccurrences[6] = {0,0,0,0,0,0};
 
 	for(i=0;i<5;i++){
-		tabOccurences[De[i]-1]++;
+		tabOccurrences[De[i]-1]++;
 	}
 
 	for(j=0;j<=2;j++){
-		if(tabOccurences[j] > 0 && tabOccurences[j+1] > 0 && tabOccurences[j+2] > 0 && tabOccurences[j+3] > 0)
+		if(tabOccurrences[j] > 0 && tabOccurrences[j+1] > 0 && tabOccurrences[j+2] > 0 && tabOccurrences[j+3] > 0)
 			return 1;
 
 	}
@@ -496,22 +505,21 @@ int isGdSuite()
 	int i;
 	int j;
 	
-	int tabOccurences[6] = {0,0,0,0,0,0};
+	int tabOccurrences[6] = {0,0,0,0,0,0};
 
-	CalculOccurences();
 
 	for( i = 0;i < 5; i++){
-		//compte le nombre d'occurence
-		tabOccurences[De[i]-1]++;
+		//compte le nombre d'occurrence
+		tabOccurrences[De[i]-1]++;
 	}
 	for( j=0; j<1; j++){
-		if(tabOccurences[0] == 1){
+		if(tabOccurrences[0] == 1){
 			//pour trouver si il y a un 1
-			if((tabOccurences[j] > 0) && (tabOccurences[j+1] > 0) && (tabOccurences[j+2] > 0) && (tabOccurences[j+3] > 0) && (tabOccurences[j+4] > 0)){
+			if((tabOccurrences[j] > 0) && (tabOccurrences[j+1] > 0) && (tabOccurrences[j+2] > 0) && (tabOccurrences[j+3] > 0) && (tabOccurrences[j+4] > 0)){
 				return 1;
 			}
 		}else{
-			if((tabOccurences[j+1] > 0) && (tabOccurences[j+2] > 0) && (tabOccurences[j+3] > 0) && (tabOccurences[j+4] > 0) && (tabOccurences[j+5] > 0)){
+			if((tabOccurrences[j+1] > 0) && (tabOccurrences[j+2] > 0) && (tabOccurrences[j+3] > 0) && (tabOccurrences[j+4] > 0) && (tabOccurrences[j+5] > 0)){
 				//pour trouver si il y a un six
 				return 1;
 			}
@@ -522,14 +530,11 @@ int isGdSuite()
 
 int isYahtzee()
 {
-	
 
-	CalculOccurences();
-
-	//on parcourt la tab Occurences, si on trouve 5 dans tabOccu, on trouve un Yahtzee donc 5 dés de même valeur.
+	//on parcourt la tab Occurrences, si on trouve 5 dans tabOccu, on trouve un Yahtzee donc 5 dés de même valeur.
 
 	for (int i=0; i < 6; i++){
-		if ( tabOccurences[i] == 5){
+		if ( tabOccurrences[i] == 5){
 			return 1;
 		}
 	}
@@ -547,36 +552,48 @@ void CalculScore(int joueur, int * Categorie)
 		case 5 :
 		case 6 :
 		/* fonction qui calcule le score pour les dés de un a six */
-			Score[joueur][*Categorie] = (*Categorie) * tabOccurences[*Categorie-1];
+			Score[joueur][*Categorie] = (*Categorie) * tabOccurrences[*Categorie-1];
 			break;			
 		case 7:
 			if(isBrelan())
 				Score[joueur][*Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
+			else
+				Score[joueur][*Categorie] = 0;
 			break;
 			
 		case 8:
 			if(isCarre())
 				Score[joueur][*Categorie] = De[0]+De[1]+De[2]+De[3]+De[4];
+			else
+				Score[joueur][*Categorie] = 0;
 			break;
 			
 		case 9:
 			if(isFull())
 				Score[joueur][*Categorie] = 25;
+			else
+				Score[joueur][*Categorie] = 0;
 			break;
 			
 		case 10:
 			if(isPtSuite())
 				Score[joueur][*Categorie] = 30;
+			else
+				Score[joueur][*Categorie] = 0;
 			break;
 			
 		case 11:
 			if(isGdSuite())
 				Score[joueur][*Categorie] = 40;
+			else
+				Score[joueur][*Categorie] = 0;
 			break;
 			
 		case 12:
 			if(isYahtzee())
 				Score[joueur][*Categorie] = 50;
+			else
+				Score[joueur][*Categorie] = 0;
 			break;
 			
 		case 13:
@@ -591,9 +608,9 @@ void EcrireScore(int joueur)
 	int x = 2;
 	int y = 2;
 	
-	mvwprintw(ZoneMessage ,y ,x ,"veuillez désigner la categorie choisie");
+	mvwprintw(ZoneMessage ,y ,x ,"Veuillez choisir la categorie");
 	wrefresh(ZoneMessage);
-	ChoixCategorie(&categorie ,ZoneScore); 
+	ChoixCategorie(&categorie ,ZoneScore,joueur); 
 	CalculScore(joueur, &categorie);
 	
 	/* choix de la colonne */
@@ -609,31 +626,42 @@ void EcrireScore(int joueur)
 	mvwprintw(ZoneScore ,y ,x ,"%i" ,Score[joueur][categorie]);
 	wrefresh(ZoneScore);
 }
-
+int ChangerJoueur(int joueur, int nb_joueur){
+	return ((joueur+1)%nb_joueur);
+}
 int main(){
 	
 	int joueur=0;
+	int nb_joueur=2;
 	char ch;
 	int nb_tour=0;
+	int i=1;
+	strcpy(pseudo_j[0], "J1");
+	strcpy(pseudo_j[1], "J2");
+	strcpy(pseudo_j[2], "J3");
+	strcpy(pseudo_j[3], "J4");
 	MiseEnPlace();
-	while(nb_tour<13){
-		int i=1;
-		wclear(ZoneMessage);	
+	while(nb_tour < 13*nb_joueur){
+		attron(A_BOLD);
+		mvwprintw(ZoneMessage,1 ,2 ,"                                                                  ");
+		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", pseudo_j[joueur]);
+		attroff(A_BOLD);
 		Lancer();
 		AffichageDe(De ,ZoneDe);
 		do
 		{
 			if (i == 3) break;
-			wclear(ZoneMessage);
-			mvwprintw(ZoneMessage,2 ,2 ,"voulez vous relancer ? [O/N]");
+			mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
+			mvwprintw(ZoneMessage,2 ,2 ,"Voulez-vous relancer ? [O/N]");
 			wrefresh(ZoneMessage);
 			do{
 				ch=getch();
 			}
 			while(tolower(ch) != 'o' && tolower(ch) != 'n');
 			if (tolower(ch) == 'n') break;
-			wclear(ZoneMessage);
-			mvwprintw(ZoneMessage,2 ,2 ,"Sélectionnez les dés à garder avec [ESPACE].");
+			mvwprintw(ZoneMessage, 2, 2, "                                                                  ");
+			mvwprintw(ZoneMessage, 2, 2, "Sélectionnez les dés à garder avec [ESPACE].");
+			mvwprintw(ZoneMessage, 2, 2, "Validez avec [ENTREE].");
 			wrefresh(ZoneMessage);
 
 			Garder(ZoneDe, Garde);
@@ -642,9 +670,9 @@ int main(){
 			i++;
 		
 		}while(1);
-		CalculOccurences();
-		EcrireScore(3);
+		EcrireScore(joueur);
 		nb_tour++;
+		joueur=ChangerJoueur(joueur,nb_joueur);
 	}
 	do
 	{
