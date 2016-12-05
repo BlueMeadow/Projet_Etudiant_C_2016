@@ -1,3 +1,8 @@
+/**
+* \file calcul.c
+* \brief Calcul le score du joueur selon la catégorie choisie
+* \version 1.0 
+*/
 
 int CalculScore(int * joueur){
 	int i;
