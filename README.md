@@ -6,7 +6,7 @@ Groupe: Benoit Combasteix, Simon Fernandes et Nathan OUALET.
 
 Simon: Affichage. Gestion Interface - Utilisateur.
 
-Benoit: Affichage, fonctions de gestion de score,
+Benoit: Affichage, fonctions de gestion de score,test assemblage
 
 Nathan: Début algorithme jeu, fonctions de gestion de score. Commentaires Doxygen.
 
