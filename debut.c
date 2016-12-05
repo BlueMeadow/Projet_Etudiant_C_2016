@@ -1,4 +1,10 @@
-
+/**
+* \file debut.c
+* \author Nathan OUALET
+* \brief Permet via un menu, de choisir entre un enouvelle partie, voir les rêgles ou quitter le jeu.
+* \date 05 décembre 2016
+* \verson 1.0
+*/
 
 #include <ncurses.h>
 #include <stdio.h>
