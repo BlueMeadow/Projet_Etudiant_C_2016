@@ -26,7 +26,8 @@ WINDOW *ZoneMenu;                                /* Sous fenetre pour l'affichag
 WINDOW *ZoneDe;                                  /* Sous fenetre pour l'affichage de la valeur de dés */
 WINDOW *ZoneMessage;                             /* Sous fenetre pour l'affichage des messages à l'utilisateur pendant la partie */
 WINDOW *ZoneAide;                                /* Sous fenetre pour l'affichage de l'aide au jeu */
-WINDOW *ZoneScore;				                 /* Sous fenetre pour l'affichage de la fiche de score */
+WINDOW *ZoneScore;				                       /* Sous fenetre pour l'affichage de la fiche de score */
+WINDOW * ZoneResultat;                           /* Sous fenetre pour l'affichage des résultats de la partie */
 
 
 /* Menu */
@@ -38,17 +39,17 @@ void Regles();                                    /* Affiche les règles */
 /* Initialisation de la partie */
 
 
-void EntrerPseudo();                                   /* Demande les pseudos des joueurs */
-void MiseEnPlace();                                    /* Crée les fenêtres utilisées pour jouer */
-void FicheDeScore();								   /* Affiche la fiche de score dans la fenêtre */
+void EntrerPseudo();                               /* Demande les pseudos des joueurs */
+void MiseEnPlace();                                /* Crée les fenêtres utilisées pour jouer */
+void FicheDeScore();								               /* Affiche la fiche de score dans la fenêtre */
 
 /* Fonctions de jeu */
 
 void LancerDe();                                 /* Simule 5 lancers de dés et entre les résultats dans le tableau */
 void CalculOccurence();                          /* Entre l'occurence de chaque valeur dans le tableau */
 void Garder();                                   /* Permet au joueur de conserver de dés avant de relancer */
-int isBrelan();									 /* Fonctions booléennes vérifiant les résultats */
-int isCarre();									 /* --- */
+int isBrelan();									                 /* Fonctions booléennes vérifiant les résultats */
+int isCarre();								                	 /* --- */
 int isFull();                                    /* --- */
 int isPtSuite();                                 /* --- */
 int isGdSuite();                                 /* --- */
@@ -57,5 +58,15 @@ void ChoixCategorie(int *Categorie);             /* Permet de choisir la catégo
 void CalculScore();                              /* Calcul le score pour la catégorie choisie */
 void EcrireScore();                              /* Ecrie le score sur la ligne et dans la colonne correspondant au joueur */
 
+/* Fonctions d'affichage */
+
+void DeUn();                                      /* Dessine un De en caractères */
+void DeDeux();                                    /* Dessine un De en caractères */
+void DeTrois();                                   /* Dessine un De en caractères */
+void DeQuatre();                                  /* Dessine un De en caractères */
+void DeCinq();                                    /* Dessine un De en caractères */
+void DeSix();                                     /* Dessine un De en caractères */
+void DeVide();                                    /* Dessine un De en caractères */
+WINDOW * CreerFenetre(int hauteur, int longueur, int DebutY, int DebutX);   /* Renvoit une fenetre ayant des bordures */
 
 #endif
