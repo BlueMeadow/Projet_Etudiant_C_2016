@@ -1,7 +1,7 @@
 void Resultat()
 {	
 
-	
+	ZoneResultat = CreerFenetre(20,50,3,3);
 	int nb_joueur = 4;
 	int Total[nb_joueur];
 	int ch;
