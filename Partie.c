@@ -611,8 +611,6 @@ void Aide(int i){//demande d'entrer 1 si on veut l'aide
 	int y=2;
 	int x=2;
 	int temp1=0, temp2=0;
-	mvwprintw(ZoneMessage, 3, 2,"rentre");		//test
-	wrefresh(ZoneMessage);			//test
 	attron(A_BOLD);
 	mvwprintw(ZoneAide, 2, 13, "AIDE");
 	attroff(A_BOLD);
@@ -655,16 +653,6 @@ void Aide(int i){//demande d'entrer 1 si on veut l'aide
 		wrefresh(ZoneAide);
 	}
 }
-void Nettoyer(int DebutY, int DebutX, int FinY, int FinX, WINDOW * localwin){
-	char Nettoyeur[70];
-	int i;
-	Nettoyeur[0]=' ';	
-	for ( i = 0 ; i < (FinX-DebutX) ; i++)
-		strcat(Nettoyeur, " ");
-	for (i = DebutY ; i < FinY ; i++)
-		mvwprintw(localwin, DebutY, DebutX, "%s", Nettoyeur);
-	wrefresh(localwin);
-}
 int main(){
 	
 	int joueur=0;
@@ -683,6 +671,8 @@ int main(){
 		mvwprintw(ZoneMessage,3 ,2 ,"                                                                  ");
 		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", pseudo_j[joueur]);
 		attroff(A_BOLD);
+		for(int i=3;i<20;i++)
+		mvwprintw(ZoneAide,i,2,"                           "); 
 		Lancer();
 		AffichageDe(De ,ZoneDe);
 		Aide(1);
