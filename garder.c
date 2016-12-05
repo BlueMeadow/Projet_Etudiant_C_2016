@@ -1,3 +1,10 @@
+/**
+* \file garder.c
+* \brief Permet de sélectionner les dés que nous voulons garder ou non pour le prochain lancer.
+* \version 1.0
+* \date 15 novembre 2016
+*/
+
 void Garder (WINDOW *localwin, int Garde[5])
 {
 	int y, x, ch;
