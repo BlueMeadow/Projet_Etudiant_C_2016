@@ -1,13 +1,3 @@
-/**
-* \file Partie.c
-* \brief Programme rassemblant toutes les fonctions qui permettent de faire une ou plusieurs parties de Yahtzee
-* \author Benoit COMBASTEIX, Simon FERNANDES et Nathan OUALET
-* \version 1.0
-* \date 01 décembre 2016
-* \fn void Garder(WINDOW *localwin, int Garde[5])
-* \return
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -25,6 +15,7 @@ char pseudo_j[4][30];
 WINDOW *ZoneDe;
 WINDOW *ZoneMessage;
 WINDOW *ZoneAide;
+WINDOW *ZoneResultat;
 WINDOW *ZoneScore;
 char pseudos[50];
 /*
@@ -653,10 +644,92 @@ void Aide(int i){//demande d'entrer 1 si on veut l'aide
 		wrefresh(ZoneAide);
 	}
 }
+
+void Resultat()
+{	
+
+	
+	int nb_joueur = 4;
+	int Total[nb_joueur];
+	int ch;
+	char Vainqueur[4][10];
+	int i, j;
+	int max;
+	delwin(ZoneMessage);
+	delwin(ZoneDe);
+	delwin(ZoneScore);
+	delwin(ZoneAide);
+	ZoneResultat = create_newwin(20,50,(LINES-20)/2, (COLS-50)/2);
+
+	for (i = 0 ; i < nb_joueur ; i++)
+	{
+		Total[i] = 0;
+		for (j = 0 ; j < 6 ; j++)
+		{
+			Total[i] += Score[i][j];
+		}
+		if (Total[i] > 62) 
+		{
+			Total[i] += 35;
+		}	
+		for (j = 6 ; j < 12 ; j++)
+		{
+			Total[i] += Score[i][j];
+		}
+	}
+	max = Total[0];
+	strcpy(Vainqueur[0], pseudo_j[0]);
+	j = 0;
+	for( i = 1 ; i < 4 ; i++)
+	{
+		if ( max < Total[i] )
+		{
+			max = Total[i];
+			strcpy(Vainqueur[j], pseudo_j[j]);
+		}
+		else if ( max == Total[i] )
+		{
+			j++;
+			strcpy(Vainqueur[j], pseudo_j[i]);
+		}
+	}
+	
+
+	wattron(ZoneResultat, A_REVERSE);
+	mvwprintw(ZoneResultat, 2, 16, "TABLEAU DE SCORES");
+	wattroff(ZoneResultat, A_REVERSE);
+	for (i = 0 ; i < nb_joueur ; i++)
+	{
+		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", pseudo_j[i], Total[i]);
+	}
+	
+	wattron(ZoneResultat, A_REVERSE);
+	mvwprintw(ZoneResultat, 11, 20, "VAINQUEUR");
+	wattroff(ZoneResultat, A_REVERSE);
+
+	for (i = 0 ; i <= j ; i++)
+	{
+		mvwprintw(ZoneResultat, 14+i, (50-strlen(Vainqueur[i]))/2 , "%s", Vainqueur[i] ) ;
+	}
+	mvwprintw(ZoneResultat, 15+j, 6, "Appuyez sur [ENTREE] pour relancer une partie ou sur Q pour revenir au menu");
+	do
+	{
+		ch = wgetch(ZoneResultat);
+	} while ( ch != 10 || tolower(ch) != 'q');
+	/*switch (ch)
+	{
+		case 10 : Partie(); break;
+		case 'q' :
+		case 'Q' : Menu(); break;
+	}	*/
+	wrefresh(ZoneResultat);
+		
+} 
+
 int main(){
 	
 	int joueur=0;
-	int nb_joueur=2;
+	int nb_joueur=1;
 	char ch;
 	int nb_tour=0;
 	int nb_lancers=1;
@@ -704,6 +777,7 @@ int main(){
 		joueur=ChangerJoueur(joueur,nb_joueur);
 		nb_lancers = 1;
 	}
+	Resultat();
 	do
 	{
 		ch = getch();
