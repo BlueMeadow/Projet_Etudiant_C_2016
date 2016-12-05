@@ -6,6 +6,8 @@
 * \verson 1.0
 */
 
+
+
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,7 +111,7 @@ void Regles(){
 
 				}
 				break;
-			case 'q' : Debut(); break;
+			//case 'q' : Debut(); break;
 		}
 
 	} while (ch != 10); /* Entrée fait sortir de l'affichage des règles */
@@ -123,7 +125,7 @@ int debut(WINDOW *localwin, int y, int x){
 /* Affichage du menu et saisie du choix */
 		
 		
-	mvwprintw(localwin, y,   x,  "  |Bonjour Joueurs de Yahtzee !");
+	mvwprintw(localwin, y,   x,  "Bonjour Joueurs de Yahtzee !");
 	mvwprintw(localwin, y+1, x,  "  |Nouvelle Partie ?");
 	mvwprintw(localwin, y+2, x,  "  |Voir les Regles.");
 	mvwprintw(localwin, y+3, x,  "  |Quitter le jeu.");
@@ -144,40 +146,41 @@ void SelectDebut()
 	keypad(ZoneDebut, TRUE); //Permet l'utilisation des touches directionnelles
 	
 	debut(ZoneDebut, y, x);
-	wmove(ZoneDebut, 2, 2);
+	wmove(ZoneDebut, 2, 1);
 	wrefresh(ZoneDebut);
 	do 
-	{	
-		
+	{			
 		ch = wgetch(ZoneDebut);
 		switch (ch)
 		{
 			case KEY_DOWN:  
 				if ( y < 4 )
 				{
-					y = y + 1;
+					y += 1;
 					wmove(ZoneDebut, y, x);
 					wrefresh(ZoneDebut);
 				}
 				else{
-					y = 2;
+					y -= 2;
 					wmove(ZoneDebut, y, x);
 					wrefresh(ZoneDebut);			
 				}
+				break;
 				
 			case KEY_UP:
 				if ( y > 2)
 				{
-					y = y - 1;
+					y -= 1;
 					wmove(ZoneDebut, y, x);
 					wrefresh(ZoneDebut);
 
 				}
 				else{
-					y = 4;
+					y += 2;
 					wmove(ZoneDebut, y, x);
 					wrefresh(ZoneDebut);			
 				}
+				break;
 				
 			
 		}
@@ -204,24 +207,15 @@ int Debut(){
 	initscr();
 	cbreak();
 	noecho(); /* Les trois lignes au dessus sont dans MiseEnPlace() */
-	SelectMenu();
+	SelectDebut();
 	endwin();
 
 }
 
+int main(){
 
-
-
-
-
-
-
-
-
-
-
-
-
+	Debut();
+}
 
 
 
