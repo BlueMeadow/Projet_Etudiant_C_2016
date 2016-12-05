@@ -1,18 +1,13 @@
-
-
-
-
-void FinDePartie()
+void Resultat()
 {	
-	WINDOW * ZoneResultat;
-	ZoneResultat = CreerFenetre(20, 50,(LINES - 20)/2, (COLS - 50)/2);
-	int Prime[nb_joueur];
+
+	
+	int nb_joueur = 4;
 	int Total[nb_joueur];
+	int ch;
 	char Vainqueur[4][10];
 	int i, j;
 	int max;
-	
-
 
 	for (i = 0 ; i < nb_joueur ; i++)
 	{
@@ -20,16 +15,15 @@ void FinDePartie()
 		Prime[i] = 0;
 		for (j = 0 ; j < 6 ; j++)
 		{
-			Total[i] + = Score[i][j];
+			Total[i] += Score[i][j];
 		}
 		if (Total[i] > 62) 
 		{
-			Prime[i] = 1;
-			Total[i] + = 35;
+			Total[i] += 35;
 		}	
 		for (j = 6 ; j < 12 ; j++)
 		{
-			Total[i] + = Score[i][j];
+			Total[i] += Score[i][j];
 		}
 	}
 	max = Total[0];
@@ -45,27 +39,38 @@ void FinDePartie()
 		else if ( max == Total[i] )
 		{
 			j++;
-			strcpy(Vainqueur[j], pseudo_j[j]);
+			strcpy(Vainqueur[j], pseudo_j[i]);
 		}
 	}
 	
 
 	wattron(ZoneResultat, A_REVERSE);
-	mvwprintw(ZoneResultat, 13, 18, "TABLEAU DE SCORES");
+	mvwprintw(ZoneResultat, 2, 16, "TABLEAU DE SCORES");
 	wattroff(ZoneResultat, A_REVERSE);
-	mvwprintw(ZoneResultat, 10, 5, "%s : %i", pseudo_j[0], Total[0]);
-	mvwprintw(ZoneResultat, 11, 5, "%s : %i", pseudo_j[1], Total[1]);
-	mvwprintw(ZoneResultat, 12, 5, "%s : %i", pseudo_j[2], Total[2]);
-	mvwprintw(ZoneResultat, 13, 5, "%s : %i", pseudo_j[3], Total[3]);
+	for (i = 0 ; i < nb_joueur ; i++)
+	{
+		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", pseudo_j[i], Total[i]);
+	}
 	
 	wattron(ZoneResultat, A_REVERSE);
-	mvwprintw(ZoneResultat, 15, 20, "VAINQUEUR");
+	mvwprintw(ZoneResultat, 11, 20, "VAINQUEUR");
 	wattroff(ZoneResultat, A_REVERSE);
-	for (i = 0 ; i < j ; i++)
+
+	for (i = 0 ; i <= j ; i++)
 	{
-		mvwprintw(ZoneResultat, 17+i, (20-strlen(Vainqueur[i])/2, "%s", Vainqueur[i]);
+		mvwprintw(ZoneResultat, 14+i, (50-strlen(Vainqueur[i]))/2 , "%s", Vainqueur[i] ) ;
 	}
+	mvwprintw(ZoneResultat, 15+j, 6, "Appuyez sur [ENTREE] pour relancer une partie ou sur Q pour revenir au menu");
+	do
+	{
+		ch = wgetch(ZoneResultat);
+	} while ( ch != 10 || tolower(ch) != 'q');
+	switch (ch)
+	{
+		case 10 : Partie(); break;
+		case q :
+		case Q : Menu();
+	}	
 	wrefresh(ZoneResultat);
 		
 }	
-	
