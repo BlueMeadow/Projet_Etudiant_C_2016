@@ -610,6 +610,7 @@ int ChangerJoueur(int joueur, int nb_joueur){
 
 void Aide(int i){//demande d'entrer 1 si on veut l'aide
 	int y=2;
+	int compt; 	
 	int x=2;
 	int temp1=0, temp2=0;
 	attron(A_BOLD);
@@ -619,16 +620,34 @@ void Aide(int i){//demande d'entrer 1 si on veut l'aide
 	y+=2;
 	if( i==1 ){
 		if(isBrelan()){
+			for(compt = 0; compt <= 5; compt++){
+				if(tabOccurrences[compt] >= 3){
+					 temp1 = compt+1;
+				}
+			}
 			mvwprintw(ZoneAide, y, x, "Brelan de %i", temp1);
 			wrefresh(ZoneAide);
 			y+=2;
 		}
 		if(isCarre()){
+			for(compt = 0; compt <= 5; compt++){
+				if(tabOccurrences[compt] >= 4){
+					 temp1 = compt+1;
+				}
+			}
 			mvwprintw(ZoneAide, y, x, "Carre de %i", temp1);
 			wrefresh(ZoneAide);
 			y+=2;
 		}
 		if(isFull()){
+			for(compt = 0; compt <= 5; compt++){
+				if(tabOccurrences[compt] == 3){
+					 temp1 = compt+1;
+				}
+				if(tabOccurrences[compt] == 2){
+					 temp2 = compt+1;
+				}
+			}
 			mvwprintw(ZoneAide, y, x, "Full : %i - %i", temp1, temp2);
 			wrefresh(ZoneAide);
 			y+=2;
@@ -656,6 +675,7 @@ void Aide(int i){//demande d'entrer 1 si on veut l'aide
 }
 
 void DetruireFenetre(WINDOW * Fenetre)
+	//permet de detruire une fenetre defini en parametres
 {
 	wclear(Fenetre);
 	wrefresh(Fenetre);
@@ -663,6 +683,7 @@ void DetruireFenetre(WINDOW * Fenetre)
 }
 
 void Resultat(int nb_joueur)
+	//affiche le resultat et la possibilites de recommencer
 {	
 
 	
@@ -671,12 +692,14 @@ void Resultat(int nb_joueur)
 	char Vainqueur[4][10];
 	int i, j;
 	int max;
+	//supprime toute les fenetres de la partie pour ne laisser que la fenetre de score
 	DetruireFenetre(ZoneMessage);
 	DetruireFenetre(ZoneDe);
 	DetruireFenetre(ZoneScore);
 	DetruireFenetre(ZoneAide);
 	ZoneResultat = create_newwin(20,60,(LINES-20)/2, (COLS-60)/2);
-
+	
+	//calcule le score des joueurs
 	for (i = 0 ; i < nb_joueur ; i++)
 	{
 		Total[i] = 0;
@@ -697,6 +720,7 @@ void Resultat(int nb_joueur)
 	max = Total[0];
 	strcpy(Vainqueur[0], pseudo_j[0]);
 	j = 0;
+	//calcule le meilleur score
 	for( i = 1 ; i < 4 ; i++)
 	{
 		if ( max < Total[i] )
@@ -715,7 +739,8 @@ void Resultat(int nb_joueur)
 	wattron(ZoneResultat, A_REVERSE);
 	mvwprintw(ZoneResultat, 2, 16, "TABLEAU DE SCORES");
 	wattroff(ZoneResultat, A_REVERSE);
-
+	
+	//affiche les score
 	for (i = 0 ; i < nb_joueur ; i++)
 	{
 		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", pseudo_j[i], Total[i]);
@@ -724,7 +749,8 @@ void Resultat(int nb_joueur)
 	wattron(ZoneResultat, A_REVERSE);
 	mvwprintw(ZoneResultat, 11, 20, "VAINQUEUR");
 	wattroff(ZoneResultat, A_REVERSE);
-
+	
+	//affiche le vainqueur
 	for (i = 0 ; i <= j ; i++)
 	{
 		mvwprintw(ZoneResultat, 14+i, (50-strlen(Vainqueur[i]))/2 , "%s", Vainqueur[i] ) ;
@@ -734,6 +760,7 @@ void Resultat(int nb_joueur)
 	do
 	{
 		ch = wgetch(ZoneResultat);
+	//donne la possibilites de recommencer
 	} while ( ch != 10 || tolower(ch) != 'q');
 	switch (ch)
 	{
@@ -749,11 +776,13 @@ void Resultat(int nb_joueur)
 		
 } 
 
-void Partie(){
-	
+
+void Partie(){ 
+	//lance la partie de yathzee
 	int joueur=0;
 	int nb_joueur=2;
 	char ch;
+	int a;
 	int nb_tour=0;
 	int nb_lancers=1;
 	strcpy(pseudo_j[0], "J1");
@@ -761,17 +790,28 @@ void Partie(){
 	strcpy(pseudo_j[2], "J3");
 	strcpy(pseudo_j[3], "J4");
 	MiseEnPlace();
+	mvwprintw(ZoneMessage,1 ,2 ,"taper [o] pour avoir l'aide et [n] pour ne pas l'avoir");
+	wrefresh(ZoneMessage);
+	do{
+		ch=getch();
+	}
+	while(tolower(ch) != 'o' && tolower(ch) != 'n');
+	if (tolower(ch) == 'n') a=0;
+	if(tolower(ch) == 'o') a=1;
+	//tant que toute les case ne sont pas remplie
 	while(nb_tour < 13*nb_joueur){
 		attron(A_BOLD);
 		mvwprintw(ZoneMessage,1 ,2 ,"                                                                  ");
 		mvwprintw(ZoneMessage,3 ,2 ,"                                                                  ");
 		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", pseudo_j[joueur]);
 		attroff(A_BOLD);
+		//vide la ZoneAide de ses caractere
 		for(int i=3;i<20;i++)
-		mvwprintw(ZoneAide,i,2,"                           "); 
+		mvwprintw(ZoneAide,i,2,"                        "); 
 		Lancer();
 		AffichageDe(De ,ZoneDe);
-		Aide(1);
+		Aide(a);
+		//do while pour la relance entre chaque entrée
 		do
 		{
 			if (nb_lancers == 3) break;
@@ -791,7 +831,9 @@ void Partie(){
 			Garder(ZoneDe, Garde);
 			Lancer();
 			AffichageDe(De ,ZoneDe);
-			Aide(1);
+			for(int i=3;i<20;i++)
+			mvwprintw(ZoneAide,i,2,"                        "); 
+			Aide(a);
 			nb_lancers++;
 		
 		}while(1);
@@ -800,6 +842,7 @@ void Partie(){
 		joueur=ChangerJoueur(joueur,nb_joueur);
 		nb_lancers = 1;
 	}
+	//une fois la partie terminé affiche le resultat
 	Resultat(nb_joueur);
 	do
 	{
