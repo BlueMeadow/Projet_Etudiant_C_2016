@@ -1,0 +1,155 @@
+;*****************************************
+;Yams.au3 by 6308988W
+;Créé avec ISN AutoIt Studio v. 1.03
+;*****************************************
+;
+; Principe de l'algo
+;===================
+; A partir d'un tableau regroupant toutes les combinaisons 
+; (ci-dessous le tableau $resume (14 lignes de 6 colonnes)
+;
+; pour chacune des combinaisons on calcule le nombre de dés manquants permettant de réaliser la combinaisons
+; on met dans chacune des colonnes [0] le nom de la combinaisons 
+; exemple '1', '2',..., 'brelan', 'full', etc...
+
+; a) on met le nombre de dés manquant dans la colonne [1] 
+;
+; Exemple: on a fait le jet suivant 1 3 3 5 6
+; pour la combinaison 	"1", il manque 4 dés
+;						"2", il manque 5 dés
+;						"3", il manque 3 dés
+;						"4", il manque 5 dés
+;						"5", il manque 4 dés
+;						"6", il manque 4 dés
+; b) on multiplie le nombre trouvé dans a) par 1/6 - pourcentage pour obtenir le dés souhaité) et on le met au niveau de la colonne [2] 
+; pour chacune des combinaisons
+;
+; pour l'exemple cité ci-dessus on aurait 
+;
+; pour la combinaison 	"1", (1/6) * (1/6) * (1/6) * (1/6)
+;						"2", (1/6) * (1/6) * (1/6) * (1/6) * (1/6)
+;						"3", (1/6) * (1/6) * (1/6)
+;						"4", (1/6) * (1/6) * (1/6) * (1/6) * (1/6)
+;						"5", (1/6) * (1/6) * (1/6) * (1/6)
+;						"6", (1/6) * (1/6) * (1/6) * (1/6)
+;
+; c) on multiplie la valeur inscrite dans la colonne [2] par [3] pour obtenir le score
+; d) on choisit la combinaison ayant le meilleur score
+;	on retire les dés ne permettant pas d'avoir le meilleur score 
+;   le meilleur score pour l'exemple ci-dessus correspond au chiffre 3. On conserve donc les dés '3' et on fait un nouveau lancer pour les 3 autres
+;
+
+; On fait ce calcul 2 fois pour simuler les 3 lancers 
+; Une 
+
+
+Local $Tableau_Des[5] ; Création d'un tableau permettant de stocker la valeur des 5 dès.
+Local $Resume[14][4]
+$Resume[0][0] = "Combinaison" ; Libellé de la combinaison (1, 2, 3... brelan, full, etc...)
+$Resume[0][1] = "Nb manquant" ; Nb de dés manquant pour avoir le maximum de dés correspondant à la combinaison
+$Resume[0][2] = "Pourcentage" ; Pourcentage calculé
+$Resume[0][3] = "Valeur_maxi" ; Valeur maximum (exemple pour la combinaison '1' = 5*1, la combinaison '4' = 5*4
+$Resume[0][4] = "Valeur_potentielle" ; produit de la colonne [2] et [3] pour avoir le score de chacune des combinaisons 
+$Resume[0][5] = "Disponible" ; 1 = Cette combinaison n'a pas encore été prise, 0= Cette combinaison 
+
+$Resume[1][1] = "1" ; Cumul des 1 -> cumul de 1
+$Resume[2][1] = "2" ; Cumul des 2 -> cumul de 2
+$Resume[3][1] = "3" ; Cumul des 3 -> cumul de 3
+$Resume[4][1] = "4" ; Cumul des 4 -> cumul de 4
+$Resume[5][1] = "5" ; Cumul des 5 -> cumul de 5
+$Resume[6][1] = "6" ; Cumul des 6 -> cumul de 6
+$Resume[7][1] = "Brelan" ; 3 faces identiques -> 3 fois la valeur
+$Resume[8][1] = "Carré" ; 4 faces identiques  -> 4 fois la valeur
+$Resume[9][1] = "Full" ; Brelan + Paire -> 25 points
+$Resume[10][1] = "Petite Suite" ; Une suite de 4 faces -> 30 points
+$Resume[11][1] = "Grande Suite" ; Une suite de 5 faces -> 40 points
+$Resume[12][1] = "Yams" ; 5 faces identiques -> 50 points
+$Resume[13][1] = "Chance" ; n'importe quoi -> Somme des 5 faces
+
+Func Main()
+	; on va initialiser les 5 dès.
+	;=============================
+	For $i = 0 To 4
+		$Valeur = Random(1, 6, 1) ; On récupère dans la variable <$valeur> un nombre entre 1 et 6
+		$Tableau_Des[$i] = $Valeur
+	Next
+EndFunc   ;==>Main
+
+
+; Fonction permettant de calculer le nombre de dés manquant
+;
+; $d<n> : 1<= n < 5 === Les dès
+; $Valeur : valeur de comparaison
+;==========================================================
+Func Manque_valeur($d1, $d2, $d3, $d4, $d5, $Valeur)
+	Local $Nb = 0
+	If $d1 <> $Valeur Then
+		$Nb += 1
+	EndIf
+	If $d2 <> $Valeur Then
+		$Nb += 1
+	EndIf
+	If $d3 <> $Valeur Then
+		$Nb += 1
+	EndIf
+	If $d4 <> $Valeur Then
+		$Nb += 1
+	EndIf
+	If $d5 <> $Valeur Then
+		$Nb += 1
+	EndIf
+	
+	Return $Nb
+EndFunc   ;==>Manque_valeur
+
+
+; Fonction permettant de calculer le nombre de dés manquant pour réaliser un brelan
+;
+; Retourner la chaine de caractère X,Y
+; correspondant à X la valeur du dés à conserver
+; et Y le nombre de dés à rejeter
+;==========================================================
+Func Manque_brelan($d1, $d2, $d3, $d4, $d5)
+	$Valeur_Des = 9
+	$Nb_A_Rejeter = 9
+	Local $Rc
+	For $i = 1 To 6
+		; on va regarder le nombre de dès manquant pour la valeur <$i>
+		$Nb = Manque_valeur($d1, $d2, $d3, $d4, $d5, $i)
+		
+		If $Nb < $Nb_A_Rejeter Then
+			$Nb_A_Rejeter = $Nb
+			$Valeur_Des = $i
+		EndIf
+	Next
+	
+	$Rc = $Valeur_Des & "," & $Nb_A_Rejeter
+	Return $Rc
+EndFunc   ;==>Manque_brelan
+
+
+; Fonction permettant de calculer le nombre de dés manquant pour réaliser un carre
+;
+; Retourner la chaine de caractère X,Y
+; correspondant à X la valeur du dés à conserver
+; et Y le nombre de dés à rejeter
+;==========================================================
+Func Manque_carre($d1, $d2, $d3, $d4, $d5)
+	$Valeur_Des = 9
+	$Nb_A_Rejeter = 9
+	Local $Rc
+	For $i = 1 To 6
+		; on va regarder le nombre de dès manquant pour la valeur <$i>
+		$Nb = Manque_valeur($d1, $d2, $d3, $d4, $d5, $i)
+		
+		If $Nb < $Nb_A_Rejeter Then
+			$Nb_A_Rejeter = $Nb
+			$Valeur_Des = $i
+		EndIf
+	Next
+	
+	$Rc = $Valeur_Des & "," & $Nb_A_Rejeter
+	Return $Rc
+EndFunc   ;==>Manque_carre
+
+
