@@ -1,12 +1,3 @@
-/*
- La partie commence enfin. Etape importante: Veuillez entrer vos pseudos Première étape: sélection du premier joueur par la fonction QuiCommence.c. L'ordre des joueurs se fera par le
- sens des aiguilles d'une montre. Donc le premier joueur joue. Le suivi des fonctions sera le même pour tous les joueurs de la partie. 
- Tout d'abord, au premier lancer, les joueurs lancent leurs 5 dés. Ensuite ils continuent à lancer leurs dés de leur choix selon la combinaison
- qu'il obtienne jusqu'au troisième lancer. Ils peuvent les lancers quand ils veulent. Pour chaque lancer, une aide sera disponible pour connaître 
- le score qu'il obtienne selon la combinaison des 5 dés.  
-*/
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -15,27 +6,39 @@
 #include <time.h>
 
 
-int tabOccurrences[6]={0}; 
+int TabOccurrences[6]={0}; 
 int Score[4][13]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 int De[5]={0,0,0,0,0};
 int Garde[5]={0};
-char pseudo_j[4][30];
+int NbJoueur;
+char PseudoJ[4][10];
+char Pseudos[40];
+int Joueur=0;
+int isAide[4]={0};
+void Aide(int isAide[], int Joueur);
 
 WINDOW *ZoneDe;
 WINDOW *ZoneMessage;
 WINDOW *ZoneAide;
 WINDOW *ZoneResultat;
 WINDOW *ZoneScore;
-char pseudos[50];
+WINDOW *ZoneMenu;
+
 
 void Partie();
 void Menu();
 void Regles();
-void Debut();
-void SelectDebut();
+
 /*
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 */
+void Nettoyer(WINDOW * localwin, int DebutY, int DebutX, int FinY, int FinX)
+{
+	int i, j;
+	for (i = DebutY ; i < FinY ; i++)
+		for (j = DebutX ; j < FinY ; j++)
+			mvwprintw(localwin, i, j, " ");
+}
 
 void Garder(WINDOW *localwin, int Garde[5])
 {
@@ -111,17 +114,17 @@ void CalculOccurrences()
 	// dans le tableau d'occurrences correspondant à la valeur du dé
 	int i;
 	for( i = 0; i < 6 ; i++)
-		tabOccurrences[i] = 0;
+		TabOccurrences[i] = 0;
 
 	for( i = 0; i < 5 ; i++){
 		
 		switch(De[i]){
-			case 1: tabOccurrences[0]++; break;
-			case 2: tabOccurrences[1]++; break;
-			case 3: tabOccurrences[2]++; break;
-			case 4: tabOccurrences[3]++; break;
-			case 5: tabOccurrences[4]++; break;
-			case 6: tabOccurrences[5]++; break;
+			case 1: TabOccurrences[0]++; break;
+			case 2: TabOccurrences[1]++; break;
+			case 3: TabOccurrences[2]++; break;
+			case 4: TabOccurrences[3]++; break;
+			case 5: TabOccurrences[4]++; break;
+			case 6: TabOccurrences[5]++; break;
 		}
 	}
 }
@@ -138,17 +141,20 @@ void Lancer()
 		ch = getch();
 	} while (ch != 10);
 
-	for(int i = 0; i < 5; i++){
-		if(Garde[i] == 0){	
+	for(int i = 0; i < 5; i++)
+	{
+		if(Garde[i] == 0)
+		{	
 			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
 			De[i] = rand()%6+1;
 		}
 		CalculOccurrences();
-		Garde[i]=0;
+		Garde[i]=0;	
 	}
+	Aide(isAide, Joueur);
 }
 
-WINDOW *create_newwin(int height, int width, int starty, int startx)
+WINDOW *CreerFenetre(int height, int width, int starty, int startx)
 {	WINDOW *localwin;
 	localwin = newwin(height, width, starty, startx);
 	wborder(localwin, '|', '|', '-', '-', '+', '+', '+', '+');		/* 0, 0 gives default characters 
@@ -158,24 +164,22 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 	return localwin;
 }
 
-WINDOW *create_newwin(int height, int width, int starty, int startx);
-void destroy_win(WINDOW *local_win);
 
-void ChainePseudo (char pseudos[50])
+void ChainePseudo (char Pseudos[50])
 {
 	int i, esp1, esp2, esp3, esp4;
-	esp1 = 10-strlen(pseudo_j[0]);
-	esp2 = 10-strlen(pseudo_j[1]);
-	esp3 = 10-strlen(pseudo_j[2]);
-	esp4 = 10-strlen(pseudo_j[3]);
-	strcat(pseudos, pseudo_j[0]);
-	for(i = 0 ; i <= esp1 ; i++) strcat(pseudos, " ");
-	strcat(pseudos, pseudo_j[1]);
-	for(i = 0 ; i < esp2 ; i++) strcat(pseudos, " ");
-	strcat(pseudos, pseudo_j[2]);
-	for(i = 0 ; i < esp3 ; i++) strcat(pseudos, " ");
-	strcat(pseudos, pseudo_j[3]);
-	for(i = 0 ; i < esp4-1 ; i++) strcat(pseudos, " ");
+	esp1 = 10-strlen(PseudoJ[0]);
+	esp2 = 10-strlen(PseudoJ[1]);
+	esp3 = 10-strlen(PseudoJ[2]);
+	esp4 = 10-strlen(PseudoJ[3]);
+	strcat(Pseudos, PseudoJ[0]);
+	for(i = 0 ; i <= esp1 ; i++) strcat(Pseudos, " ");
+	strcat(Pseudos, PseudoJ[1]);
+	for(i = 0 ; i < esp2 ; i++) strcat(Pseudos, " ");
+	strcat(Pseudos, PseudoJ[2]);
+	for(i = 0 ; i < esp3 ; i++) strcat(Pseudos, " ");
+	strcat(Pseudos, PseudoJ[3]);
+	for(i = 0 ; i < esp4-1 ; i++) strcat(Pseudos, " ");
 	
 		
 }
@@ -183,7 +187,7 @@ void ChainePseudo (char pseudos[50])
 void FicheDeScore(WINDOW *localwin, int y, int x)
 /* Affiche le squelette de la fiche de score */
 {
-	mvwprintw(localwin, y+1, x,  " PARTIE HAUTE    %s", pseudos);
+	mvwprintw(localwin, y+1, x,  " PARTIE HAUTE    %s", Pseudos);
 	mvwprintw(localwin, y+2, x,  "+---+-----------+----------+---------+---------+---------+");
 	mvwprintw(localwin, y+3, x,  "|   |     1     |          |         |         |         |");
 	mvwprintw(localwin, y+4, x,  "|   |     2     |          |         |         |         |");                                              
@@ -192,7 +196,7 @@ void FicheDeScore(WINDOW *localwin, int y, int x)
 	mvwprintw(localwin, y+7, x,  "|   |     5     |          |         |         |         |");                                               
 	mvwprintw(localwin, y+8, x,  "|   |     6     |          |         |         |         |");                                                 
 	mvwprintw(localwin, y+9, x,  "+---+-----------+----------+---------+---------+---------+");
-	mvwprintw(localwin, y+10, x, "|PARTIE BASSE    %s|", pseudos);
+	mvwprintw(localwin, y+10, x, "|PARTIE BASSE    %s|", Pseudos);
 	mvwprintw(localwin, y+11, x, "+---+-----------+----------+---------+---------+---------+");
 	mvwprintw(localwin, y+12, x, "|   | BRELAN    |          |         |         |         |");                                              
 	mvwprintw(localwin, y+13, x, "|   | CARRE     |          |         |         |         |");                                               
@@ -304,16 +308,16 @@ void MiseEnPlace()
 	cbreak();
 	noecho();
 	refresh();
-	ChainePseudo(pseudos);
-	ZoneAide = create_newwin(30,30,3,92);
-	ZoneDe = create_newwin(31, 19, 3, 3);
-	ZoneScore = create_newwin(25,70,3,22);
-	ZoneMessage = create_newwin(10,70,28,22);
+	ChainePseudo(Pseudos);
+	ZoneAide = CreerFenetre(30,30,3,92);
+	ZoneDe = CreerFenetre(31, 19, 3, 3);
+	ZoneScore = CreerFenetre(25,70,3,22);
+	ZoneMessage = CreerFenetre(10,70,28,22);
 	FicheDeScore(ZoneScore,2,2);
 	AffichageDe(De, ZoneDe);
 }
 
-void ChoixCategorie (int *Categorie, WINDOW *localwin,int joueur)
+void ChoixCategorie (int *Categorie, WINDOW *localwin,int Joueur)
 {
 	int y, x;
 	y = 5; //indice d'ordonnée
@@ -384,7 +388,7 @@ void ChoixCategorie (int *Categorie, WINDOW *localwin,int joueur)
 		}
 		if (y < 11) *Categorie = y - 4;
 		else *Categorie = y - 7;
-		if(Score[joueur][*Categorie-1] != -1){
+		if(Score[Joueur][*Categorie-1] != -1){
 			mvwprintw(ZoneMessage, 2, 2 ,"                                                                  ");
 			mvwprintw(ZoneMessage, 3, 2 ,"                                                                  ");
 			mvwprintw(ZoneMessage, 2, 2, "Cette categorie est déja prise.");
@@ -409,50 +413,25 @@ void ChoixCategorie (int *Categorie, WINDOW *localwin,int joueur)
 
 int isBrelan()
 {
-	int i, j, cptvalide = 0;
-
-	int valeuri, valeurj;
-
-	for(i =0; i<5; i++){
-		for( j = 4; i<j; j--){
-			valeuri = De[i];
-			valeurj = De[j];
-			
-			//s'il trouve trois dés identiques, la condition s'arrete, et retourne le résultat
-			if (cptvalide==3) break;
-
-			if (valeuri == valeurj){
-				cptvalide++;
-			}
-		}
-
+	int i;
+	for( i = 0; i < 6 ; i++)
+	{
+		if (TabOccurrences[i] > 2)
+			return 1;
 	}
-	return ( cptvalide == 3);
+	return 0;
 }
 
 int isCarre()
 {
 	int i;
-	int j;
 	
-	int total = 0;
-	
-	for( i = 0; i < 5 ; i++){
-		
-		for( j=0; j<5; j++){
-			
-			if(De[i] == De[j] && i != j ){
-				//i!=j pour qu'il ne compte pas si les deux sont sur la meme case
-				total++;
-			}
-		}
-		if(total > 2){
+	for( i = 0; i < 6 ; i++)
+	{
+		if (TabOccurrences[i] > 3)
 			return 1;
-
-		}
-		total=0;
 	}
-	return 0;
+	return 0;		
 }
 
 int isFull()
@@ -461,11 +440,12 @@ int isFull()
 
 	for( i = 0 ; i < 6 ; i++)
 	{
-		if( tabOccurrences[i] == 5 )
+		if( TabOccurrences[i] == 5 )
+		/* Un Yahtzee est considéré comme un full */
 			return 1;		
-		if( tabOccurrences[i] == 2 )
+		if( TabOccurrences[i] == 2 )
 			cpt2 = 1;
-		if( tabOccurrences[i] == 3 )
+		if( TabOccurrences[i] == 3 )
 			cpt3 = 1;
 	}
 	if (cpt2 == 1 && cpt3 == 1)
@@ -482,7 +462,7 @@ int isPtSuite()
 	int j;
 
 	for(j=0;j<=2;j++){
-		if(tabOccurrences[j] > 0 && tabOccurrences[j+1] > 0 && tabOccurrences[j+2] > 0 && tabOccurrences[j+3] > 0)
+		if(TabOccurrences[j] > 0 && TabOccurrences[j+1] > 0 && TabOccurrences[j+2] > 0 && TabOccurrences[j+3] > 0)
 			return 1;
 
 	}
@@ -496,13 +476,13 @@ int isGdSuite()
 	int j;
 	
 	for( j=0; j<1; j++){
-		if(tabOccurrences[0] == 1){
+		if(TabOccurrences[0] == 1){
 			//pour trouver si il y a un 1
-			if((tabOccurrences[j] > 0) && (tabOccurrences[j+1] > 0) && (tabOccurrences[j+2] > 0) && (tabOccurrences[j+3] > 0) && (tabOccurrences[j+4] > 0)){
+			if((TabOccurrences[j] > 0) && (TabOccurrences[j+1] > 0) && (TabOccurrences[j+2] > 0) && (TabOccurrences[j+3] > 0) && (TabOccurrences[j+4] > 0)){
 				return 1;
 			}
 		}else{
-			if((tabOccurrences[j+1] > 0) && (tabOccurrences[j+2] > 0) && (tabOccurrences[j+3] > 0) && (tabOccurrences[j+4] > 0) && (tabOccurrences[j+5] > 0)){
+			if((TabOccurrences[j+1] > 0) && (TabOccurrences[j+2] > 0) && (TabOccurrences[j+3] > 0) && (TabOccurrences[j+4] > 0) && (TabOccurrences[j+5] > 0)){
 				//pour trouver si il y a un six
 				return 1;
 			}
@@ -517,14 +497,14 @@ int isYahtzee()
 	//on parcourt la tab Occurrences, si on trouve 5 dans tabOccu, on trouve un Yahtzee donc 5 dés de même valeur.
 
 	for (int i=0; i < 6; i++){
-		if ( tabOccurrences[i] == 5){
+		if ( TabOccurrences[i] == 5){
 			return 1;
 		}
 	}
 	return 0;
 }
 
-void CalculScore(int joueur, int Categorie)
+void CalculScore(int Joueur, int Categorie)
 {
 	switch(Categorie){
 	/* choix score a utiliser */		
@@ -535,57 +515,57 @@ void CalculScore(int joueur, int Categorie)
 		case 5 :
 		case 6 :
 		/* fonction qui calcule le score pour les dés de un a six */
-			Score[joueur][Categorie-1] = (Categorie) * tabOccurrences[Categorie-1];
+			Score[Joueur][Categorie-1] = (Categorie) * TabOccurrences[Categorie-1];
 			break;			
 		case 7:
 			if(isBrelan())
-				Score[joueur][Categorie-1] = De[0]+De[1]+De[2]+De[3]+De[4];
+				Score[Joueur][Categorie-1] = De[0]+De[1]+De[2]+De[3]+De[4];
 			else
-				Score[joueur][Categorie-1] = 0;
+				Score[Joueur][Categorie-1] = 0;
 			break;
 			
 		case 8:
 			if(isCarre())
-				Score[joueur][Categorie-1] = De[0]+De[1]+De[2]+De[3]+De[4];
+				Score[Joueur][Categorie-1] = De[0]+De[1]+De[2]+De[3]+De[4];
 			else
-				Score[joueur][Categorie-1] = 0;
+				Score[Joueur][Categorie-1] = 0;
 			break;
 			
 		case 9:
 			if(isFull())
-				Score[joueur][Categorie-1] = 25;
+				Score[Joueur][Categorie-1] = 25;
 			else
-				Score[joueur][Categorie-1] = 0;
+				Score[Joueur][Categorie-1] = 0;
 			break;
 			
 		case 10:
 			if(isPtSuite())
-				Score[joueur][Categorie-1] = 30;
+				Score[Joueur][Categorie-1] = 30;
 			else
-				Score[joueur][Categorie-1] = 0;
+				Score[Joueur][Categorie-1] = 0;
 			break;
 			
 		case 11:
 			if(isGdSuite())
-				Score[joueur][Categorie-1] = 40;
+				Score[Joueur][Categorie-1] = 40;
 			else
-				Score[joueur][Categorie-1] = 0;
+				Score[Joueur][Categorie-1] = 0;
 			break;
 			
 		case 12:
 			if(isYahtzee())
-				Score[joueur][Categorie-1] = 50;
+				Score[Joueur][Categorie-1] = 50;
 			else
-				Score[joueur][Categorie-1] = 0;
+				Score[Joueur][Categorie-1] = 0;
 			break;
 			
 		case 13:
-			Score[joueur][Categorie-1] = De[0]+De[1]+De[2]+De[3]+De[4];
+			Score[Joueur][Categorie-1] = De[0]+De[1]+De[2]+De[3]+De[4];
 			break;
 	}
 }	
 
-void EcrireScore(int joueur)
+void EcrireScore(int Joueur)
 {
 	int categorie;
 	int x = 2;
@@ -595,11 +575,11 @@ void EcrireScore(int joueur)
 	
 	mvwprintw(ZoneMessage ,y ,x ,"Veuillez choisir la categorie");
 	wrefresh(ZoneMessage);
-	ChoixCategorie(&categorie ,ZoneScore,joueur); 
-	CalculScore(joueur, categorie);
+	ChoixCategorie(&categorie ,ZoneScore,Joueur); 
+	CalculScore(Joueur, categorie);
 	
 	/* choix de la colonne */
-	x = 24 + 10 * joueur;
+	x = 24 + 10 * Joueur;
 	/* choix de la ligne */
 	
 	
@@ -610,54 +590,54 @@ void EcrireScore(int joueur)
 		y = categorie + 7;
 	
 	/*affiche le score */
-	mvwprintw(ZoneScore ,y ,x ,"%i" ,Score[joueur][categorie-1]);
+	mvwprintw(ZoneScore ,y ,x ,"%i" ,Score[Joueur][categorie-1]);
 	wrefresh(ZoneScore);
 }
-int ChangerJoueur(int joueur, int nb_joueur){
-	return ((joueur+1)%nb_joueur);
+int ChangerJoueur(int Joueur, int NbJoueur){
+	return ((Joueur+1)%NbJoueur);
 }
 
-void Aide(int i){//demande d'entrer 1 si on veut l'aide
+void Aide(int isAide[4], int Joueur){//demande d'entrer 1 si on veut l'aide
 	int y=2;
-	int compt; 	
 	int x=2;
+	int i;
 	int temp1=0, temp2=0;
+	Nettoyer(ZoneAide, 2, 2, 29, 29);
 	attron(A_BOLD);
 	mvwprintw(ZoneAide, 2, 13, "AIDE");
 	attroff(A_BOLD);
 	wrefresh(ZoneAide);
 	y+=2;
-	if( i==1 ){
+
+	if( isAide[Joueur] ){
 		if(isBrelan()){
-			for(compt = 0; compt <= 5; compt++){
-				if(tabOccurrences[compt] >= 3){
-					 temp1 = compt+1;
+			for (i = 0 ; i < 6 ; i++)
+			{
+				if (TabOccurrences[i] > 2)
+				{
+					temp1 = i;
+					break;
 				}
 			}
-			mvwprintw(ZoneAide, y, x, "Brelan de %i", temp1);
+			mvwprintw(ZoneAide, y, x, "Brelan de %i", temp1+1);
 			wrefresh(ZoneAide);
 			y+=2;
 		}
 		if(isCarre()){
-			for(compt = 0; compt <= 5; compt++){
-				if(tabOccurrences[compt] >= 4){
-					 temp1 = compt+1;
+			for (i = 0 ; i < 6 ; i++)
+			{
+				if (TabOccurrences[i] > 3)
+				{
+					temp1 = i;
+					break;
 				}
 			}
-			mvwprintw(ZoneAide, y, x, "Carre de %i", temp1);
+			mvwprintw(ZoneAide, y, x, "Carre de %i", temp1+1);
 			wrefresh(ZoneAide);
 			y+=2;
 		}
 		if(isFull()){
-			for(compt = 0; compt <= 5; compt++){
-				if(tabOccurrences[compt] == 3){
-					 temp1 = compt+1;
-				}
-				if(tabOccurrences[compt] == 2){
-					 temp2 = compt+1;
-				}
-			}
-			mvwprintw(ZoneAide, y, x, "Full : %i - %i", temp1, temp2);
+			mvwprintw(ZoneAide, y, x, "Full");
 			wrefresh(ZoneAide);
 			y+=2;
 		}
@@ -684,32 +664,26 @@ void Aide(int i){//demande d'entrer 1 si on veut l'aide
 }
 
 void DetruireFenetre(WINDOW * Fenetre)
-	//permet de detruire une fenetre defini en parametres
 {
 	wclear(Fenetre);
 	wrefresh(Fenetre);
 	delwin(Fenetre);
 }
 
-void Resultat(int nb_joueur)
-	//affiche le resultat et la possibilites de recommencer
-{	
-
-	
-	int Total[nb_joueur];
+void Resultat()
+{		
+	int Total[NbJoueur];
 	int ch;
 	char Vainqueur[4][10];
 	int i, j;
 	int max;
-	//supprime toute les fenetres de la partie pour ne laisser que la fenetre de score
 	DetruireFenetre(ZoneMessage);
 	DetruireFenetre(ZoneDe);
 	DetruireFenetre(ZoneScore);
 	DetruireFenetre(ZoneAide);
-	ZoneResultat = create_newwin(20,60,(LINES-20)/2, (COLS-60)/2);
-	
-	//calcule le score des joueurs
-	for (i = 0 ; i < nb_joueur ; i++)
+	ZoneResultat = CreerFenetre(20,60,(LINES-20)/2, (COLS-60)/2);
+
+	for (i = 0 ; i < NbJoueur ; i++)
 	{
 		Total[i] = 0;
 		for (j = 0 ; j < 6 ; j++)
@@ -727,20 +701,19 @@ void Resultat(int nb_joueur)
 		}
 	}
 	max = Total[0];
-	strcpy(Vainqueur[0], pseudo_j[0]);
+	strcpy(Vainqueur[0], PseudoJ[0]);
 	j = 0;
-	//calcule le meilleur score
 	for( i = 1 ; i < 4 ; i++)
 	{
 		if ( max < Total[i] )
 		{
 			max = Total[i];
-			strcpy(Vainqueur[j], pseudo_j[j]);
+			strcpy(Vainqueur[j], PseudoJ[j]);
 		}
 		else if ( max == Total[i] )
 		{
 			j++;
-			strcpy(Vainqueur[j], pseudo_j[i]);
+			strcpy(Vainqueur[j], PseudoJ[i]);
 		}
 	}
 	
@@ -748,18 +721,16 @@ void Resultat(int nb_joueur)
 	wattron(ZoneResultat, A_REVERSE);
 	mvwprintw(ZoneResultat, 2, 16, "TABLEAU DE SCORES");
 	wattroff(ZoneResultat, A_REVERSE);
-	
-	//affiche les score
-	for (i = 0 ; i < nb_joueur ; i++)
+
+	for (i = 0 ; i < NbJoueur ; i++)
 	{
-		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", pseudo_j[i], Total[i]);
+		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", PseudoJ[i], Total[i]);
 	}
 	
 	wattron(ZoneResultat, A_REVERSE);
 	mvwprintw(ZoneResultat, 11, 20, "VAINQUEUR");
 	wattroff(ZoneResultat, A_REVERSE);
-	
-	//affiche le vainqueur
+
 	for (i = 0 ; i <= j ; i++)
 	{
 		mvwprintw(ZoneResultat, 14+i, (50-strlen(Vainqueur[i]))/2 , "%s", Vainqueur[i] ) ;
@@ -769,7 +740,6 @@ void Resultat(int nb_joueur)
 	do
 	{
 		ch = wgetch(ZoneResultat);
-	//donne la possibilites de recommencer
 	} while ( ch != 10 || tolower(ch) != 'q');
 	switch (ch)
 	{
@@ -778,49 +748,53 @@ void Resultat(int nb_joueur)
 			  break;
 		case 'q' :
 		case 'Q' : DetruireFenetre(ZoneResultat);
-			   Debut();
+			   Menu();
 			   break;
 	}	
 	wrefresh(ZoneResultat);
 		
 } 
 
+void Partie(){
+	
 
-void Partie(){ 
-	//lance la partie de yathzee
-	int joueur=0;
-	int nb_joueur=2;
 	char ch;
-	int a;
 	int nb_tour=0;
 	int nb_lancers=1;
-	strcpy(pseudo_j[0], "J1");
-	strcpy(pseudo_j[1], "J2");
-	strcpy(pseudo_j[2], "J3");
-	strcpy(pseudo_j[3], "J4");
+
+	int i;
+	DetruireFenetre(ZoneMenu);
 	MiseEnPlace();
-	mvwprintw(ZoneMessage,1 ,2 ,"taper [o] pour avoir l'aide et [n] pour ne pas l'avoir");
-	wrefresh(ZoneMessage);
-	do{
-		ch=getch();
+	for (i = 0 ; i < NbJoueur ; i++)
+	{
+		mvwprintw(ZoneMessage, 1, 2, "Joueur %s : ", PseudoJ[i]);
+		mvwprintw(ZoneMessage, 2, 2, "Voulez-vous afficher l'aide ? [O/N]");
+	
+		do
+		{
+			ch=wgetch(ZoneMessage);
+		} while(tolower(ch) != 'o' && tolower(ch) != 'n');
+
+		if (tolower(ch) == 'n') isAide[i] = 0;
+		else isAide[i] = 1;
+
+		wrefresh(ZoneMessage);
 	}
-	while(tolower(ch) != 'o' && tolower(ch) != 'n');
-	if (tolower(ch) == 'n') a=0;
-	if(tolower(ch) == 'o') a=1;
-	//tant que toute les case ne sont pas remplie
-	while(nb_tour < 13*nb_joueur){
+	
+
+	while(nb_tour < 13*NbJoueur)
+	{
+		Aide(isAide, Joueur);
 		attron(A_BOLD);
 		mvwprintw(ZoneMessage,1 ,2 ,"                                                                  ");
 		mvwprintw(ZoneMessage,3 ,2 ,"                                                                  ");
-		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", pseudo_j[joueur]);
+		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", PseudoJ[Joueur]);
 		attroff(A_BOLD);
-		//vide la ZoneAide de ses caractere
 		for(int i=3;i<20;i++)
-		mvwprintw(ZoneAide,i,2,"                        "); 
+		mvwprintw(ZoneAide,i,2,"                           "); 
 		Lancer();
 		AffichageDe(De ,ZoneDe);
-		Aide(a);
-		//do while pour la relance entre chaque entrée
+		Aide(isAide, Joueur);
 		do
 		{
 			if (nb_lancers == 3) break;
@@ -840,19 +814,16 @@ void Partie(){
 			Garder(ZoneDe, Garde);
 			Lancer();
 			AffichageDe(De ,ZoneDe);
-			for(int i=3;i<20;i++)
-			mvwprintw(ZoneAide,i,2,"                        "); 
-			Aide(a);
+			Aide(isAide, Joueur);
 			nb_lancers++;
 		
 		}while(1);
-		EcrireScore(joueur);
+		EcrireScore(Joueur);
 		nb_tour++;
-		joueur=ChangerJoueur(joueur,nb_joueur);
+		Joueur = ChangerJoueur(Joueur,NbJoueur);
 		nb_lancers = 1;
 	}
-	//une fois la partie terminé affiche le resultat
-	Resultat(nb_joueur);
+	Resultat(NbJoueur);
 	do
 	{
 		ch = getch();
@@ -861,7 +832,6 @@ void Partie(){
 }
 
 void Page_Regles(WINDOW *localwin, int y, int x){
-	
 
 	
 	mvwprintw(localwin, y,   x,  "                        Rêgles du Yahtzee ");
@@ -926,8 +896,9 @@ void Page_Regles(WINDOW *localwin, int y, int x){
 void Regles(){
 /* A faire dans une fenetre ayant moins de lignes que le texte que l'on veut afficher */
 	int x, y, ch;
+	DetruireFenetre(ZoneMenu);
 	WINDOW * ZoneRegles;
-	ZoneRegles =  newwin(30, 67, 1, 1);	
+	ZoneRegles =  newwin(30, 67, (LINES-30)/2, (COLS-67)/2);	
 	wrefresh(ZoneRegles);
 	keypad(ZoneRegles, TRUE);
 	y = 1;
@@ -956,62 +927,156 @@ void Regles(){
 
 				}
 				break;
-			case 'q' : Debut(); break;
+			case 'q' : Menu(); break;
 		}
 
 	} while (ch != 10); /* Entrée fait sortir de l'affichage des règles */
 	/* Retour au menu ici */
-	Debut();
-}
-
-
-void Menu(WINDOW *localwin, int y, int x){	
-
-	
-/* Affichage du menu et saisie du choix */
-		
-		
-	mvwprintw(localwin, y,   x,  "  |Bonjour Joueurs de Yahtzee !");
-	mvwprintw(localwin, y+1, x,  "  |Nouvelle Partie ?");
-	mvwprintw(localwin, y+2, x,  "  |Voir les Regles.");
-	mvwprintw(localwin, y+3, x,  "  |Quitter le jeu.");
-	
+	DetruireFenetre(ZoneRegles);
+	Menu();
 }
 
 
 
-void SelectDebut()
+void EntrerNbJoueur()
+{
+	keypad(ZoneMenu, TRUE);
+
+	int y, ch;
+	NbJoueur = 0;
+	wclear(ZoneMenu);
+
+	mvwprintw(ZoneMenu, 2, 2, "Choisissez le nombre de Joueurs (max. 4) avec les flèches et validez avec [ENTREE].");
+	mvwprintw(ZoneMenu, 5, 2, "  |1 Joueur");
+	mvwprintw(ZoneMenu, 6, 2, "  |2 Joueurs.");
+	mvwprintw(ZoneMenu, 7, 2, "  |3 Joueurs");
+	mvwprintw(ZoneMenu, 8, 2, "  |4 Joueurs");
+
+	wrefresh(ZoneMenu);
+	
+	wmove(ZoneMenu, 5, 2);
+	wrefresh(ZoneMenu);
+	
+	y = 5;
+	do
+	{
+		ch = wgetch(ZoneMenu);
+		
+		switch(ch)
+		{
+			case KEY_UP : 
+						if (y > 5)
+						{
+							y--;
+
+							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
+							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 2);
+							wrefresh(ZoneMenu);
+						}
+						else
+						{
+							y = 8;
+							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
+							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 2);
+							wrefresh(ZoneMenu);
+						}
+						break;	
+			case KEY_DOWN : 
+						if (y < 8)
+						{
+							y++;
+							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
+							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 2);
+							wrefresh(ZoneMenu);
+						}
+						else
+						{
+							y = 5;
+							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
+							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 2);
+							wrefresh(ZoneMenu);
+						}
+						break;	
+		} 
+	} while (ch != 10);
+	if (NbJoueur == 0)
+		NbJoueur = y - 4;	
+}
+
+
+ 	
+void EntrerPseudo()
+{
+	keypad(ZoneMenu, TRUE);
+	echo(); 
+	/* On remet l'affichage des toucehs saisies piur facilite l'entrée du pseudo */
+	for ( int i = 0; i < NbJoueur; i++)
+	{	
+		wclear(ZoneMenu);
+		mvwprintw(ZoneMenu, 2, 6, "Joueur %i : ", i+1);
+		mvwprintw(ZoneMenu, 3, 6, "Entrez votre Pseudo (moins de 10 caractères)");
+		wmove(ZoneMenu, 4, 6);
+		wrefresh(ZoneMenu);
+		wscanw(ZoneMenu, "%s", PseudoJ[i]);
+		while (strlen(PseudoJ[i]) > 10)
+		{
+			mvwprintw(ZoneMenu, 3, 6, "Pseudo de plus de 10 caractères, recommencez la saisie");
+			wmove(ZoneMenu, 4, 6);
+			wrefresh(ZoneMenu);
+			wscanw(ZoneMenu, "%s", PseudoJ[i]);
+		}
+		while (strlen(PseudoJ[i]) < 1)
+		{
+			mvwprintw(ZoneMenu, 3, 6, "Un pseudo contient au moins un caractère, recommencez la saisie");
+			wmove(ZoneMenu, 4, 6);
+			wrefresh(ZoneMenu);
+			wscanw(ZoneMenu, "%s", PseudoJ[i]);
+		}
+	}
+	noecho();
+	/* On recache les tocuehs saisies */
+}
+
+void Menu()
 {
 	int y, x, ch;
 	
-	y = 1; //indice d'ordonnée
-	x = 1; // indice d'abscisse
-	WINDOW * ZoneDebut;
-	ZoneDebut =  newwin(30, 67, 1, 1);
+	WINDOW * ZoneMenu;
+	ZoneMenu =  newwin(15, 35, (LINES-15)/2, (COLS-35)/2);
 	
-	keypad(ZoneDebut, TRUE); //Permet l'utilisation des touches directionnelles
+	keypad(ZoneMenu, TRUE); //Permet l'utilisation des touches directionnelles
 	
-	Menu(ZoneDebut, y, x);
-	wmove(ZoneDebut, 2, 2);
-	wrefresh(ZoneDebut);
+	mvwprintw(ZoneMenu, y,   x,  "  |Bonjour Joueurs de Yahtzee !");
+	mvwprintw(ZoneMenu, y+1, x,  "  |Nouvelle Partie ?");
+	mvwprintw(ZoneMenu, y+2, x,  "  |Voir les Regles.");
+	mvwprintw(ZoneMenu, y+3, x,  "  |Quitter le jeu.");
+	wmove(ZoneMenu, 2, 2);
+	wrefresh(ZoneMenu);
+	
 	y = 2;
+
 	do 
 	{			
-		ch = wgetch(ZoneDebut);
+		ch = wgetch(ZoneMenu);
 		switch (ch)
 		{
 			case KEY_DOWN :
 				if ( y == 4)
 				{
 					y=2;
-					wmove(ZoneDebut, y, x);
-					wrefresh(ZoneDebut);
+					wmove(ZoneMenu, y, x);
+					wrefresh(ZoneMenu);
 
 				}
-				else{
+				else
+				{
 					y++;
-					wmove(ZoneDebut, y, x);
-					wrefresh(ZoneDebut);			
+					wmove(ZoneMenu, y, x);
+					wrefresh(ZoneMenu);			
 				}
 				break;
 		
@@ -1020,40 +1085,43 @@ void SelectDebut()
 				if ( y > 2)
 				{
 					y--;
-					wmove(ZoneDebut, y, x);
-					wrefresh(ZoneDebut);
+					wmove(ZoneMenu, y, x);
+					wrefresh(ZoneMenu);
 
 				}
-				else{
+				else
+				{
 					y = 4;
-					wmove(ZoneDebut, y, x);
-					wrefresh(ZoneDebut);			
+					wmove(ZoneMenu, y, x);
+					wrefresh(ZoneMenu);			
 				}
 				break;
 		
 					
 		}
-	mvwprintw(ZoneDebut, 7, 3, "%i", y);
-	wrefresh(ZoneDebut);	
+	wrefresh(ZoneMenu);	
 	} while ( ch != 10 );	
 	/* On valide la selection avec la touche entree */
 	switch(y)
 	{
-		case 2 : Partie();
-		case 3 : Regles();
-		case 4 : endwin();
+		case 2 : EntrerNbJoueur(); EntrerPseudo(); Partie(); Resultat();break;
+		case 3 : Regles(); break;
+		case 4 : endwin(); break;
 	}
 }
 
-void Debut(){
-	
-	initscr();
-	cbreak();
-	noecho(); /* Les trois lignes au dessus sont dans MiseEnPlace() */
-	SelectDebut();
 
-}
 
 int main(){	
-	Debut();
+	int ch;
+	initscr();
+	cbreak();
+	noecho();
+	refresh();
+	ZoneMenu = CreerFenetre(15,90,(LINES-15)/2,(COLS-90)/2);
+	EntrerNbJoueur(); 
+	EntrerPseudo(); Partie();
+	
+	endwin();
+	
 }
