@@ -45,28 +45,32 @@ void FicheDeScore();								               /* Affiche la fiche de score dans la 
 
 /* Fonctions de jeu */
 
-void LancerDe();                                 /* Simule 5 lancers de dés et entre les résultats dans le tableau */
+void Nettoyer(WINDOW * localwin, int DebutY, int DebutX, int FinY, int FinX);
+void Lancer();                                 /* Simule 5 lancers de dés et entre les résultats dans le tableau */
 void CalculOccurence();                          /* Entre l'occurence de chaque valeur dans le tableau */
-void Garder();                                   /* Permet au joueur de conserver de dés avant de relancer */
+void Garder(WINDOW *localwin, int Garde[5]);                                   /* Permet au joueur de conserver de dés avant de relancer */
 int isBrelan();									                 /* Fonctions booléennes vérifiant les résultats */
 int isCarre();								                	 /* --- */
 int isFull();                                    /* --- */
 int isPtSuite();                                 /* --- */
 int isGdSuite();                                 /* --- */
 int isYahtzee();                                 /* --- */
+WINDOW *CreerFenetre(int height, int width, int starty, int startx);
+void ChainePseudo (char Pseudos[50]);
+void FicheDeScore(WINDOW *localwin, int y, int x)
 void ChoixCategorie(int *Categorie);             /* Permet de choisir la catégorie avec les flèches */
 void CalculScore();                              /* Calcul le score pour la catégorie choisie */
 void EcrireScore();                              /* Ecrie le score sur la ligne et dans la colonne correspondant au joueur */
 
 /* Fonctions d'affichage */
 
-void DeUn();                                      /* Dessine un De en caractères */
-void DeDeux();                                    /* Dessine un De en caractères */
-void DeTrois();                                   /* Dessine un De en caractères */
-void DeQuatre();                                  /* Dessine un De en caractères */
-void DeCinq();                                    /* Dessine un De en caractères */
-void DeSix();                                     /* Dessine un De en caractères */
-void DeVide();                                    /* Dessine un De en caractères */
+void de_un();                                      /* Dessine un De en caractères */
+void de_deux();                                    /* Dessine un De en caractères */
+void de_trois();                                   /* Dessine un De en caractères */
+void de_quatre();                                  /* Dessine un De en caractères */
+void de_cinq();                                    /* Dessine un De en caractères */
+void de_six();                                     /* Dessine un De en caractères */
+void de_vide();                                    /* Dessine un De en caractères */
 WINDOW * CreerFenetre(int hauteur, int longueur, int DebutY, int DebutX);   /* Renvoit une fenetre ayant des bordures */
 
 #endif
