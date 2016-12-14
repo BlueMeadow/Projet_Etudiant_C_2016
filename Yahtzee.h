@@ -34,20 +34,24 @@ WINDOW * ZoneResultat;                           /* Sous fenetre pour l'affichag
 
 void Debut();                                     /* Premier menu, permet de commencer une partie, afficher les règles ou quitter */
 void Partie();                                    /* Commence une partie de Yahtzee */
-void Regles();                                    /* Affiche les règles */       
+void Regles();                                    /* Affiche les règles */  
+void Page_Regles(WINDOW *localwin, int y, int x);
 
 /* Initialisation de la partie */
 
-
+void Menu();
 void EntrerPseudo();                               /* Demande les pseudos des joueurs */
 void MiseEnPlace();                                /* Crée les fenêtres utilisées pour jouer */
 void FicheDeScore();								               /* Affiche la fiche de score dans la fenêtre */
+void EntrerNbJoueur();
 
 /* Fonctions de jeu */
 
 void Nettoyer(WINDOW * localwin, int DebutY, int DebutX, int FinY, int FinX);
 void Lancer();                                 /* Simule 5 lancers de dés et entre les résultats dans le tableau */
 void CalculOccurence();                          /* Entre l'occurence de chaque valeur dans le tableau */
+void CalculScore(int Joueur, int Categorie);
+void EcrireScore(int Joueur);
 void Garder(WINDOW *localwin, int Garde[5]);                                   /* Permet au joueur de conserver de dés avant de relancer */
 int isBrelan();									                 /* Fonctions booléennes vérifiant les résultats */
 int isCarre();								                	 /* --- */
@@ -55,22 +59,26 @@ int isFull();                                    /* --- */
 int isPtSuite();                                 /* --- */
 int isGdSuite();                                 /* --- */
 int isYahtzee();                                 /* --- */
-WINDOW *CreerFenetre(int height, int width, int starty, int startx);
+WINDOW *CreerFenetre(int height, int width, int starty, int startx);    /* Renvoit une fenetre ayant des bordures */
 void ChainePseudo (char Pseudos[50]);
 void FicheDeScore(WINDOW *localwin, int y, int x)
-void ChoixCategorie(int *Categorie);             /* Permet de choisir la catégorie avec les flèches */
+void ChoixCategorie(int *Categorie, WINDOW *localwin,int Joueur);             /* Permet de choisir la catégorie avec les flèches */
 void CalculScore();                              /* Calcul le score pour la catégorie choisie */
 void EcrireScore();                              /* Ecrie le score sur la ligne et dans la colonne correspondant au joueur */
 
+int ChangerJoueur(int Joueur, int NbJoueur);
+Aide(int isAide[4], int Joueur);
+void DetruireFenetre(WINDOW * Fenetre);
+void Resultat();
 /* Fonctions d'affichage */
 
-void de_un();                                      /* Dessine un De en caractères */
-void de_deux();                                    /* Dessine un De en caractères */
-void de_trois();                                   /* Dessine un De en caractères */
-void de_quatre();                                  /* Dessine un De en caractères */
-void de_cinq();                                    /* Dessine un De en caractères */
-void de_six();                                     /* Dessine un De en caractères */
-void de_vide();                                    /* Dessine un De en caractères */
-WINDOW * CreerFenetre(int hauteur, int longueur, int DebutY, int DebutX);   /* Renvoit une fenetre ayant des bordures */
+void de_un(WINDOW *localwin, int y, int x);                                      /* Dessine un De en caractères */
+void de_deux(WINDOW *localwin, int y, int x);                                    /* Dessine un De en caractères */
+void de_trois(WINDOW *localwin, int y, int x);                                   /* Dessine un De en caractères */
+void de_quatre(WINDOW *localwin, int y, int x);                                  /* Dessine un De en caractères */
+void de_cinq(WINDOW *localwin, int y, int x);                                    /* Dessine un De en caractères */
+void de_six(WINDOW *localwin, int y, int x);                                     /* Dessine un De en caractères */
+void de_vide(WINDOW *localwin, int y, int x);                                    /* Dessine un De en caractères */
+void AffichageDe(int De[5], WINDOW *localwin);  
 
 #endif
