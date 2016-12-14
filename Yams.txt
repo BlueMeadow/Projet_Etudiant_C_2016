@@ -19,12 +19,12 @@
 ; a) on met le nombre de dés manquant dans la colonne [1]
 ;
 ; Exemple: on a fait le jet suivant 1 3 3 5 6
-; pour la combinaison 	"5 dés de 1", il manque 4 dés
-;						"5 des de 2", il manque 5 dés
-;						"5 des de 3", il manque 3 dés
-;						"5 des de 4", il manque 5 dés
-;						"5 des de 5", il manque 4 dés
-;						"5 des de 6", il manque 4 dés
+; pour la combinaison 	"1", il manque 4 dés
+;						"2", il manque 5 dés
+;						"3", il manque 3 dés
+;						"4", il manque 5 dés
+;						"5", il manque 4 dés
+;						"6", il manque 4 dés
 ; b) on multiplie le nombre trouvé dans a) par 1/6 - pourcentage pour obtenir le dés souhaité) et on le met au niveau de la colonne [2]
 ; pour chacune des combinaisons
 ;
@@ -83,31 +83,152 @@ EndFunc   ;==>Main
 
 typedef struct { int nombre_des_rejeter, int valeur} t_coup;
 
-int Manque_valeur( int un, int deux, int trois, int quatre, int cinq, int valeur)
+void Manque_valeur( int un, int deux, int trois, int quatre, int cinq, int valeur)
 /*Permettant de retourner le nombre de sés manquant*/
 {
-    int retour = 0;
+    int retour[5]= {0,0,0,0,0};
 
     if ( un != valeur){
-        retour += 1;
+        retour[0]++;
     }
     if ( deux != valeur){
-        retour += 1;
+        retour[1]++;
     }
     if ( trois != valeur){
-        retour += 1;
+        retour[2]++;
     }
     if ( quatre != valeur){
-        retour += 1;
+        retour[3]++;
     }
     if ( cinq != valeur){
-        retour += 1;
+        retour[4]++;
     }
-
-    return retour;
 }
 
-int Manque_combinaison( int un, int deux, int trois, int quatre, int cinq)
+void Manq_un ( int un, int deux, int trois, int quatre, int cinq)
+{
+	int valeur=1, i, verif;
+	int retour[5]= {0,0,0,0,0};	
+	
+	Manque_valeur( un, deux, trois, quatre, cinq, i);
+	
+	printf("Veuillez changer les dés");
+	for( i = 0; i < 5; i++)
+	{
+		verif = retour[i];
+		if ( verif > 0 )
+		{
+			printf(" %i,", i);
+		}
+		else{
+			printf(".\n");
+		}	
+	}
+}
+
+void Manq_deux ( int un, int deux, int trois, int quatre, int cinq)
+{
+	int valeur=2, i, verif;
+	int retour[5]= {0,0,0,0,0};	
+	
+	Manque_valeur( un, deux, trois, quatre, cinq, valeur);
+	
+	printf("Les dés à ne pas garder");
+	for( i = 0; i < 5; i++)
+	{
+		verif = retour[i];
+		if ( verif > 0 )
+		{
+			printf(" %i,", i);
+		}
+		else{
+			printf(".\n");
+		}	
+	}
+}
+
+void Manq_trois ( int un, int deux, int trois, int quatre, int cinq)
+{
+	int valeur=3, i, verif;
+	int retour[5]= {0,0,0,0,0};	
+	
+	Manque_valeur( un, deux, trois, quatre, cinq, valeur);
+	
+	printf("Veuillez changer les dés");
+	for( i = 0; i < 5; i++)
+	{
+		verif = retour[i];
+		if ( verif > 0 )
+		{
+			printf(" %i,", i);
+		}
+		else{
+			printf(".\n");
+		}	
+	}
+}
+void Manq_quatre ( int un, int deux, int trois, int quatre, int cinq)
+{
+	int valeur=4, i, verif;
+	int retour[5]= {0,0,0,0,0};	
+	
+	Manque_valeur( un, deux, trois, quatre, cinq, valeur);
+	
+	printf("Veuillez changer les dés");
+	for( i = 0; i < 5; i++)
+	{
+		verif = retour[i];
+		if ( verif > 0 )
+		{
+			printf(" %i,", i);
+		}
+		else{
+			printf(".\n");
+		}	
+	}
+}
+void Manq_cinq ( int un, int deux, int trois, int quatre, int cinq)
+{
+	int valeur=5, i, verif;
+	int retour[5]= {0,0,0,0,0};	
+	
+	Manque_valeur( un, deux, trois, quatre, cinq, valeur);
+	
+	printf("Veuillez changer les dés");
+	for( i = 0; i < 5; i++)
+	{
+		verif = retour[i];
+		if ( verif > 0 )
+		{
+			printf(" %i,", i);
+		}
+		else{
+			printf(".\n");
+		}	
+	}
+}
+void Manq_six ( int un, int deux, int trois, int quatre, int cinq)
+{
+	int valeur=6, i, verif;
+	int retour[5]= {0,0,0,0,0};	
+	
+	Manque_valeur( un, deux, trois, quatre, cinq, valeur);
+	
+	printf("Veuillez changer les dés");
+	for( i = 0; i < 5; i++)
+	{
+		verif = retour[i];
+		if ( verif > 0 )
+		{
+			printf(" %i,", i);
+		}
+		else{
+			printf(".\n");
+		}	
+	}
+}
+
+void Manque_Carre( int un, int deux, int trois, int quatre, int cinq)
 {
     t_coup resultat;
     int nbre_des = 7;
@@ -115,10 +236,11 @@ int Manque_combinaison( int un, int deux, int trois, int quatre, int cinq)
     int valeur_des = 7;
 
     int i;
+    int retour[5]= {0,0,0,0,0};
 
-    for ( i = 0; i <= 6; i++)
+    for ( i = 1; i <= 6; i++)
     {
-         nombre = Manque_valeur( un, deux, trois, quatre, cinq, i)
+         Manque_valeur( un, deux, trois, quatre, cinq, i);
 
          if (nombre < nbre_des){
             nbre_des = nombre;
@@ -128,30 +250,4 @@ int Manque_combinaison( int un, int deux, int trois, int quatre, int cinq)
     resultat.nombre_des_rejeter = nbre_des;
     resultat.valeur = valeur_des;
 }
-
-; Fonction permettant de calculer le nombre de dés manquant pour réaliser un brelan
-;
-; Retourner la chaine de caractère X,Y
-; correspondant à X la valeur du dés à conserver
-; et Y le nombre de dés à rejeter
-;==========================================================
-Func Manque_brelan($d1, $d2, $d3, $d4, $d5)
-	$Valeur_Des = 9
-	$Nb_A_Rejeter = 9
-	Local $Rc
-	For $i = 1 To 6
-		; on va regarder le nombre de dès manquant pour la valeur <$i>
-		$Nb = Manque_valeur($d1, $d2, $d3, $d4, $d5, $i)
-
-		If $Nb < $Nb_A_Rejeter Then
-			$Nb_A_Rejeter = $Nb
-			$Valeur_Des = $i
-		EndIf
-	Next
-
-	$Rc = $Valeur_Des & "," & $Nb_A_Rejeter
-	Return $Rc
-EndFunc   ;==>Manque_brelan
-
-
 
