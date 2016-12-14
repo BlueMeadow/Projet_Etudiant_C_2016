@@ -2,6 +2,7 @@
 #include<stdlib.h>
 
 /*
+http://pictor.free.fr/guppy/articles.php?lng=fr&pg=19
 ;*****************************************
 ;Yams.au3 by 6308988W
 ;Créé avec ISN AutoIt Studio v. 1.03
