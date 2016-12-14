@@ -19,12 +19,12 @@
 ; a) on met le nombre de dés manquant dans la colonne [1]
 ;
 ; Exemple: on a fait le jet suivant 1 3 3 5 6
-; pour la combinaison 	"1", il manque 4 dés
-;						"2", il manque 5 dés
-;						"3", il manque 3 dés
-;						"4", il manque 5 dés
-;						"5", il manque 4 dés
-;						"6", il manque 4 dés
+; pour la combinaison 	"5 dés de 1", il manque 4 dés
+;						"5 des de 2", il manque 5 dés
+;						"5 des de 3", il manque 3 dés
+;						"5 des de 4", il manque 5 dés
+;						"5 des de 5", il manque 4 dés
+;						"5 des de 6", il manque 4 dés
 ; b) on multiplie le nombre trouvé dans a) par 1/6 - pourcentage pour obtenir le dés souhaité) et on le met au niveau de la colonne [2]
 ; pour chacune des combinaisons
 ;
