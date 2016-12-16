@@ -1466,7 +1466,7 @@ void Menu()
 				Resultat(&isRelancer); 
 			} while (isRelancer);
 			 break;
-		case 6 : //DetruireFenetre(ZoneMenu);
+		case 6 : DetruireFenetre(ZoneMenu);
 			if (Charger())
 			{
 				do 
