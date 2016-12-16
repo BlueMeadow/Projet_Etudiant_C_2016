@@ -1,3 +1,113 @@
+/*
+ La partie commence enfin. Etape importante: Veuillez entrer vos pseudos Première étape: sélection du premier joueur par la fonction QuiCommence.c. L'ordre des joueurs se fera par le
+ sens des aiguilles d'une montre. Donc le premier joueur joue. Le suivi des fonctions sera le même pour tous les joueurs de la partie. 
+ Tout d'abord, au premier lancer, les joueurs lancent leurs 5 dés. Ensuite ils continuent à lancer leurs dés de leur choix selon la combinaison
+ qu'il obtienne jusqu'au troisième lancer. Ils peuvent les lancers quand ils veulent. Pour chaque lancer, une aide sera disponible pour connaître 
+ le score qu'il obtienne selon la combinaison des 5 dés.  
+*/
+
+/**
+* \file Partie.c
+* \brief Permet de faire fonctionner notre Yahtzee
+* \author Benoit Combasteix, Simon Fernandes et Nathan OUALET
+* \version 1.0
+*/
+
+/**
+* \fn Nettoyer(WINDOW * localwin, int DebutY, int DebutX, int FinY, int FinX)
+* \return 
+* \fn Garder(WINDOW *localwin, int Garde[5])
+* \return FOnction booléenne qui permet de garder le résultat d'un dé ou le changer
+* \fn CalculOccurrences()
+* \return Pour chaque lancer, calcul le nombre d'occurences d'une valeur sur les 5 dés
+* \fn Lancer()
+* \return Après utilisation de la fonction Garder(...), on (re)lance les dés qu'on a pas voulu garder.
+* \fn ChainePseudo (char pseudos[50])
+* \return
+* \fn FicheDeScore(WINDOW *localwin, int y, int x)
+* \return Affiche le squelette de la fiche de score
+*/
+
+/**
+* \fn DeUn(WINDOW *localwin, int y, int x)
+* \return Affiche la face Un d'un dé
+* \fn DeDeux(WINDOW *localwin, int y, int x)
+* \return Affiche la face Deux d'un dé
+* \fn DeTrois(WINDOW *localwin, int y, int x)
+* \return Affiche la face Trois d'un dé
+* \fn DeQuatre(WINDOW *localwin, int y, int x)
+* \return Affiche la face Quatre d'un dé
+* \fn DeCinq(WINDOW *localwin, int y, int x)
+* \return Affiche la face Cinq d'un dé
+* \fn DeSix(WINDOW *localwin, int y, int x)
+* \return Affiche la face Six d'un dé
+* \fn DeVide(WINDOW *localwin, int y, int x)
+* \return Affiche la face Vide d'un dé ( utiliséé au début de la partie )
+*/
+
+/**
+* \fn AffichageDe(int De[5], WINDOW *localwin)
+* \return Affiche les dés selon le résultat de Lancer()
+* \fn MiseEnPlace()
+* \return Initialise les zones utilisés par le programme
+* \fn ChoixCategorie (int *Categorie, WINDOW *localwin,int joueur)
+* \return Permet de choisir entre les différentes catégories ( 1,...,6, Full,...,Chance)
+*/
+
+/**
+* \fn isBrelan()
+* \return Retourne vrai si la série de dé a un Brelan.
+* \fn isCarre()
+* \return Retourne vrai si la série de dé a un Carre.
+* \fn isFull()
+* \return Retourne vrai si la série de dé a un Full.
+* \fn isPtSuite()
+* \return Retourne vrai si la série de dé a une petite suite.
+* \fn isGdSuite()
+* \return Retourne vrai si la série de dé a une grande suite.
+* \fn isYahtzee()
+* \return Retourne vrai si la série de dé a un Yahtzee.
+*/
+
+/**
+* \fn CalculScore(int joueur, int Categorie)
+* \return Calcul le score de la catégorie choisi par ChoixCategorie() pour chaque joueur
+
+* \fn EcrireScore(int joueur)
+* \return Ecris le score actuelle après chaque tour
+
+* \fn ChangerJoueur(int joueur, int nb_joueur)
+* \return retourne le joueur qui suit celui qui a joué.
+
+* \fn Aide(int i)
+* \return Affiche l'aide selon l'envie du joueur.
+
+* \fn DetruireFenetre(WINDOW * Fenetre)
+* \return Détruis les données d'une fenetre défini en paramêtres.
+
+* \fn Resultat()
+* \return Affiche le résultat final d'une partie.
+
+* \fn Partie()
+* \return Permet de lancer une nouvelle partie
+
+* \fn Page_Regles(WINDOW *localwin, int y, int x)
+* \return Affiche toutes les rêgles.
+
+* \fn Regles()
+* \return Permet de faire un déroulement de la page des rêgles.
+
+* \fn EntrerNbJoueur()
+* \return Permet de sélectionner le nombre de joueur qui joue à la partie.
+
+* \fn EntrerPseudo()
+* \return Permet de sélectionner les pseudos des joueurs selon le nombre de joueurs.
+
+* \fn Menu(WINDOW *localwin, int y, int x)
+* \return Affiche la première page qui permet de choisir entre commencer une nouvelle partie, voir le rêgles ou quitter le jeu.
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
