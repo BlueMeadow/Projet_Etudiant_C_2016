@@ -46,7 +46,6 @@ int Initialisation()
 		{
 			Score[i][j] = -1;
 		}
-		isAide[i] = 0;
 	}
 	
 	for (i = 0 ; i < 6 ; i++)
@@ -895,7 +894,7 @@ void Aide(int isAide[4], int Joueur){
 	attroff(A_BOLD);
 	wrefresh(ZoneAide);
 	y+=2;
-
+	
 	if( isAide[Joueur] ){
 		mvwprintw(ZoneAide, y, x, "Pas de combinaison");
 		wrefresh(ZoneAide);
@@ -999,7 +998,7 @@ int Resultat(int * isRelancer)
 		}
 	}
 	max = Total[0];
-	strcpy(Vainqueur[0], PseudoJ[0]);
+	strcpy(Vainqueur[0], PseudoJ[0]);		
 	j = 0;
 	for( i = 1 ; i < 4 ; i++)
 	{
@@ -1007,7 +1006,8 @@ int Resultat(int * isRelancer)
 		/* Si le joueur i n'a pas le meilleur score */
 		{
 			max = Total[i];
-			strcpy(Vainqueur[j], PseudoJ[j]);
+			strcpy(Vainqueur[j], PseudoJ[i]);		
+		
 		}
 		else if ( max == Total[i] )
 		/* En cas d'égalité */
@@ -1016,12 +1016,9 @@ int Resultat(int * isRelancer)
 			strcpy(Vainqueur[j], PseudoJ[i]);
 		}
 	}
-	
-
 	wattron(ZoneResultat, A_REVERSE);
 	mvwprintw(ZoneResultat, 2, 16, "TABLEAU DE SCORES");
 	wattroff(ZoneResultat, A_REVERSE);
-
 	for (i = 0 ; i < NbJoueurs ; i++)
 	{
 		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", PseudoJ[i], Total[i]);
@@ -1033,7 +1030,7 @@ int Resultat(int * isRelancer)
 
 	for (i = 0 ; i <= j ; i++)
 	{
-		mvwprintw(ZoneResultat, 14+i, (50-strlen(Vainqueur[i]))/2 , "%s", Vainqueur[i] ) ;
+		mvwprintw(ZoneResultat, 14+i, (50-strlen(Vainqueur[i+1]))/2 , "%s", Vainqueur[i] ) ;
 	}
 	mvwprintw(ZoneResultat, 20+j, 6, "Appuyez sur [ENTREE] pour relancer une partie");
 	mvwprintw(ZoneResultat, 21+j, 6, "Appuyez sur [M] pour revenir au menu");
@@ -1076,11 +1073,8 @@ void DemandeAide()
 		else isAide[i] = 1;
 
 	}
+	
 }
-
-
-
-
 
 int Partie()
 {	
@@ -1318,10 +1312,11 @@ void EntrerNbJoueur()
  	
 void EntrerPseudo()
 {
+	int i, j;
 	keypad(ZoneMenu, TRUE);
 	echo(); 
 	/* On remet l'affichage des touches saisies piur facilite l'entrée du pseudo */
-	for ( int i = 0; i < NbJoueurs; i++)
+	for ( i = 0; i < NbJoueurs; i++)
 	{	
 		wclear(ZoneMenu);
 		mvwprintw(ZoneMenu, 2, 6, "Joueur %i : ", i+1);
@@ -1343,6 +1338,18 @@ void EntrerPseudo()
 			wrefresh(ZoneMenu);
 			wscanw(ZoneMenu, "%s", PseudoJ[i]);
 		}
+		for( j = 0; j < i; j++)
+		{
+			while(!strcmp(PseudoJ[i],PseudoJ[j]))
+			{
+				mvwprintw(ZoneMenu, 3, 6, "Vous ne pouvez pas choisir le même pseudo qu'un autre utilisateur");
+				mvwprintw(ZoneMenu, 4, 6,"          "); 
+				wmove(ZoneMenu, 4, 6);
+				wrefresh(ZoneMenu);
+				wscanw(ZoneMenu, "%s", PseudoJ[i]);
+			}
+		}
+		
 	}
 	noecho();
 	/* On recache les touches saisies */
