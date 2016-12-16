@@ -107,7 +107,6 @@
 * \return Affiche la première page qui permet de choisir entre commencer une nouvelle partie, voir le rêgles ou quitter le jeu.
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
@@ -333,13 +332,21 @@ WINDOW *CreerFenetre(int height, int width, int starty, int startx)
 
 void FinDePartie()
 {
+	int i;
+	int j=3;
 	WINDOW * ZoneFin;
 	ZoneFin = CreerFenetre(12, 80, (LINES-12)/2, (COLS-80)/2);
 
 	mvwprintw(ZoneFin, 3, 30, "Merci d'avoir joué !");
-	mvwprintw(ZoneFin, 6, 21, "Le programme quittera dans 3 secondes");
+	mvwprintw(ZoneFin, 6, 21, "Le programme quittera dans %i secondes",j);
 	wrefresh(ZoneFin);
-	sleep(3);
+	sleep(1);
+	for(i = 0; i < j; i++){
+		j--;
+		mvwprintw(ZoneFin, 6, 21, "Le programme quittera dans %i secondes",j);
+		wrefresh(ZoneFin);
+		sleep(1);
+	}	
 	endwin();
 	exit(1);
 }
@@ -1631,3 +1638,4 @@ int main(){
 	} while (1);
 	
 }
+
