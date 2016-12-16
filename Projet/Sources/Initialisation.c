@@ -28,7 +28,6 @@ int Initialisation()
 		{
 			Score[i][j] = -1;
 		}
-		isAide[i] = 0;
 	}
 	
 	for (i = 0 ; i < 6 ; i++)
@@ -50,6 +49,7 @@ void EntrerNbJoueur()
 {
 	int y, ch;
 	keypad(ZoneMenu, TRUE);
+	noecho();
 	y = 5;
 	NbJoueurs = 0;
 	wclear(ZoneMenu);

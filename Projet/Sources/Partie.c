@@ -159,8 +159,10 @@ void Aide(int isAide[4], int Joueur)
 	attroff(A_BOLD);
 	wrefresh(ZoneAide);
 	y+=2;
-
+	
 	if( isAide[Joueur] ){
+		mvwprintw(ZoneAide, y, x, "Pas de combinaison");
+		wrefresh(ZoneAide);
 		if(isBrelan()){
 			for (i = 0 ; i < 6 ; i++)
 			{

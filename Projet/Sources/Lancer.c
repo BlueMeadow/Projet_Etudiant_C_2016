@@ -1,10 +1,11 @@
 #include "../lib/Global.h"
 
-void Lancer(int De[5], int Garde[5])
+void Lancer()
 {
-	int i, ch;
-	/* initialisation des valeurs aléatoires, à chaque tirage */
+	//initialisation des valeurs aléatoires, à chaque tirage
+	noecho();
 	srand(time(0));
+	int ch;
 	mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
 	mvwprintw(ZoneMessage, 2, 2, "Appuyez sur [ENTREE] pour lancer les dés.");
 	mvwprintw(ZoneMessage, 4, 2, "Vous pouvez sauvegarder et quitter en appuyant sur [S]");
@@ -33,18 +34,22 @@ void Lancer(int De[5], int Garde[5])
 	if (ch == 10)
 		mvwprintw(ZoneMessage, 4, 2, "                                                          ");
 
-	for( i = 0; i < 5; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		if(Garde[i] == 0)
 		{	
-			/* lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard */
+			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
 			De[i] = rand()%6+1;
 		}
 		CalculOccurrences();
 		Garde[i]=0;	
 	}
+	mvwprintw(ZoneAide, 4, 2, "Avant l'aide");
 	Aide(isAide, Joueur);
+	mvwprintw(ZoneAide, 5, 2, "Après l'aide");
+	wrefresh(ZoneMessage);
 }
+
 
 void Garder(WINDOW *Fenetre, int Garde[5])
 {
