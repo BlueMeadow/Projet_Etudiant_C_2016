@@ -14,6 +14,7 @@ int Garde[5];
 int NbJoueurs;
 char PseudoJ[4][10];
 char Pseudos[40];
+int Prime[4];
 int Joueur;
 int NbTours;
 int NbLancers;
@@ -56,6 +57,10 @@ int Initialisation()
 	{
 		Garde[i] = 0;
 		De[i] = 0;
+	}
+	for (i = 0 ; i < 4 ; i++)
+	{
+		Prime[i] = 0;
 	}
 	Joueur = 0;
 	NbTours = 0;
@@ -793,6 +798,11 @@ int isGdSuite()
 
 void CalculScore(int Joueur, int Categorie)
 {
+	if(Score[Joueur][11]>0){
+		if(isYahtzee()){
+			Prime[Joueur]++;
+		}
+	}
 	switch(Categorie){	
 		case 1 :
 		case 2 :
@@ -837,7 +847,7 @@ void CalculScore(int Joueur, int Categorie)
 			else
 				Score[Joueur][Categorie-1] = 0;
 			break;
-			
+
 		case 12:
 			if(isYahtzee())
 				Score[Joueur][Categorie-1] = 50;
@@ -848,7 +858,7 @@ void CalculScore(int Joueur, int Categorie)
 		case 13:
 			Score[Joueur][Categorie-1] = De[0]+De[1]+De[2]+De[3]+De[4];
 			break;
-	}
+	}	
 }	
 
 void EcrireScore(int Joueur)
@@ -995,6 +1005,10 @@ int Resultat(int * isRelancer)
 		for (j = 6 ; j < 13 ; j++)
 		{
 			Total[i] += Score[i][j];
+		}
+		if(Prime[i] > 0)
+		{
+			Total[i] += 100*Prime[i];
 		}
 	}
 	max = Total[0];
