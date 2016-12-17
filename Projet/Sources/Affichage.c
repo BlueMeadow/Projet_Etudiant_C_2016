@@ -29,10 +29,10 @@ void MiseEnPlace()
 {	
 	refresh();
 	ChainePseudo(Pseudos);
-	ZoneAide = CreerFenetre(30,30,3,92);
-	ZoneDe = CreerFenetre(31, 19, 3, 3);
-	ZoneScore = CreerFenetre(25,70,3,22);
-	ZoneMessage = CreerFenetre(10,70,28,22);
+	ZoneAide = CreerFenetre(30,30,(LINES-35)/2,(COLS+70)/2);
+	ZoneDe = CreerFenetre(31, 19, (LINES-35)/2, (COLS-70)/2-19);
+	ZoneScore = CreerFenetre(25,70,(LINES-35)/2,(COLS-70)/2);
+	ZoneMessage = CreerFenetre(10,70,(LINES+15)/2,(COLS-70)/2);
 	FicheDeScore(ZoneScore,2,2);
 	AffichageDe(De, ZoneDe);
 }

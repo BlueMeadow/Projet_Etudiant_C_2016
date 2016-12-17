@@ -67,11 +67,14 @@ int Regles()
 	ZoneRegles = newwin(30, 120, (LINES-30)/2, (COLS-67)/2);
 	ZoneMessage = CreerFenetre(5,120, (LINES-30)/2+35, (COLS-120)/2);
 
+	keypad(ZoneRegles, TRUE);
+	/* Permet d'utiliser les fleches directionnelles */
+	curs_set(0);
+	/* Rend le curseur invisible */
+
 	mvwprintw(ZoneMessage, 2, 38, "Faites défiler avec les flèches ou la molette");
 	mvwprintw(ZoneMessage, 3, 38, "Appuyez sur [ENTREE] pour retourner au menu");
 	wrefresh(ZoneMessage);
-
-	keypad(ZoneRegles, TRUE);
 
 	y = 1;
 	x = 2;

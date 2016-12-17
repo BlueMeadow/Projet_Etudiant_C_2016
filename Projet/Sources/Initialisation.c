@@ -52,7 +52,7 @@ void EntrerNbJoueur()
 	noecho();
 	y = 5;
 	NbJoueurs = 0;
-	wclear(ZoneMenu);
+	Nettoyer(ZoneMenu, 1, 1 , 14, 89);
 
 	mvwprintw(ZoneMenu, 2, 2, "Choisissez le nombre de joueurs (max. 4) avec les flèches.");
 	mvwprintw(ZoneMenu, 5, 2, "  |1 Joueur.");
@@ -120,49 +120,118 @@ void EntrerNbJoueur()
  	
 void EntrerPseudo()
 {
-	int i;
+	int i, j = 0, k, ch;
+	char temp[100];
 	keypad(ZoneMenu, TRUE);
 	echo(); 
-	/* On remet l'affichage des touches saisies piur facilite l'entrée du pseudo */
+	/* Remet l'affichage des touches saisies pour faciliter l'entrée du pseudo */
 	for ( i = 0; i < NbJoueurs; i++)
 	{	
-		wclear(ZoneMenu);
+		Nettoyer(ZoneMenu, 1, 1 , 14, 89);
 		mvwprintw(ZoneMenu, 2, 6, "Joueur %i : ", i+1);
-		mvwprintw(ZoneMenu, 3, 6, "Entrez votre Pseudo (moins de 10 caractères)");
+		mvwprintw(ZoneMenu, 3, 6, "Entrez votre Pseudo (entre 3 et 10 caractères)");
 		wmove(ZoneMenu, 4, 6);
 		wrefresh(ZoneMenu);
-		wscanw(ZoneMenu, "%s", PseudoJ[i]);
-		while (strlen(PseudoJ[i]) > 10)
+
+		do	
+		{
+			ch = wgetch(ZoneMenu);
+			if ( ch == 32 )
+				ch = '_';
+			if ( ch == 10 )
+				break;
+			temp[j] = ch;
+			j++;
+		} while (1);			
+		
+
+		/* Vérification des conditions d'entrée du pseudo */
+
+		while (strlen(temp) > 10)
 		{
 			mvwprintw(ZoneMenu, 3, 6, "Pseudo de plus de 10 caractères, recommencez la saisie");
+			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 			wmove(ZoneMenu, 4, 6);
 			wrefresh(ZoneMenu);
-			wscanw(ZoneMenu, "%s", PseudoJ[i]);
+			do	
+			{
+				ch = wgetch(ZoneMenu);
+				if ( ch == 32 )
+					ch = '_';
+				if ( ch == 10 )
+					break;
+				temp[j] = ch;
+				j++;
+			} while (1);	
 		}
-		while (strlen(PseudoJ[i]) < 1)
+		while (strlen(temp) < 3)
 		{
-			mvwprintw(ZoneMenu, 3, 6, "Un pseudo contient au moins un caractère, recommencez la saisie");
+			mvwprintw(ZoneMenu, 3, 6, "Pseudo de moins de 3 caractères, recommencez la saisie");
+			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 			wmove(ZoneMenu, 4, 6);
 			wrefresh(ZoneMenu);
-			wscanw(ZoneMenu, "%s", PseudoJ[i]);
+			do	
+			{
+				ch = wgetch(ZoneMenu);
+				if ( ch == 32 )
+					ch = '_';
+				if ( ch == 10 )
+					break;
+				temp[j] = ch;
+				j++;
+			} while (1);	
 		}
-		while(!strcmp(PseudoJ[i],"AAA") || !strcmp(PseudoJ[i],"BBB") || !strcmp(PseudoJ[i],"CCC") || !strcmp(PseudoJ[i],"DDD") || !strcmp(PseudoJ[i],"EEE"))
+		while(!strcmp(temp,"AAA") || !strcmp(temp,"BBB") || !strcmp(temp,"CCC") || !strcmp(temp,"DDD") || !strcmp(temp,"EEE"))
+		/* Pseudos utilisés par le fichier des Highscores */
 		{
-			mvwprintw(ZoneMenu, 3, 6, "Ce pseudo est utilisé par le système, recommencez la saisie");
+			mvwprintw(ZoneMenu, 3, 6, "Ce pseudo est utilisé par le programme, recommencez la saisie");
+			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 			wmove(ZoneMenu, 4, 6);
 			wrefresh(ZoneMenu);
-			wscanw(ZoneMenu, "%s", PseudoJ[i]);
+			do	
+			{
+				ch = wgetch(ZoneMenu);
+				if ( ch == 32 )
+					ch = '_';
+				if ( ch == 10 )
+					break;
+				temp[j] = ch;
+				j++;
+			} while (1);	
 		}
+		for( k = 0 ; k < i ; k++)
+		/* Compare aux pseudos précédents */
+		{
+			while(!strcmp(temp, PseudoJ[k]))
+			{
+				mvwprintw(ZoneMenu, 3, 6, "Ce pseudo est utilisé par un autre joueur, recommencez la saisie");
+				Nettoyer(ZoneMenu, 4, 6 , 4, 16);
+				wmove(ZoneMenu, 4, 6);
+				wrefresh(ZoneMenu);
+				do	
+				{
+					ch = wgetch(ZoneMenu);
+					if ( ch == 32 )
+						ch = '_';
+					if ( ch == 10 )
+						break;
+					temp[j] = ch;
+					j++;
+				} while (1);	
+			}
+		}
+		strcpy(Pseudo[i], temp);
+		/* Le pseudo remplit les conditions d'entrée */	
 	}
 	noecho();
-	/* On recache les touches saisies */
+	/* Recache les touches saisies */
 }
 
 void DemandeAide()
 {
 	int i, ch;
 	keypad(ZoneMenu, TRUE);
-	echo(); 
+	noecho(); 
 
 	wmove(ZoneMenu, 1, 1);
 	for (i = 0 ; i < NbJoueurs ; i++)
@@ -170,6 +239,7 @@ void DemandeAide()
 		Nettoyer(ZoneMenu, 2, 2, 14, 89);
 		mvwprintw(ZoneMenu, 2, 2, "Joueur %s : ", PseudoJ[i]);
 		mvwprintw(ZoneMenu, 3, 2, "Voulez-vous afficher l'aide ? [O/N]");
+		mvwprintw(ZoneMenu, 4, 2, "(Vous pourrez l'afficher ou la cacher pendant la partie à tout moment)");
 		wrefresh(ZoneMenu);
 		do
 		{
