@@ -12,6 +12,6 @@ Avant de commencer la partie, chaque joueur doit lancer un dé pour savoir qui c
 
 La partie commence enfin après ce tirage au sort. Pour chaque tour, chaque possède un ou trois lancers de dés. Au premier lancer, tous les dés sont lancés. S’il souhaite faire son deuxième ou troisième lancer, il peut sélectionner les dés qu’il souhaite conserver. A la fin de son dernier lancer, le joueur a l’obligation de choisir une des treize catégories dans le tableau dans la colonne du joueur qui joue. 
 
-Rappel : Une  combinaison ne peut être remplie qu’une seule fois dans la partie, donc soyez stratégique dans vos choix. Si vous ne connaissez pas le jeu, il est vivement conseillé de connaître les règles avant de commencer une partie. Cependant, une aide vous ai proposé pour ceux qui débutent dans le jeu.
+Rappel : Une  combinaison ne peut être remplie qu’une seule fois dans la partie, donc soyez stratégique dans vos choix. Si vous ne connaissez pas le jeu, il est vivement conseillé de connaître les règles avant de commencer une partie. Cependant, une aide vous ai proposé pour ceux qui débutent dans le jeu. Vous pourrez désactiver votre aide à tout moment dans la partie.
 
 Bon jeu à tous.
