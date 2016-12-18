@@ -20,8 +20,7 @@ void Tri(int iTab[5], char cTab[5][10])
 				iTab[j] = iTab[j-1];
 				strcpy(cTab[j], cTab[j-1]); 
 				iTab[j-1] = iTemp;
-				strcpy(cTab[j-1], cTemp);
-				    
+				strcpy(cTab[j-1], cTemp);				    
 				j--; 
 			} 
 		} 
