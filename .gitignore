@@ -35,3 +35,6 @@
 #Sauvegardes
 sav_*
 
+Yahtzee
+*.h.gch
+
