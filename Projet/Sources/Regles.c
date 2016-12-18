@@ -94,7 +94,7 @@ int Regles()
 	{
 
 		Nettoyer(ZoneRegles, 0, 0, LINES, COLS);
-		Page_Regles(ZoneRegles, y, x);
+		PageRegles(ZoneRegles, y, x);
 		wrefresh(ZoneRegles);
 		ch = wgetch(ZoneRegles);
 		switch (ch)

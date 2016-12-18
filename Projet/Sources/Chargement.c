@@ -81,13 +81,10 @@ int Charger()
 	char NomFichier[10] = "sav_"; /**< Début de nom ommun à toutes les sauvegardes */
 	char temp[4];  	/**< Garde le début du nom de fichier après modifcation */
 	char NumSav[3]; /**< Jusqu'à 99 sauvegardes */	
-	WINDOW * ZoneChargement;
+	WINDOW * ZoneChargement;	
+	ZoneChargement = CreerFenetre(48, 85, (LINES-40)/2, (COLS-85)/2);
 	strcpy(temp, NomFichier);
-	NumSav[2] = '\0';
-	
-
-	
-	
+	NumSav[2] = '\0';	
 
 	/** Recherche des sauvegardes */
 
@@ -108,15 +105,14 @@ int Charger()
 		strcpy(NomFichier, temp);
 	}
 			
-
 	/** Affichage Ncurses */	
 
-	ZoneChargement = CreerFenetre(48, 85, (LINES-40)/2, (COLS-85)/2);
+
 	keypad(ZoneChargement, TRUE);
-	mvwprintw(ZoneChargement, 2, (Longueur-17)/2, "Sélectionnez la sauvegarde à charger");
+	mvwprintw(ZoneChargement, 2, ((COLS-85)/2-17)/2, "Sélectionnez la sauvegarde à charger");
 	if (!NbSav) /**< Si aucune sauvegarde n'a été trouvée */
 	{
-		mvwprintw(ZoneChargement, 2, (Longueur-34)/2, "Il n'y a pas de sauvegarde à charger"); /**< Affiche un message d'erreur */
+		mvwprintw(ZoneChargement, 2, ((COLS-85)/2-34)/2, "Il n'y a pas de sauvegarde à charger"); /**< Affiche un message d'erreur */
 		mvwprintw(ZoneChargement, 4, 16, "Appuyez sur une touche pour revenir au menu");
 		wgetch(ZoneChargement);
 		DetruireFenetre(ZoneChargement);

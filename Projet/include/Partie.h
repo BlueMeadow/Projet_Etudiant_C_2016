@@ -5,7 +5,7 @@ void Menu();
 int Partie();
 int ChangerJoueur(int Joueur, int NbJoueurs);
 void Aide();
-int Resultat(int *isRejouer);
+int Resultat();
 void FinDePartie();
 
 #endif

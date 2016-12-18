@@ -132,7 +132,7 @@ int AffichageHS()
 	/** Ecriture des highscores à l'écran */
 	for (i = 0 ; i < 5 ; i++)
 	{
-		 (!strcmp(PseudoHS[i], "AAA"))/**< Empeche d'afficher les placeholders */ 
+		if (!strcmp(PseudoHS[i], "AAA"))/**< Empeche d'afficher les placeholders */ 
 			break;
 		
 		mvwprintw(ZoneHighScore, 12+2*i, 18, "%s", PseudoHS[i]);

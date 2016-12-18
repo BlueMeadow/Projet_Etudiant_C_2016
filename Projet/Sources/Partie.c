@@ -13,7 +13,6 @@ void Menu()
 */
 {
 	int y, x, ch;
-	int isRelancer; /**< Booléen, permet de relancer une partie */
 	ZoneMenu = CreerFenetre(15,90,(LINES-15)/2,(COLS-90)/2);
 	
 	keypad(ZoneMenu, TRUE); /**< Permet l'utilisation des touches directionnelles */
@@ -106,7 +105,7 @@ int Partie()
 * \brief Lance une partie de Yahtzee 
 */
 {	
-	int i, ch;
+	int ch;
 	MiseEnPlace();
 	ChargementAffichage();
 	while(NbTours < 13*NbJoueurs)
@@ -151,12 +150,12 @@ int Partie()
 	return 1;
 }
 
-int ChangerJoueur()
+int ChangerJoueur(int Joueur, int NbJoueurs)
 /* \fn ChangerJoueur(int Joueur, int NbJoueur)
 *\ brief Passe au joueur suivant
 */
 {
-	return ((Joueur+1)%NbJoueur);
+	return ((Joueur+1)%NbJoueurs);
 }
 
 void Aide()
