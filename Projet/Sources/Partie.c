@@ -219,7 +219,7 @@ void Aide()
 
 int Resultat(int * isRelancer)
 {		
-	int Total[NbJoueurs];
+	int Total[4];
 	int ch;
 	int i, j, y = 0;
 	int max;
@@ -302,7 +302,7 @@ int Resultat(int * isRelancer)
 	/* Options de sortie */
 
 	y = 0;
-	if ( VerifHS() )
+	if ( VerifHS(Total) )
 		mvwprintw(ZoneResultat, 20+y, 6, "Appuyez sur [H] pour enregistrer vos Highscores");
 	else 
 		mvwprintw(ZoneResultat, 20+y, 6, "Dommage, pas de Highscore cette fois");
@@ -314,28 +314,28 @@ int Resultat(int * isRelancer)
 	do
 	{
 		ch = wgetch(ZoneResultat);
-		if ( !VerifHS() )
+		if ( !VerifHS(Total) )
 			ch = 0;
 		/* Empeche de sortir du menu avec [H] si il n'y a pas de nouveau highscore */
-		switch (tolower(ch))
+		switch (ch)
 		{
-			case 'h' : EcritureHS(); break;
+			case 'H':
+			case 'h' : EcritureHS(PseudoJ, Total); break;
 			case 10 : *isRelancer = 1; Initialisation(); DetruireFenetre(ZoneResultat); return 1;
+			case 'Q':
 			case 'q' : *isRelancer = 0; FinDePartie(); break;
+			case 'M':
 			case 'm' : *isRelancer = 0; DetruireFenetre(ZoneResultat); return 1;		
 		}
-		
 	} while (ch != 'h');
 	/* Affiche un nouveau menu si les highscores sont entrés */
-
-	mvwprintw(ZoneResultat, 20+y, 6, "Highscores enregistrés ! Consultez la page depuis le menu !");
-	mvwprintw(ZoneResultat, 21+y, 6, "Appuyez sur [ENTREE] pour relancer une partie");
-	mvwprintw(ZoneResultat, 22+y, 6, "Appuyez sur [M] pour revenir au menu");
-	mvwprintw(ZoneResultat, 23+y, 6, "Appuyez sur [Q] pour quitter");
+	Nettoyer(ZoneResultat, 20+y, 5, 20+y, 57);
+	mvwprintw(ZoneResultat, 20+y, 6, "Consultez vos highscores depuis le menu !");
 	wrefresh(ZoneResultat);
 
 	do
 	{
+		ch = wgetch(ZoneResultat);
 		switch (tolower(ch))
 		{
 			case 10 : *isRelancer = 1; Initialisation(); DetruireFenetre(ZoneResultat); return 1;

@@ -58,58 +58,23 @@ int LectureHS(FILE * HighScore, char PseudoHS[5][10], int HS[5])
 	return 1;
 }
 
-int VerifHS(int NbJoueurs, int Total[NbJoueurs])
+int VerifHS(int Total[4])
 {
 	FILE * HighScore = NULL;
 	int i, j, ch;
 	char PseudoHS[5][10];
 	int HS[5];
 
-	mvwprintw(ZoneResultat, 1,1, "Avant la lecture");
-	wrefresh(ZoneResultat);
-	ch = wgetch(ZoneResultat);
-
 	LectureHS(HighScore, PseudoHS, HS);
-
-	mvwprintw(ZoneResultat, 1,1, "Après la lecture");
-	wrefresh(ZoneResultat);
-	ch = wgetch(ZoneResultat);
-
+	
 	for ( i = 0 ; i < NbJoueurs ; i++)
 	{
-		mvwprintw(ZoneResultat, 1,1, "Dans le for : i = %i", i);
-		wrefresh(ZoneResultat);
-		ch = wgetch(ZoneResultat);
-
 		for ( j = 0 ; j < 5 ; j++)
-		{
-			mvwprintw(ZoneResultat, 1,1, "Dans le for : j = %i", j);
-			wrefresh(ZoneResultat);
-			ch = wgetch(ZoneResultat);
-			mvwprintw(ZoneResultat, 1,1, "HS[0] =  %i", HS[0]);
-			wrefresh(ZoneResultat);
-			ch = wgetch(ZoneResultat);
-			mvwprintw(ZoneResultat, 1,1, "Total[0] = %i", Total[0]);
-			wrefresh(ZoneResultat);
-			ch = wgetch(ZoneResultat);
-
-			wrefresh(ZoneResultat);
-			ch = wgetch(ZoneResultat);
-			
-			if ( HS[j] < Total[i] )
-			{
-				mvwprintw(ZoneResultat, 1,1, "Dans le if");
-				wrefresh(ZoneResultat);
-				ch = wgetch(ZoneResultat);
-				mvwprintw(ZoneResultat, 1,1, "HS[%i] =  %i",j,  HS[j]);
-				wrefresh(ZoneResultat);
-				ch = wgetch(ZoneResultat);
-				mvwprintw(ZoneResultat, 1,1, "Total[%i] = %i", i, Total[i]);
-				wrefresh(ZoneResultat);
-				ch = wgetch(ZoneResultat);
+		{			
+			if ( HS[j] < Total[i] )				
 				return 1;
-			}
 		}
+			
 	}
 	
 	return 0;
@@ -153,12 +118,12 @@ int AffichageHS()
 void EcritureHS(char PseudoJ[4][10], int Total[4])
 {
 	FILE * HighScore = NULL;
-	int i, j;
+	int i, j, ch;
 	char PseudoHS[5][10];
 	int HS[5];
-	
+
 	LectureHS(HighScore, PseudoHS, HS);
-	
+
 	for ( j = 0 ; j < 4 ; j++)
 	{
 		if (Total[j] > HS[4])
