@@ -1,4 +1,4 @@
-#include "../lib/Global.h"
+#include "../include/Global.h"
 
 int isBrelan()
 {
@@ -131,7 +131,11 @@ void CalculScore(int Joueur, int Categorie)
 			
 		case 12:
 			if(isYahtzee())
+			{
 				Score[Joueur][Categorie-1] = 50;
+				Prime[Joueur]++;
+				/* Débloque les primes de Yahtzee */
+			}
 			else
 				Score[Joueur][Categorie-1] = 0;
 			break;
@@ -158,6 +162,7 @@ void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
 	do 
 	{
 		ch = wgetch(Fenetre);
+		ActiverAide(ch);
 		switch (ch)
 		{
 			case KEY_UP:  
@@ -251,6 +256,15 @@ void EcrireScore(int Joueur)
 	/* choix de la colonne */
 	x = 24 + 10 * Joueur;
 	/* choix de la ligne */
+	
+	if( isYahtzee() && (Prime[Joueur] >=0) )
+		Prime[Joueur]++;
+////
+	mvwprintw(ZoneMessage, 8, 2, "       ");
+	mvwprintw(ZoneMessage, 8, 2, "%i", Prime[Joueur]);
+	wrefresh(ZoneMessage);
+	
+	/* Comptabilise les Yahtzee supplémentaires */
 
 	if(categorie < 7)
 		y = categorie + 4;

@@ -1,4 +1,4 @@
-#include "../lib/Global.h"
+#include "../include/Global.h"
 
 void ChainePseudo(char Pseudos[40])
 {
@@ -28,6 +28,7 @@ int Initialisation()
 		{
 			Score[i][j] = -1;
 		}
+		Prime[i] = -1;
 	}
 	
 	for (i = 0 ; i < 6 ; i++)
@@ -52,7 +53,7 @@ void EntrerNbJoueur()
 	noecho();
 	y = 5;
 	NbJoueurs = 0;
-	Nettoyer(ZoneMenu, 1, 1 , 14, 89);
+	Nettoyer(ZoneMenu, 1, 1 , 13, 88);
 
 	mvwprintw(ZoneMenu, 2, 2, "Choisissez le nombre de joueurs (max. 4) avec les flèches.");
 	mvwprintw(ZoneMenu, 5, 2, "  |1 Joueur.");
@@ -121,13 +122,13 @@ void EntrerNbJoueur()
 void EntrerPseudo()
 {
 	int i, j = 0, k, ch;
-	char temp[100];
+	char temp[10]="";
 	keypad(ZoneMenu, TRUE);
 	echo(); 
 	/* Remet l'affichage des touches saisies pour faciliter l'entrée du pseudo */
 	for ( i = 0; i < NbJoueurs; i++)
 	{	
-		Nettoyer(ZoneMenu, 1, 1 , 14, 89);
+		Nettoyer(ZoneMenu, 1, 1 , 12, 87);
 		mvwprintw(ZoneMenu, 2, 6, "Joueur %i : ", i+1);
 		mvwprintw(ZoneMenu, 3, 6, "Entrez votre Pseudo (entre 3 et 10 caractères)");
 		wmove(ZoneMenu, 4, 6);
@@ -136,11 +137,16 @@ void EntrerPseudo()
 		do	
 		{
 			ch = wgetch(ZoneMenu);
+			mvwprintw(ZoneMenu, 8, 6, "%i", strlen(temp));
+			mvwprintw(ZoneMenu, 9,6, "%s", temp);
+			wmove(ZoneMenu, 4,7+j);
+			wrefresh(ZoneMenu);
 			if ( ch == 32 )
 				ch = '_';
 			if ( ch == 10 )
 				break;
-			temp[j] = ch;
+			if ( j < 10 )
+				temp[j] = ch;
 			j++;
 		} while (1);			
 		
@@ -149,7 +155,11 @@ void EntrerPseudo()
 
 		while (strlen(temp) > 10)
 		{
+			j = 0;
+			memset(temp, '\0', 10);
+			/* Vide complètement la chaine de catactères */
 			mvwprintw(ZoneMenu, 3, 6, "Pseudo de plus de 10 caractères, recommencez la saisie");
+			
 			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 			wmove(ZoneMenu, 4, 6);
 			wrefresh(ZoneMenu);
@@ -160,12 +170,15 @@ void EntrerPseudo()
 					ch = '_';
 				if ( ch == 10 )
 					break;
-				temp[j] = ch;
+				if ( j < 10 )				
+					temp[j] = ch;
 				j++;
 			} while (1);	
 		}
 		while (strlen(temp) < 3)
 		{
+			j = 0;
+			memset(temp, '\0', 10);
 			mvwprintw(ZoneMenu, 3, 6, "Pseudo de moins de 3 caractères, recommencez la saisie");
 			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 			wmove(ZoneMenu, 4, 6);
@@ -177,17 +190,21 @@ void EntrerPseudo()
 					ch = '_';
 				if ( ch == 10 )
 					break;
-				temp[j] = ch;
+				if ( j < 10 )
+					temp[j] = ch;
 				j++;
 			} while (1);	
 		}
 		while(!strcmp(temp,"AAA") || !strcmp(temp,"BBB") || !strcmp(temp,"CCC") || !strcmp(temp,"DDD") || !strcmp(temp,"EEE"))
 		/* Pseudos utilisés par le fichier des Highscores */
-		{
+		{	
+			j = 0;
+			memset(temp, '\0', 10);
 			mvwprintw(ZoneMenu, 3, 6, "Ce pseudo est utilisé par le programme, recommencez la saisie");
 			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 			wmove(ZoneMenu, 4, 6);
 			wrefresh(ZoneMenu);
+			
 			do	
 			{
 				ch = wgetch(ZoneMenu);
@@ -195,7 +212,8 @@ void EntrerPseudo()
 					ch = '_';
 				if ( ch == 10 )
 					break;
-				temp[j] = ch;
+				if ( j < 10 )
+					temp[j] = ch;
 				j++;
 			} while (1);	
 		}
@@ -204,6 +222,8 @@ void EntrerPseudo()
 		{
 			while(!strcmp(temp, PseudoJ[k]))
 			{
+				j = 0;
+				memset(temp, '\0', 10);
 				mvwprintw(ZoneMenu, 3, 6, "Ce pseudo est utilisé par un autre joueur, recommencez la saisie");
 				Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 				wmove(ZoneMenu, 4, 6);
@@ -215,13 +235,17 @@ void EntrerPseudo()
 						ch = '_';
 					if ( ch == 10 )
 						break;
-					temp[j] = ch;
+					if ( j < 10 )
+						temp[j] = ch;
 					j++;
 				} while (1);	
 			}
 		}
-		strcpy(Pseudo[i], temp);
-		/* Le pseudo remplit les conditions d'entrée */	
+		strcpy(PseudoJ[i], temp);
+		/* Le pseudo remplit les conditions d'entrée */
+		j = 0;
+		memset(temp, '\0', 10);
+		/* temp réinitialisé pour le prochain */
 	}
 	noecho();
 	/* Recache les touches saisies */
@@ -236,7 +260,7 @@ void DemandeAide()
 	wmove(ZoneMenu, 1, 1);
 	for (i = 0 ; i < NbJoueurs ; i++)
 	{
-		Nettoyer(ZoneMenu, 2, 2, 14, 89);
+		Nettoyer(ZoneMenu, 2, 2, 13, 88);
 		mvwprintw(ZoneMenu, 2, 2, "Joueur %s : ", PseudoJ[i]);
 		mvwprintw(ZoneMenu, 3, 2, "Voulez-vous afficher l'aide ? [O/N]");
 		mvwprintw(ZoneMenu, 4, 2, "(Vous pourrez l'afficher ou la cacher pendant la partie à tout moment)");
@@ -252,4 +276,9 @@ void DemandeAide()
 	}
 }
 
-
+void ActiverAide(int i)
+{
+	if ( tolower(i) == 'h' )
+		isAide[Joueur] = (isAide[Joueur]+1)%2;
+	Aide();
+}

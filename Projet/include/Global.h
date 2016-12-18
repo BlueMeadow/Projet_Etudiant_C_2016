@@ -9,15 +9,15 @@
 /* -------------------- */
 
 /* HEADERS */
+#include "Initialisation.h"
 #include "Affichage.h"
+#include "Highscore.h"
 #include "Chargement.h"
 #include "Fenetre.h"
-#include "Highscore.h"
-#include "Initialisation.h"
 #include "Lancer.h"
-#include "Partie.h"
 #include "Regles.h"
 #include "Score.h"
+#include "Partie.h"
 /* -------------------- */
 
 
@@ -44,6 +44,7 @@ int Joueur;
 int NbTours;
 int NbLancers;
 int isAide[4];
+int Prime[4];
 
 #endif
 

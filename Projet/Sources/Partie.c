@@ -1,4 +1,4 @@
-#include "../lib/Global.h"
+#include "../include/Global.h"
 
 void Menu()
 {
@@ -6,7 +6,8 @@ void Menu()
 	int isRelancer;
 	ZoneMenu = CreerFenetre(15,90,(LINES-15)/2,(COLS-90)/2);
 	
-	keypad(ZoneMenu, TRUE); /* Permet l'utilisation des touches directionnelles */
+	keypad(ZoneMenu, TRUE); 
+	/* Permet l'utilisation des touches directionnelles */
 
 	mvwprintw(ZoneMenu, 5, 30,  "[   ] Nouvelle Partie ?");
 	mvwprintw(ZoneMenu, 6, 30,  "[   ] Reprendre une partie.");
@@ -81,7 +82,7 @@ void Menu()
 				{ 
 					Partie(); 
 					Resultat(&isRelancer);
-				} while ( isRelancer );
+				} while ( isRelancer == 1);
 			}
 				break;
 		case 7 : DetruireFenetre(ZoneMenu); Regles(); break;
@@ -94,7 +95,6 @@ void Menu()
 
 int Partie()
 {	
-	char ch;
 	int i;
 	MiseEnPlace();
 	ChargementAffichage();
@@ -111,7 +111,7 @@ int Partie()
 		Lancer();
 		AffichageDe(De ,ZoneDe);
 		Aide(isAide, Joueur);
-		do
+		/*do
 		{
 			if (NbLancers == 3) break;
 			mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
@@ -133,7 +133,7 @@ int Partie()
 			Aide(isAide, Joueur);
 			NbLancers++;
 		
-		} while(1);
+		} while(1);*/
 		EcrireScore(Joueur);
 		NbTours++;
 		Joueur = ChangerJoueur(Joueur,NbJoueurs);
@@ -147,13 +147,13 @@ int ChangerJoueur(int Joueur, int NbJoueur)
 	return ((Joueur+1)%NbJoueur);
 }
 
-void Aide(int isAide[4], int Joueur)
+void Aide()
 {
 	int y=2;
 	int x=2;
 	int i;
 	int temp1=0;
-	Nettoyer(ZoneAide, 2, 2, 29, 29);
+	Nettoyer(ZoneAide, 2, 2, 28, 28);
 	attron(A_BOLD);
 	mvwprintw(ZoneAide, 2, 13, "AIDE");
 	attroff(A_BOLD);
@@ -221,14 +221,15 @@ int Resultat(int * isRelancer)
 {		
 	int Total[NbJoueurs];
 	int ch;
-	char Vainqueur[4][10];
-	int i, j;
+	int i, j, y = 0;
 	int max;
 	DetruireFenetre(ZoneMessage);
 	DetruireFenetre(ZoneDe);
 	DetruireFenetre(ZoneScore);
 	DetruireFenetre(ZoneAide);
 	ZoneResultat = CreerFenetre(28,60,(LINES-28)/2, (COLS-60)/2);
+	
+		/* Calcul du Total des points */
 
 	for (i = 0 ; i < NbJoueurs ; i++)
 	{
@@ -239,7 +240,7 @@ int Resultat(int * isRelancer)
 			
 		}
 		if (Total[i] > 62) 
-		/* La prime de 35 si le score de la partie haute est de 63 ou plus */
+		/* Prime de 35 si le score de la partie haute est de 63 ou plus */
 		{
 			Total[i] += 35;
 		}	
@@ -247,61 +248,101 @@ int Resultat(int * isRelancer)
 		{
 			Total[i] += Score[i][j];
 		}
+		if ( Prime[i] > 0 )
+			Total[i] = Total[i] + 100 * (Prime[i]-1);
+		/* Prime pour chaque Yahtzee supplémentaire */
 	}
-	max = Total[0];
-	strcpy(Vainqueur[0], PseudoJ[0]);
-	j = 0;
-	for( i = 1 ; i < 4 ; i++)
-	{
-		if ( max < Total[i] )
-		/* Si le joueur i n'a pas le meilleur score */
-		{
-			max = Total[i];
-			strcpy(Vainqueur[j], PseudoJ[j]);
-		}
-		else if ( max == Total[i] )
-		/* En cas d'égalité */
-		{
-			j++;
-			strcpy(Vainqueur[j], PseudoJ[i]);
-		}
-	}
-	
+
+	/* Mise en place de l'interface */
 
 	wattron(ZoneResultat, A_REVERSE);
 	mvwprintw(ZoneResultat, 2, 16, "TABLEAU DE SCORES");
 	wattroff(ZoneResultat, A_REVERSE);
-
-	for (i = 0 ; i < NbJoueurs ; i++)
-	{
-		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", PseudoJ[i], Total[i]);
-	}
 	
 	wattron(ZoneResultat, A_REVERSE);
 	mvwprintw(ZoneResultat, 11, 20, "VAINQUEUR");
 	wattroff(ZoneResultat, A_REVERSE);
 
-	for (i = 0 ; i <= j ; i++)
+	/* Affichage des points de chaque joueur */
+	
+	for (i = 0 ; i < NbJoueurs ; i++)
 	{
-		mvwprintw(ZoneResultat, 14+i, (50-strlen(Vainqueur[i]))/2 , "%s", Vainqueur[i] ) ;
+		mvwprintw(ZoneResultat, 5+i, 10, "%s : %i", PseudoJ[i], Total[i]);
 	}
-	mvwprintw(ZoneResultat, 20+j, 6, "Appuyez sur [ENTREE] pour relancer une partie");
-	mvwprintw(ZoneResultat, 21+j, 6, "Appuyez sur [M] pour revenir au menu");
-	mvwprintw(ZoneResultat, 22+j, 6, "Appuyez sur [Q] pour quitter");
+
+	/* Ecriture du nom des vainqueurs */
+
+	mvwprintw(ZoneResultat, y+14, (50-strlen(PseudoJ[0]))/2 , "%s", PseudoJ[0] );
+	max = Total[0];
+	for (i = 1 ; i < NbJoueurs ; i++)
+	{
+		if ( Total[i] > max )
+		{
+			max = Total[i];
+			y = 0;
+			/* Place sur la première ligne */
+			Nettoyer(ZoneResultat, y+14, 2, y+17, 58);
+			/* Efface les 3 potentiels joueurs écrits en dessous */
+			mvwprintw(ZoneResultat, y+14, (50-strlen(PseudoJ[i]))/2 , "%s", PseudoJ[i] );
+			/* Ecrit le nom du vainqueur */
+
+		}
+		else if ( max == Total[i] )
+		{
+			y++;
+			/* Passe à la ligne suivante */
+			mvwprintw(ZoneResultat, y+14, (50-strlen(PseudoJ[i]))/2 , "%s", PseudoJ[i] );
+			/* Ecrit le nom du joueur sous le précédent */
+		}
+	}
 	wrefresh(ZoneResultat);
+
+	
+
+	/* Options de sortie */
+
+	y = 0;
+	if ( VerifHS() )
+		mvwprintw(ZoneResultat, 20+y, 6, "Appuyez sur [H] pour enregistrer vos Highscores");
+	else 
+		mvwprintw(ZoneResultat, 20+y, 6, "Dommage, pas de Highscore cette fois");
+	mvwprintw(ZoneResultat, 21+y, 6, "Appuyez sur [ENTREE] pour relancer une partie");
+	mvwprintw(ZoneResultat, 22+y, 6, "Appuyez sur [M] pour revenir au menu");
+	mvwprintw(ZoneResultat, 23+y, 6, "Appuyez sur [Q] pour quitter");
+	wrefresh(ZoneResultat);
+
 	do
 	{
 		ch = wgetch(ZoneResultat);
-	} while ( ch != 10 && tolower(ch) != 'q' && tolower(ch) != 'm');
+		if ( !VerifHS() )
+			ch = 0;
+		/* Empeche de sortir du menu avec [H] si il n'y a pas de nouveau highscore */
+		switch (tolower(ch))
+		{
+			case 'h' : EcritureHS(); break;
+			case 10 : *isRelancer = 1; Initialisation(); DetruireFenetre(ZoneResultat); return 1;
+			case 'q' : *isRelancer = 0; FinDePartie(); break;
+			case 'm' : *isRelancer = 0; DetruireFenetre(ZoneResultat); return 1;		
+		}
+		
+	} while (ch != 'h');
+	/* Affiche un nouveau menu si les highscores sont entrés */
 
-	switch (ch)
+	mvwprintw(ZoneResultat, 20+y, 6, "Highscores enregistrés ! Consultez la page depuis le menu !");
+	mvwprintw(ZoneResultat, 21+y, 6, "Appuyez sur [ENTREE] pour relancer une partie");
+	mvwprintw(ZoneResultat, 22+y, 6, "Appuyez sur [M] pour revenir au menu");
+	mvwprintw(ZoneResultat, 23+y, 6, "Appuyez sur [Q] pour quitter");
+	wrefresh(ZoneResultat);
+
+	do
 	{
-		case 10 :  DetruireFenetre(ZoneResultat); *isRelancer = 1;  break;
-		case 'q' :
-		case 'Q' : *isRelancer = 0; FinDePartie(); break;
-		case 'm' :
-		case 'M' : *isRelancer = 0; DetruireFenetre(ZoneResultat); return 1;		
-	}
+		switch (tolower(ch))
+		{
+			case 10 : *isRelancer = 1; Initialisation(); DetruireFenetre(ZoneResultat); return 1;
+			case 'q' : *isRelancer = 0; FinDePartie(); break;
+			case 'm' : *isRelancer = 0; DetruireFenetre(ZoneResultat); return 1;		
+		}
+	} while (1);
 	return 0;			
 } 
 

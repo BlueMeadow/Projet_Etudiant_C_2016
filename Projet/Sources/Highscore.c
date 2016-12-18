@@ -1,4 +1,6 @@
-#include "../lib/Global.h"
+#include "../include/Global.h"
+
+
 
 void Tri(int iTab[5], char cTab[5][10])
 {
@@ -56,6 +58,64 @@ int LectureHS(FILE * HighScore, char PseudoHS[5][10], int HS[5])
 	return 1;
 }
 
+int VerifHS(int NbJoueurs, int Total[NbJoueurs])
+{
+	FILE * HighScore = NULL;
+	int i, j, ch;
+	char PseudoHS[5][10];
+	int HS[5];
+
+	mvwprintw(ZoneResultat, 1,1, "Avant la lecture");
+	wrefresh(ZoneResultat);
+	ch = wgetch(ZoneResultat);
+
+	LectureHS(HighScore, PseudoHS, HS);
+
+	mvwprintw(ZoneResultat, 1,1, "Après la lecture");
+	wrefresh(ZoneResultat);
+	ch = wgetch(ZoneResultat);
+
+	for ( i = 0 ; i < NbJoueurs ; i++)
+	{
+		mvwprintw(ZoneResultat, 1,1, "Dans le for : i = %i", i);
+		wrefresh(ZoneResultat);
+		ch = wgetch(ZoneResultat);
+
+		for ( j = 0 ; j < 5 ; j++)
+		{
+			mvwprintw(ZoneResultat, 1,1, "Dans le for : j = %i", j);
+			wrefresh(ZoneResultat);
+			ch = wgetch(ZoneResultat);
+			mvwprintw(ZoneResultat, 1,1, "HS[0] =  %i", HS[0]);
+			wrefresh(ZoneResultat);
+			ch = wgetch(ZoneResultat);
+			mvwprintw(ZoneResultat, 1,1, "Total[0] = %i", Total[0]);
+			wrefresh(ZoneResultat);
+			ch = wgetch(ZoneResultat);
+
+			wrefresh(ZoneResultat);
+			ch = wgetch(ZoneResultat);
+			
+			if ( HS[j] < Total[i] )
+			{
+				mvwprintw(ZoneResultat, 1,1, "Dans le if");
+				wrefresh(ZoneResultat);
+				ch = wgetch(ZoneResultat);
+				mvwprintw(ZoneResultat, 1,1, "HS[%i] =  %i",j,  HS[j]);
+				wrefresh(ZoneResultat);
+				ch = wgetch(ZoneResultat);
+				mvwprintw(ZoneResultat, 1,1, "Total[%i] = %i", i, Total[i]);
+				wrefresh(ZoneResultat);
+				ch = wgetch(ZoneResultat);
+				return 1;
+			}
+		}
+	}
+	
+	return 0;
+}
+
+
 int AffichageHS()
 {
 	FILE * HighScore = NULL;
@@ -75,8 +135,8 @@ int AffichageHS()
 
 	for (i = 0 ; i < 5 ; i++)
 	{
-		if (!strcmp(PseudoHS[i], "AAA"))
-			break;
+		/*if (!strcmp(PseudoHS[i], "AAA"))
+			break;*/
 		/* Empeche d'afficher les placeholders */ 
 		mvwprintw(ZoneHighScore, 12+2*i, 18, "%s", PseudoHS[i]);
 		mvwprintw(ZoneHighScore, 12+2*i, 29, "|");
@@ -85,10 +145,7 @@ int AffichageHS()
 	}
 	mvwprintw(ZoneHighScore, 26, 8, "Appuyez sur une touche pour revenir au menu");
 	wrefresh(ZoneHighScore);
-	do {
-
-		ch = wgetch(ZoneHighScore);
-	} while (ch != 10);
+	ch = wgetch(ZoneHighScore);
 	DetruireFenetre(ZoneHighScore);
 	return 1;
 }

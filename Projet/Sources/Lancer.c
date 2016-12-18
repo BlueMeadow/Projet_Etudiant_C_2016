@@ -1,4 +1,4 @@
-#include "../lib/Global.h"
+#include "../include/Global.h"
 
 void Lancer()
 {
@@ -6,19 +6,20 @@ void Lancer()
 	noecho();
 	srand(time(0));
 	int ch;
-	mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
+	Nettoyer(ZoneMessage, 5, 2, 5, 68);
 	mvwprintw(ZoneMessage, 2, 2, "Appuyez sur [ENTREE] pour lancer les dés.");
-	mvwprintw(ZoneMessage, 4, 2, "Vous pouvez sauvegarder et quitter en appuyant sur [S]");
+	mvwprintw(ZoneMessage, 5, 2, "Vous pouvez sauvegarder et quitter en appuyant sur [S]");
 	wrefresh(ZoneMessage);
 	do
 	{
 		ch = getch();
+		ActiverAide(ch);
 	} while (ch != 10 && tolower(ch) != 's');
 	
 	if ( ch == 's' )
 	{
-		mvwprintw(ZoneMessage, 4, 2, "                                                          ");
-		mvwprintw(ZoneMessage, 4, 2, "Vous-vous vraiment sauvegarder et quitter ? [O/N]");
+		Nettoyer(ZoneMessage, 5, 2, 5, 68);
+		mvwprintw(ZoneMessage, 5, 2, "Vous-vous vraiment sauvegarder et quitter ? [O/N]");
 		wrefresh(ZoneMessage);
 		do
 		{
@@ -38,15 +39,15 @@ void Lancer()
 	{
 		if(Garde[i] == 0)
 		{	
-			//lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard
-			De[i] = rand()%6+1;
+			//De[i] = rand()%6+1;
+			/*lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard */
+			De[i] = 1;
+			
 		}
 		CalculOccurrences();
 		Garde[i]=0;	
 	}
-	mvwprintw(ZoneAide, 4, 2, "Avant l'aide");
 	Aide(isAide, Joueur);
-	mvwprintw(ZoneAide, 5, 2, "Après l'aide");
 	wrefresh(ZoneMessage);
 }
 
@@ -63,6 +64,7 @@ void Garder(WINDOW *Fenetre, int Garde[5])
 	do 
 	{
 		ch = wgetch(Fenetre);
+		ActiverAide(ch);
 		switch (ch)
 		{
 			case KEY_UP:  

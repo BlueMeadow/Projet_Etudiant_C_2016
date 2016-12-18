@@ -1,4 +1,4 @@
-#include "../lib/Global.h"
+#include "../include/Global.h"
 
 void Page_Regles(WINDOW *Fenetre, int y, int x)
 {	

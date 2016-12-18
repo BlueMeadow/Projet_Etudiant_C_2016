@@ -1,4 +1,4 @@
-#include "../lib/Global.h"
+#include "../include/Global.h"
 
 
 void Sauvegarder()
@@ -45,7 +45,7 @@ void Sauvegarder()
 	fprintf(Sauvegarde, "%i %i %i %i", NbJoueurs, Joueur, NbTours, NbLancers);
 	for (i = 0; i < NbJoueurs; i++)
 	{
-		fprintf(Sauvegarde, " %s %i", PseudoJ[i], isAide[i]);
+		fprintf(Sauvegarde, " %s %i %i", PseudoJ[i], isAide[i], Prime[i]);
 		for (j = 0; j < 13; j++)
 		{
 			fprintf(Sauvegarde, " %i", Score[i][j]);
@@ -212,7 +212,7 @@ int Charger()
 	fscanf(Sauvegarde, "%i %i %i %i", &NbJoueurs, &Joueur, &NbTours, &NbLancers);
 	for (i = 0; i < NbJoueurs; i++)
 	{
-		fscanf(Sauvegarde, " %s %i", PseudoJ[i], &isAide[i]);
+		fscanf(Sauvegarde, " %s %i %i", PseudoJ[i], &isAide[i], &Prime[i]);
 		for (j = 0; j < 13; j++)
 		{
 			fscanf(Sauvegarde, " %i", &Score[i][j]);
@@ -248,4 +248,5 @@ void ChargementAffichage()
 		}
 
 	}
+	wrefresh(ZoneScore);
 }
