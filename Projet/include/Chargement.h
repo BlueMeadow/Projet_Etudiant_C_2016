@@ -3,6 +3,6 @@
 
 void Sauvegarder();
 int Charger();
-void ChargementAffichage();
+
 
 #endif

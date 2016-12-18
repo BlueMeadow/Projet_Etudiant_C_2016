@@ -60,7 +60,7 @@ int LectureHS(FILE * HighScore, char PseudoHS[5][10], int HS[5])
 int VerifHS(int Total[4])
 {
 	FILE * HighScore = NULL;
-	int i, j, ch;
+	int i, j;
 	char PseudoHS[5][10];
 	int HS[5];
 
@@ -87,7 +87,7 @@ int AffichageHS()
 	ZoneHighScore = CreerFenetre(28,60,(LINES-28)/2, (COLS-60)/2);
 	keypad(ZoneHighScore, TRUE);
 
-	int i, ch;
+	int i;
 	char PseudoHS[5][10];
 	int HS[5];
 	wattron(ZoneHighScore, A_REVERSE);
@@ -109,7 +109,7 @@ int AffichageHS()
 	}
 	mvwprintw(ZoneHighScore, 26, 8, "Appuyez sur une touche pour revenir au menu");
 	wrefresh(ZoneHighScore);
-	ch = wgetch(ZoneHighScore);
+	wgetch(ZoneHighScore);
 	DetruireFenetre(ZoneHighScore);
 	return 1;
 }
@@ -117,7 +117,7 @@ int AffichageHS()
 void EcritureHS(char PseudoJ[4][10], int Total[4])
 {
 	FILE * HighScore = NULL;
-	int i, j, ch;
+	int i, j;
 	char PseudoHS[5][10];
 	int HS[5];
 

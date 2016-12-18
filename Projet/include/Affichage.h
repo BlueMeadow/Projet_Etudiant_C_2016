@@ -12,5 +12,6 @@ void DeCinq(WINDOW *Fenetre, int y, int x);
 void DeSix(WINDOW *Fenetre, int y, int x);
 void DeVide(WINDOW *Fenetre, int y, int x);
 void AffichageDe(int De[5], WINDOW *Fenetre);
+void ChargementAffichage();
 
 #endif

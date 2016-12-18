@@ -6,5 +6,6 @@ int Initialisation();
 void EntrerNbJoueur(); 	
 void EntrerPseudo();
 void DemandeAide();
+void ActiverAide(int i);
 
 #endif

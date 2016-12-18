@@ -1,5 +1,5 @@
-#ifndef H_Initialisation
-#define H_Initialisation
+#ifndef H_Highscore
+#define H_Highscore
 
 void Tri(int iTab[5], char cTab[5][10]);
 int LectureHS(FILE * HighScore, char PseudoHS[5][10], int HS[5]);
