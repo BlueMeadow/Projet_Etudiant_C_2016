@@ -27,6 +27,7 @@
 *.i*86
 *.x86_64
 *.hex
+Yahtzee
 
 # Debug files
 *.dSYM/
@@ -35,6 +36,6 @@
 #Sauvegardes
 sav_*
 
-Yahtzee
-*.h.gch
+
+
 
