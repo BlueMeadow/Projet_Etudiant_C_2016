@@ -314,8 +314,8 @@ int Resultat(int * isRelancer)
 	do
 	{
 		ch = wgetch(ZoneResultat);
-		if ( !VerifHS(Total) )
-			ch = 0;
+		if ( tolower(ch) == 'h' && !VerifHS(Total) )
+			ch = 48;
 		/* Empeche de sortir du menu avec [H] si il n'y a pas de nouveau highscore */
 		switch (ch)
 		{
@@ -327,6 +327,9 @@ int Resultat(int * isRelancer)
 			case 'M':
 			case 'm' : *isRelancer = 0; DetruireFenetre(ZoneResultat); return 1;		
 		}
+			mvwprintw(ZoneResultat, 2, 6, "Menu1");
+			mvwprintw(ZoneResultat, 3,6, "%c", ch);
+	wrefresh(ZoneResultat);
 	} while (ch != 'h');
 	/* Affiche un nouveau menu si les highscores sont entrés */
 	Nettoyer(ZoneResultat, 20+y, 5, 20+y, 57);
@@ -342,6 +345,8 @@ int Resultat(int * isRelancer)
 			case 'q' : *isRelancer = 0; FinDePartie(); break;
 			case 'm' : *isRelancer = 0; DetruireFenetre(ZoneResultat); return 1;		
 		}
+		mvwprintw(ZoneResultat, 2, 6, "Menu2");
+	wrefresh(ZoneResultat);
 	} while (1);
 	return 0;			
 } 
