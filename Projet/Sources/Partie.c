@@ -95,7 +95,7 @@ void Menu()
 
 int Partie()
 {	
-	int i;
+	int i, ch;
 	MiseEnPlace();
 	ChargementAffichage();
 	while(NbTours < 13*NbJoueurs)
@@ -111,7 +111,7 @@ int Partie()
 		Lancer();
 		AffichageDe(De ,ZoneDe);
 		Aide(isAide, Joueur);
-		/*do
+		do
 		{
 			if (NbLancers == 3) break;
 			mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
@@ -133,7 +133,7 @@ int Partie()
 			Aide(isAide, Joueur);
 			NbLancers++;
 		
-		} while(1);*/
+		} while(1);
 		EcrireScore(Joueur);
 		NbTours++;
 		Joueur = ChangerJoueur(Joueur,NbJoueurs);

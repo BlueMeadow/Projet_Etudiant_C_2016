@@ -2,47 +2,40 @@
 
 void Lancer()
 {
-	//initialisation des valeurs aléatoires, à chaque tirage
 	noecho();
 	srand(time(0));
 	int ch;
-	Nettoyer(ZoneMessage, 5, 2, 5, 68);
+	do
+	{
+	Nettoyer(ZoneMessage, 4, 2, 6, 68);
 	mvwprintw(ZoneMessage, 2, 2, "Appuyez sur [ENTREE] pour lancer les dés.");
 	mvwprintw(ZoneMessage, 5, 2, "Vous pouvez sauvegarder et quitter en appuyant sur [S]");
 	wrefresh(ZoneMessage);
-	do
-	{
+	
 		ch = getch();
 		ActiverAide(ch);
-	} while (ch != 10 && tolower(ch) != 's');
 	
-	if ( ch == 's' )
-	{
+		if (ch == 10)
 		Nettoyer(ZoneMessage, 5, 2, 5, 68);
-		mvwprintw(ZoneMessage, 5, 2, "Vous-vous vraiment sauvegarder et quitter ? [O/N]");
-		wrefresh(ZoneMessage);
-		do
-		{
-			ch = getch();
-		} while (tolower(ch) != 'o' && tolower(ch) != 'n');
-		if ( tolower(ch) == 'o')
+
+		if ( ch == 's' )
 		{
 			Sauvegarder();
-			
-			FinDePartie();
+			Nettoyer(ZoneMessage, 5, 2, 5, 68);
+			mvwprintw(ZoneMessage, 5, 2, "Appuyez sur [Q] pour quitter ou sur une autre touche pour continuer");
+			ch = wgetch(ZoneMessage);
+			if ( tolower(ch) == 'q' )			
+				FinDePartie();	
 		}
-	}
-	if (ch == 10)
-		mvwprintw(ZoneMessage, 4, 2, "                                                          ");
+
+
+	} while (ch != 10 && tolower(ch) != 's');
 
 	for(int i = 0; i < 5; i++)
 	{
 		if(Garde[i] == 0)
 		{	
-			//De[i] = rand()%6+1;
-			/*lancement des dés et sélection d'un chiffre entre 1 et 6 avec le hasard */
-			De[i] = 1;
-			
+			De[i] = rand()%6+1;			
 		}
 		CalculOccurrences();
 		Garde[i]=0;	

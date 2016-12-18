@@ -54,8 +54,6 @@ void Sauvegarder()
 
 	fclose(Sauvegarde);
 	mvwprintw(ZoneMessage, 4, 2, "Votre sauvegarde est la numéro %c%c", NumSav[0],NumSav[1]);
-	mvwprintw(ZoneMessage, 5, 2, "Appuyez sur une touche pour quitter");
-	wgetch(ZoneMessage);
 }
 
 int Charger()
@@ -75,7 +73,7 @@ int Charger()
 	NumSav[0] = '0'; 
 	strcat(NomFichier, NumSav);
 
-	/* Vérification du numéro de sauvegarde à attribuer */
+	/* Recherche des sauvegardes */
 	for (i = 0; i < 10; i++)
 	{
 		for (j = 1; j < 10; j++)
