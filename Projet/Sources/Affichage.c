@@ -1,10 +1,20 @@
 #include "../include/Global.h"
 
+/**
+* \file Affichage.c
+* \brief Fonctions graphiques, gèrent les éléments statiques 
+* \author Benoit Combasteix, Simon Fernandes et Nathan OUALET
+* \version 1.0
+*/
+
 
 void EcranTitre()
+/* \fn EcranTitre()
+* \brief Affiche le titre du jeu 
+*/
 {
 	WINDOW * ZoneTitre;
-	ZoneTitre = newwin(LINES,COLS, 1, 1);
+	ZoneTitre = newwin(LINES,COLS, 1, 1); /**< Crée une fenetre ncurses de la taille de la fenetre du terminal */
 	mvwprintw(ZoneTitre, (LINES-11)/2-5, (COLS-140)/2, " .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. ");
 	mvwprintw(ZoneTitre, (LINES-11)/2-4, (COLS-140)/2, "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |");
 	mvwprintw(ZoneTitre, (LINES-11)/2-3, (COLS-140)/2, "| |  ____  ____  | || |      __      | || |  ____  ____  | || |  _________   | || |   ________   | || |  _________   | || |  _________   | |");
@@ -20,26 +30,16 @@ void EcranTitre()
 	mvwprintw(ZoneTitre, (LINES-11)/2+12, (COLS-23)/2, "Appuyez sur une touche !");
 	wrefresh(ZoneTitre);	
 	wgetch(ZoneTitre);
-	DetruireFenetre(ZoneTitre);
+	DetruireFenetre(ZoneTitre); /**< Supprime la fentre et libère la mémoire */
 
-}
-
-
-void MiseEnPlace()
-{	
-	refresh();
-	ChainePseudo(Pseudos);
-	ZoneAide = CreerFenetre(30,30,(LINES-35)/2,(COLS+70)/2);
-	ZoneDe = CreerFenetre(31, 19, (LINES-35)/2, (COLS-70)/2-19);
-	ZoneScore = CreerFenetre(25,70,(LINES-35)/2,(COLS-70)/2);
-	ZoneMessage = CreerFenetre(10,70,(LINES+15)/2,(COLS-70)/2);
-	FicheDeScore(ZoneScore,2,2);
-	AffichageDe(De, ZoneDe);
 }
 
 
 void FicheDeScore(WINDOW *Fenetre, int y, int x)
-/* Affiche le squelette de la fiche de score */
+/* \fn FicheDeScore()
+* \brief Génère les fenetres nécéssaires au déroulement de la fonction Partie() 
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+*/
 {
 	mvwprintw(Fenetre, y+1, x,  " PARTIE HAUTE    %s", Pseudos);
 	mvwprintw(Fenetre, y+2, x,  "+---+-----------+----------+---------+---------+---------+");
@@ -65,7 +65,12 @@ void FicheDeScore(WINDOW *Fenetre, int y, int x)
 
 void DeUn(WINDOW *Fenetre, int y, int x)
 {
-/* Dessine un de de valeur 1 */ 
+/* \fn DeUn()
+* \brief Dessine un dé de valeur 1  
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+* \param y Première ligne de l'affichage
+* \param x Première colonne de l'affichage
+*/ 
 	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+1, x, " |       |"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+2, x, " |   O   | [   ]"); wrefresh(Fenetre);
@@ -76,7 +81,12 @@ void DeUn(WINDOW *Fenetre, int y, int x)
 						
 void DeDeux(WINDOW *Fenetre, int y, int x)
 {
-/* Dessine un de de valeur 2 */ 
+/* \fn DeDeux()
+* \brief Dessine un de de valeur 2  
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+* \param y Première ligne de l'affichage
+* \param x Première colonne de l'affichage
+*/
 	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+1, x, " | O     |"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+2, x, " |       | [   ]"); wrefresh(Fenetre);
@@ -86,7 +96,12 @@ void DeDeux(WINDOW *Fenetre, int y, int x)
 					
 void DeTrois(WINDOW *Fenetre, int y, int x)
 {
-/* Dessine un de de valeur 3 */ 
+/* \fn DeTrois()
+* \brief Dessine un de de valeur 3  
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+* \param y Première ligne de l'affichage
+* \param x Première colonne de l'affichage
+*/ 
 	mvwprintw(Fenetre, y, x, " +-------+"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+1, x, " | O     |"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+2, x, " |   O   | [   ]"); wrefresh(Fenetre);
@@ -96,7 +111,12 @@ void DeTrois(WINDOW *Fenetre, int y, int x)
 					
 void DeQuatre(WINDOW *Fenetre, int y, int x)
 {
-/* Dessine un de de valeur 4 */ 
+/* \fn DeQuatre()
+* \brief Dessine un de de valeur 4  
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+* \param y Première ligne de l'affichage
+* \param x Première colonne de l'affichage
+*/ 
 	mvwprintw(Fenetre, y, x,   " +-------+");
 	mvwprintw(Fenetre, y+1, x, " | O   O |"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+2, x, " |       | [   ]"); wrefresh(Fenetre);
@@ -106,7 +126,12 @@ void DeQuatre(WINDOW *Fenetre, int y, int x)
 				
 void DeCinq(WINDOW *Fenetre, int y, int x)
 {
-/* Dessine un de de valeur 5 */ 
+/* \fn DeCinq()
+* \brief Dessine un de de valeur 5  
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+* \param y Première ligne de l'affichage
+* \param x Première colonne de l'affichage
+*/ 
 	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre); 
 	mvwprintw(Fenetre, y+1, x, " | O   O |"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+2, x, " |   O   | [   ]"); wrefresh(Fenetre);
@@ -116,7 +141,12 @@ void DeCinq(WINDOW *Fenetre, int y, int x)
 					
 void DeSix(WINDOW *Fenetre, int y, int x)
 {
-/* Dessine un de de valeur 6 */ 
+/* \fn DeSix()
+* \brief Dessine un de de valeur 6  
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+* \param y Première ligne de l'affichage
+* \param x Première colonne de l'affichage
+*/ 
 	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+1, x, " | O   O |"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+2, x, " | O   O | [   ]"); wrefresh(Fenetre);
@@ -125,7 +155,12 @@ void DeSix(WINDOW *Fenetre, int y, int x)
 }
 
 void DeVide(WINDOW *Fenetre, int y, int x)
-/* Dessine un de si on a pas encore de valeur */
+/* \fn DeVide()
+* \brief Dessine un de si on a pas encore de valeur 
+* \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
+* \param y Première ligne de l'affichage
+* \param x Première colonne de l'affichage
+*/
 {
 	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
 	mvwprintw(Fenetre, y+1, x, " |       |"); wrefresh(Fenetre);
@@ -136,7 +171,9 @@ void DeVide(WINDOW *Fenetre, int y, int x)
 }
 
 void AffichageDe(int De[5], WINDOW *Fenetre)
-/* Choisit quel de afficher et dessine les cinq obtenus après un lancer*/
+/* \fn DeDeux()
+* \brief Choisit quel de afficher et dessine les cinq obtenus après un lancer 
+*/
 {
 	int i;
 	int x = 1;
@@ -157,3 +194,28 @@ void AffichageDe(int De[5], WINDOW *Fenetre)
 	}
 }
 
+void ChargementAffichage()
+/* \fn ChargementAffichage()
+* \brief Met à jour l'affichage du tableau des scores
+*        Ne fait rien si la partie n'a pas été chargée à partir d'un fichier 
+*/
+{
+	int i;
+	int j;
+	int x, y;	
+	for (i = 0 ; i < NbJoueurs ; i++)
+	{
+		for ( j = 0 ; j < 13 ; j ++)
+		{
+			if(j < 6)
+				y = j + 5;
+			else
+				y = j + 8;
+			x = 24 + 10 * i;
+			if (Score[i][j] != -1)
+				mvwprintw(ZoneScore, y, x, "%i", Score[i][j]);		
+		}
+
+	}
+	wrefresh(ZoneScore);
+}

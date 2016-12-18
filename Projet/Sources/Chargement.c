@@ -1,14 +1,24 @@
 #include "../include/Global.h"
 
+/**
+* \file Chargement.c
+* \brief Permet de sauvegarder et charger une partie
+* \author Benoit Combasteix, Simon Fernandes et Nathan OUALET
+* \version 1.0
+*/
+
 
 void Sauvegarder()
+/* \fn Sauvegarder()
+* \brief Sauvegarde l'état de la partie dans un ficheir pour pouvoir reprendre
+*/
 {
-	FILE * Sauvegarde = NULL;
+	FILE * Sauvegarde = NULL; /**< Fichier de sauvegarde */
 	int i;
 	int j;
 	char NomFichier[7] = "sav_";
-	char temp[4]; /* Garde le début du nom de fichier après modifcation */
-	char NumSav[3]; /* Jusqu'à 99 sauvegardes */
+	char temp[4]; /**< Garde le début du nom de fichier après modifcation */
+	char NumSav[3]; /**< Jusqu'à 99 sauvegardes */
 
 	strcpy(temp, NomFichier);
 	NumSav[2] = '\0';
@@ -16,7 +26,8 @@ void Sauvegarder()
 	NumSav[0] = '0'; 
 	strcat(NomFichier, NumSav);
 
-	/* Vérification du numéro de sauvegarde à attribuer */
+	/** Vérification du numéro de sauvegarde à attribuer */
+
 	for (i = 0; i < 10; i++)
 	{
 		for (j = 1; j < 10; j++)
@@ -24,7 +35,7 @@ void Sauvegarder()
 			Sauvegarde = fopen(NomFichier, "r");
 			if (Sauvegarde != NULL)
 			{
-				fclose(Sauvegarde);
+				fclose(Sauvegarde);/**< si le fichier existe, ferme et passe au suivant */
 				strcpy(NomFichier, temp);
 				NumSav[1]++;
 				if (NumSav[1] > '9')
@@ -32,17 +43,17 @@ void Sauvegarder()
 					NumSav[1] = '0';
 					NumSav[0]++;
 				}
-				strcat(NomFichier, NumSav);
+				strcat(NomFichier, NumSav); 
 			}
-			else break; 
-			/* Si le fichier n'existe pas, on sort des boucles de vérification */
+			else break; /**< Si le fichier n'existe pas, sort des boucles de vérification */
 		}
-		if (Sauvegarde == NULL) break; 
-		/* Si le fichier n'existe pas, on sort des boucles de vérification */
+		if (Sauvegarde == NULL) break;/**< Si le fichier n'existe pas, sort des boucles de vérification */
 	}
+	
+	/** Rentre les données importantes dans le fichier */
+
 	Sauvegarde = fopen(NomFichier, "w");
-	/* On rentre les données importantes dans le fichier */
-	fprintf(Sauvegarde, "%i %i %i %i", NbJoueurs, Joueur, NbTours, NbLancers);
+	fprintf(Sauvegarde, "%i %i %i %i", NbJoueurs, Joueur, NbTours, NbLancers); 
 	for (i = 0; i < NbJoueurs; i++)
 	{
 		fprintf(Sauvegarde, " %s %i %i", PseudoJ[i], isAide[i], Prime[i]);
@@ -53,10 +64,13 @@ void Sauvegarder()
 	}
 
 	fclose(Sauvegarde);
-	mvwprintw(ZoneMessage, 4, 2, "Votre sauvegarde est la numéro %c%c", NumSav[0],NumSav[1]);
+	mvwprintw(ZoneMessage, 4, 2, "Votre sauvegarde est la numéro %c%c", NumSav[0],NumSav[1]); /**< Affiche à l'utilisateur le numéro de la sauvegarde à charger pour reprendre cette partie */ 
 }
 
 int Charger()
+/* \fn Charger
+* \brief Permet de reprendre une partie préalablement sauvegardée 
+*/
 {
 	FILE * Sauvegarde = NULL;
 	int i;
@@ -64,54 +78,45 @@ int Charger()
 	int y = 1, x = 0, ch;
 	int NbSav = 0;
 	char SavTable[100][3];
-	char NomFichier[10] = "sav_";
-	char temp[4]; 
-	/* Garde le début du nom de fichier après modifcation */
-	char NumSav[3]; 
-	/* Jusqu'à 99 sauvegardes */	
-
+	char NomFichier[10] = "sav_"; /**< Début de nom ommun à toutes les sauvegardes */
+	char temp[4];  	/**< Garde le début du nom de fichier après modifcation */
+	char NumSav[3]; /**< Jusqu'à 99 sauvegardes */	
+	WINDOW * ZoneChargement;
 	strcpy(temp, NomFichier);
 	NumSav[2] = '\0';
-
-	WINDOW * ZoneChargement;
 	
-	int Hauteur = (LINES-40)/2;
-	int Longueur = (COLS-85)/2;
-	ZoneChargement = CreerFenetre(48, 85, Hauteur, Longueur);
 
-	/* Recherche des sauvegardes */
+	
+	
+
+	/** Recherche des sauvegardes */
 
 	for ( i = 1 ; i < 100 ; i++ )
 	{
-		NumSav[1] = i%10+48; 
-		/* Code ASCII du chiffre des unités */
-		NumSav[0] = i/10+48; 	
-		/* Code ASCII du chiffre des dizaines */
+		NumSav[1] = i%10+48; /**< Code ASCII du chiffre des unités */
+		NumSav[0] = i/10+48; /**< Code ASCII du chiffre des dizaines */
 
-		strcat(NomFichier, NumSav);
-		/* Donne le nom du fichier à rechercher */
-		Sauvegarde = fopen(NomFichier, "r");
-		/* Vérification de l'existence */
-		if ( Sauvegarde != NULL )
+		strcat(NomFichier, NumSav); /**< Donne le nom du fichier à rechercher */
+		Sauvegarde = fopen(NomFichier, "r");/**< Vérification de l'existence */
+		if ( Sauvegarde != NULL ) /**< Si le fichier existe */
 		{	
-			strcpy(SavTable[NbSav], NumSav);
+			strcpy(SavTable[NbSav], NumSav); /**< Garde le numéro en mémoire */
 			wrefresh(ZoneChargement);
 			NbSav++;
-			fclose(Sauvegarde);
+			fclose(Sauvegarde); /**< Passe au suivant */
 		}
 		strcpy(NomFichier, temp);
 	}
 			
 
-	/* Affichage Ncurses */
-	
-	
-	
+	/** Affichage Ncurses */	
+
+	ZoneChargement = CreerFenetre(48, 85, (LINES-40)/2, (COLS-85)/2);
 	keypad(ZoneChargement, TRUE);
 	mvwprintw(ZoneChargement, 2, (Longueur-17)/2, "Sélectionnez la sauvegarde à charger");
-	if (!NbSav) 
+	if (!NbSav) /**< Si aucune sauvegarde n'a été trouvée */
 	{
-		mvwprintw(ZoneChargement, 2, (Longueur-34)/2, "Il n'y a pas de sauvegarde à charger");
+		mvwprintw(ZoneChargement, 2, (Longueur-34)/2, "Il n'y a pas de sauvegarde à charger"); /**< Affiche un message d'erreur */
 		mvwprintw(ZoneChargement, 4, 16, "Appuyez sur une touche pour revenir au menu");
 		wgetch(ZoneChargement);
 		DetruireFenetre(ZoneChargement);
@@ -124,7 +129,7 @@ int Charger()
 		for ( i = 0 ; i < NbSav ; i++)
 		{
 
-			mvwprintw(ZoneChargement, 7+y, 4+28*x, "[   ] Sauvegarde n°%s", SavTable[i]);
+			mvwprintw(ZoneChargement, 7+y, 4+28*x, "[   ] Sauvegarde n°%s", SavTable[i]); /**< Affiche chaque fichier de sauvegarde trouvé */
 			y++;
 			if ( y > 32 )
 			{
@@ -135,7 +140,8 @@ int Charger()
 	}
 	wrefresh(ZoneChargement);
 
-		/* Sélection de la sauvegarde */
+		/** Sélection de la sauvegarde */
+
 	y = 0;
 	x = 0;
 	wmove(ZoneChargement, 7+y, 6+28*x);
@@ -146,8 +152,7 @@ int Charger()
 
 		switch(ch)
 		{
-			case KEY_DOWN : if ( ((y+1)+x*33) < NbSav )
-					/* Empeche de se placer sur des sauvegardes inexistantes */
+			case KEY_DOWN : if ( ((y+1)+x*33) < NbSav )/**< Empeche de se placer sur des sauvegardes inexistantes */
 					{
 						y++;
 						if ( y > 32 )
@@ -157,8 +162,7 @@ int Charger()
 						}
 					}
 					break;
-			case KEY_UP : if ( y > 0 )
-					/* Empeche de se placer sur des sauvegardes inexistantes */
+			case KEY_UP : if ( y > 0 ) /**< Empeche de se placer sur des sauvegardes inexistantes */
 					{
 						y--;
 						if ( y < 1 && x > 0)
@@ -175,13 +179,13 @@ int Charger()
 
 	} while (ch != 10);
 		
-		/* Selection de la sauvegarde */
+		/** Chargement de la sauvegarde */
 	
 	strcpy(NomFichier, temp);
 	
-	strcat(NomFichier, SavTable[y]);
+	strcat(NomFichier, SavTable[y]); 
 	
-	Sauvegarde = fopen(NomFichier, "r");
+	Sauvegarde = fopen(NomFichier, "r"); /**< Ouvre le fichier de sauvegarde choisi par l'utilisateur */
 	fscanf(Sauvegarde, "%i %i %i %i", &NbJoueurs, &Joueur, &NbTours, &NbLancers);
 	for (i = 0; i < NbJoueurs; i++)
 	{
@@ -190,7 +194,7 @@ int Charger()
 		{
 			fscanf(Sauvegarde, " %i", &Score[i][j]);
 		}
-	}
+	} /**< Initilialise les différentes données pour la partie à venir */
 
 	fclose(Sauvegarde);
 	DetruireFenetre(ZoneChargement);	
@@ -200,27 +204,3 @@ int Charger()
 
 
 
-
-void ChargementAffichage()
-/* Met à jour l'affichage du tableau des scores */
-/* Ne fait rien si la partie n'a pas été chargée à partir d'un fichier */
-{
-	int i;
-	int j;
-	int x, y;	
-	for (i = 0 ; i < NbJoueurs ; i++)
-	{
-		for ( j = 0 ; j < 13 ; j ++)
-		{
-			if(j < 6)
-				y = j + 5;
-			else
-				y = j + 8;
-			x = 24 + 10 * i;
-			if (Score[i][j] != -1)
-				mvwprintw(ZoneScore, y, x, "%i", Score[i][j]);		
-		}
-
-	}
-	wrefresh(ZoneScore);
-}

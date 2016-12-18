@@ -1,10 +1,24 @@
 #include "../include/Global.h"
 
+/**
+* \file Lancer.c
+* \brief Gère les lancers de dés
+* \author Benoit Combasteix, Simon Fernandes et Nathan OUALET
+* \version 1.0
+*/
+
+
 void Lancer()
+/* \fn Lancer()
+* \Brief Simule un lancer aléatoire de 5 dés à six faces
+*/
 {
 	noecho();
 	srand(time(0));
 	int ch;
+
+	/** Sélection */
+
 	do
 	{
 	Nettoyer(ZoneMessage, 4, 2, 6, 68);
@@ -13,12 +27,9 @@ void Lancer()
 	wrefresh(ZoneMessage);
 	
 		ch = getch();
-		ActiverAide(ch);
+		ActiverAide(ch); /**< Permet d'activer/désactiver l'aide avant de lancer le dé */
 	
-		if (ch == 10)
-		Nettoyer(ZoneMessage, 5, 2, 5, 68);
-
-		if ( ch == 's' )
+		if ( ch == 's' ) /**< Permet sauvegarder la partie avant de lancer le dé */
 		{
 			Sauvegarder();
 			Nettoyer(ZoneMessage, 5, 2, 5, 68);
@@ -28,29 +39,36 @@ void Lancer()
 				FinDePartie();	
 		}
 
+		if (ch == 10)  /**< Appuyer sur [ENTREE] lance les dés */
+		Nettoyer(ZoneMessage, 5, 2, 5, 68);
 
 	} while (ch != 10 && tolower(ch) != 's');
 
+	/** Lancement des dés */
+
 	for(int i = 0; i < 5; i++)
 	{
-		if(Garde[i] == 0)
+		if(Garde[i] == 0) /**< Empeche de lancer un dé gardé, sert lors des seconds et troisièmes lancers */
 		{	
 			De[i] = rand()%6+1;			
 		}
-		CalculOccurrences();
-		Garde[i]=0;	
+		CalculOccurrences(); /**< Calcul le nombre d'occurrences de chaque valeur */
+		Garde[i]=0; /**< Libère les dés */
 	}
-	Aide(isAide, Joueur);
+	Aide(isAide, Joueur); /**< Affiche l'aide ( ou non ) en focntion des combinaisons de dés */
 	wrefresh(ZoneMessage);
 }
 
 
 void Garder(WINDOW *Fenetre, int Garde[5])
+/* \fn Lancer()
+* \Brief Simule un lancer aléatoire de 5 dés à six faces
+*/
 {
 	int y, x, ch;
-	y = 5; /* indice d'ordonnée */
-	x = 14; /* indice d'abscisse */
-	keypad(Fenetre, TRUE); /* Permet l'utilisation des touches directionnelles */
+	y = 5; 
+	x = 14;
+	keypad(Fenetre, TRUE); 
 	
 	wmove(Fenetre, y, x);
 	wrefresh(Fenetre);
@@ -61,15 +79,13 @@ void Garder(WINDOW *Fenetre, int Garde[5])
 		switch (ch)
 		{
 			case KEY_UP:  
-				if ( y == 5 )
-				/* Si on est en haut, on passe en bas */
+				if ( y == 5 ) /**< Si on est en haut, on passe en bas */
 				{
 					y = 25;
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
-				else 
-				/* Sinon on monte d'une case */
+				else /**< Sinon on monte d'une case */
 				{
 					y-=5;
 					wmove(Fenetre, y, x);
@@ -77,23 +93,20 @@ void Garder(WINDOW *Fenetre, int Garde[5])
 				}
 				break;
 			case KEY_DOWN:
-				if ( y == 25 )
-				/* Si on est en bas, on remonte en haut */
+				if ( y == 25 )/**< Si on est en bas, on remonte en haut */
 				{
 					y = 5;
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
-				else 
-				/* Sinon on descend d'une case */
+				else /**< Sinon on descend d'une case */
 				{
 					y+=5;
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
 				break;
-			case 32: 
-				/* La touche espace sert à indiquer si on veut garder le de ou non */
+			case 32: /**< [ESPACE] indique si on veut garder le de ou non */
 				if ( Garde[y/5-1] == 0 )
 				{
 					waddch(Fenetre, 'G');
@@ -110,19 +123,21 @@ void Garder(WINDOW *Fenetre, int Garde[5])
 				}
 				break;
 		}
-	} while ( ch != 10 );	
-	/* On valide la selection avec la touche entree */
+	} while ( ch != 10 );	/**<  [ENTREE] valide la sélection avec la touche entrée */
 }
 
 void CalculOccurrences()
+/* \fn CalculOccurrences()
+* \brief Calcule le nombre d'occurrences de chaque valeur de dé
+*/
 {
-	/* parcourt les 5 dés lancés, on incremente le nombre de valeurs trouvés */
-	/* dans le tableau d'occurrences correspondant à la valeur du dé */
+
 	int i;
 	for( i = 0; i < 6 ; i++)
 		Occurrences[i] = 0;
 
-	for( i = 0; i < 5 ; i++){
+	for( i = 0; i < 5 ; i++)
+	{
 		Occurrences[De[i]-1]++;
 	}
 }

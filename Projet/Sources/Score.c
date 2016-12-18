@@ -1,8 +1,18 @@
 #include "../include/Global.h"
 
+/**
+* \file Score.c
+* \brief Permet de calculer les combinaisons de dés et les scores
+* \author Benoit Combasteix, Simon Fernandes et Nathan OUALET
+* \version 1.0
+*/
+
 int isBrelan()
+/* \fn isBrelan()
+* \brief Fonction booléenne calculant la présence d'un brelan dans les dés
+* \return VRAI s'il y a un brelan
+*/
 {
-	/* VRAI si 3 dés ont la même valeur */
 	int i;
 	for( i = 0; i < 6 ; i++)
 	{
@@ -13,8 +23,11 @@ int isBrelan()
 }
 
 int isCarre()
+/* \fn
+* \briefFonction booléenne calculant la présence d'un carré dans les dés
+* \return VRAI s'il y a un carré
+*/
 {
-	/* VRAI si 4 dés ont la même valeur */
 	int i;
 	
 	for( i = 0; i < 6 ; i++)
@@ -26,10 +39,11 @@ int isCarre()
 }
 
 int isYahtzee()
+/* \fn
+* \brief Fonction booléenne calculant la présence d'un brelan dans les dés
+* \return VRAI s'il y a un brelan
+*/
 {
-
-	/* VRAI si les 5 dés ont la même valeur */
-
 	for (int i=0; i < 6; i++){
 		if ( Occurrences[i] == 5){
 			return 1;
@@ -39,8 +53,12 @@ int isYahtzee()
 }
 
 int isFull()
+/* \fn
+* \brief Fonction booléenne calculant la présence d'un full dans les dés
+* \return VRAI s'il y a un brelan et une paire ( pas nécessairement de valeurs différentes )
+*/
 {
-	/* VRAI si on a un brelan et une paire */
+
 	int i, cpt2 = 0, cpt3 = 0;
 
 	for( i = 0 ; i < 6 ; i++)
@@ -52,15 +70,18 @@ int isFull()
 	}
 	if (cpt2 == 1 && cpt3 == 1)
 		return 1;
-	return (isYahtzee());
-	/* Un Yahtzee est condéré comme un Full */
+	return (isYahtzee());	/**< Un Yahtzee est considéré comme un Full */
 }
 
 
 
 int isPtSuite()
+/* \fn
+* \brief Fonction booléenne calculant la présence d'une petite suite dans les dés
+* \return VRAI si les valeurs de quatre dés se suivent
+*/
 {
-	/* VRAI si 4 dés se suivent */
+
 	int i;
 	for( i = 0 ; i <= 2 ; i++){
 		if(Occurrences[i] > 0 && Occurrences[i+1] > 0 && Occurrences[i+2] > 0 && Occurrences[i+3] > 0)
@@ -70,8 +91,11 @@ int isPtSuite()
 }
 
 int isGdSuite()
+/* \fn
+* \brief Fonction booléenne calculant la présence d'une grande suite dans les dés
+* \return VRAI si les valeurs de cinq dés se suivent
+*/
 {
-	/* VRAI si 5 dés se suivent */
 	int i;
 	
 	for(i = 0; i < 1; i++)
@@ -83,6 +107,11 @@ int isGdSuite()
 }
 
 void CalculScore(int Joueur, int Categorie)
+/* \fn
+* \brief Calcul le score selon la catégorie
+* \param Joueur Permet d'insérer le score dans la bonne ligne du tableau Score
+* \param Categorie Permet de choisir seulement une catégorie pour ne pas faire 13 calculs
+*/
 {
 	switch(Categorie){	
 		case 1 :
@@ -147,13 +176,16 @@ void CalculScore(int Joueur, int Categorie)
 }	
 
 void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
+/* \fn ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
+* \brief permet au joueur de choisir dans quel catégorie il veut entrer le résultat de son lancer de dés
+*/
 {
 	int y, x;
-	y = 5; //indice d'ordonnée
-	x = 4; // indice d'abscisse
+	y = 5; /**< indice d'ordonnée */
+	x = 4; /**< indice d'abscisse */
 	int ch; 
 	noecho();
-	keypad(Fenetre, TRUE); //Permet l'utilisation des touches directionnelles
+	keypad(Fenetre, TRUE); /**< Permet l'utilisation des touches directionnelles */
 	
 	wmove(Fenetre, y, x);
 	wrefresh(Fenetre);
@@ -165,53 +197,46 @@ void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
 		ActiverAide(ch);
 		switch (ch)
 		{
-			case KEY_UP:  
-				/* Fleche du haut entree */
+			case KEY_UP:  /**< Fleche du haut entrée */
 				if (y == 5)
 				{
-					y = 20; 
-					/* Si on est en haut du tableau, on passe en bas */
+					y = 20; /**< Si on est en haut du tableau, on passe en bas */
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
-				else if (y == 14)
+				else if (y == 14) /**< Passe les 3 lignes centrales du tableau de score */
 				{
-					/* On remet un vide car on change de catégorie */
 					y = 10; 
-					/* On passe les 3 lignes centrales du tableau de score */
+					
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
 				else 
 				{
-					y--;
-					/* On remonte d'une case */
+					y--;/**< Sinon, remonte d'une case */ 					
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
 				break;
 			
-			case KEY_DOWN:
-				/* Fleche du bas entree */
+			case KEY_DOWN:/**< Fleche du bas entrée */
+				
 				if (y == 20)
 				{
-					y = 5; 
-					/* Si on est en bas du tableau, on passe en haut */
+					y = 5; /**< Si on est en bas du tableau, on passe en haut */					
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
 				else if (y == 10)
 				{
-					y = 14; 
-					/* On passe les 3 lignes centrales du tableau de score */
+					y = 14; /**< On passe les 3 lignes centrales du tableau de score */					
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
 				else 
 				{
 
-					y++;
-					/* On descend d'une case */
+					y++;/**< Sinon, descend d'une case */					
 					wmove(Fenetre, y, x);
 					wrefresh(Fenetre);
 				}
@@ -219,9 +244,9 @@ void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
 		}
 		if (y < 11) *Categorie = y - 4;
 		else *Categorie = y - 7;
-		if(Score[Joueur][*Categorie-1] != -1){
-			mvwprintw(ZoneMessage, 2, 2 ,"                                                                  ");
-			mvwprintw(ZoneMessage, 3, 2 ,"                                                                  ");
+		if(Score[Joueur][*Categorie-1] != -1) /**< Empeche de choisir une catégorie déjà remplie */
+		{
+			Nettoyer(ZoneMessage, 2, 2, 2, 68);
 			mvwprintw(ZoneMessage, 2, 2, "Cette categorie est déja prise.");
 			mvwprintw(ZoneMessage, 3, 2, "Choisissez en une autre.");
 			wrefresh(ZoneMessage);
@@ -231,18 +256,19 @@ void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
 		}
 		else
 		{
-			mvwprintw(ZoneMessage, 2, 2 ,"                                                                  ");
-			mvwprintw(ZoneMessage, 3, 2 ,"                                                                  ");
-			wrefresh(ZoneMessage);
+			Nettoyer(ZoneMessage, 2, 2, 2, 68);
 			wmove(ZoneScore, y, x);
 			wrefresh(ZoneScore);	
 		}
 			
 	} while (ch != 10); 
-		/* Entrée valide le choix */
+		/**< Entrée valide le choix */
 }
 
 void EcrireScore(int Joueur)
+/* \fn EcrireScore
+* \brief Rassemble toutes les fonctions pour choisir la catégorie, calculer le score et l'écrire au bon endroit
+*/
 {
 	int categorie;
 	int x = 2;
@@ -251,27 +277,24 @@ void EcrireScore(int Joueur)
 	mvwprintw(ZoneMessage ,y ,x ,"Veuillez choisir la catégorie");
 	wrefresh(ZoneMessage);
 	ChoixCategorie(&categorie ,ZoneScore,Joueur); 
-	CalculScore(Joueur, categorie);
-	
-	/* choix de la colonne */
-	x = 24 + 10 * Joueur;
-	/* choix de la ligne */
-	
-	if( isYahtzee() && (Prime[Joueur] >=0) )
-		Prime[Joueur]++;
-////
-	mvwprintw(ZoneMessage, 8, 2, "       ");
-	mvwprintw(ZoneMessage, 8, 2, "%i", Prime[Joueur]);
-	wrefresh(ZoneMessage);
-	
-	/* Comptabilise les Yahtzee supplémentaires */
+	CalculScore(Joueur, categorie);	
 
-	if(categorie < 7)
+	if( isYahtzee() && (Prime[Joueur] >=0) ) /**< Comptabilise les Yahtzee supplémentaires */
+		Prime[Joueur]++;
+
+	/** choix de la colonne */
+
+	x = 24 + 10 * Joueur; 		
+	
+	/** Choix de la ligne */
+
+	if(categorie < 7) 
 		y = categorie + 4;
 	else
-		y = categorie + 7;
-	
-	/*affiche le score */
+		y = categorie + 7;	
+
+	/** Ecriture du score */
+
 	mvwprintw(ZoneScore, y, x,"%i", Score[Joueur][categorie-1]);
 	wrefresh(ZoneScore);
 }

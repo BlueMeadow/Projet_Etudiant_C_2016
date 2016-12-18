@@ -1,6 +1,16 @@
 #include "../include/Global.h"
 
-void Page_Regles(WINDOW *Fenetre, int y, int x)
+/**
+* \file Regles.c
+* \brief Rassemble les fonctions principales
+* \author Benoit Combasteix, Simon Fernandes et Nathan OUALET
+* \version 1.0
+*/
+
+void PageRegles(WINDOW *Fenetre, int y, int x)
+/* \fn PageRegles(WINDOW *Fenetre, int y, int x)
+* \brief affiche toutes les règles du jeu
+*/ 
 {	
 	mvwprintw(Fenetre, y,    x, "                        Règles du Yahtzee                                              ");
 	mvwprintw(Fenetre, y+1,  x, "+------------+------------------------------------------------+");
@@ -59,6 +69,9 @@ void Page_Regles(WINDOW *Fenetre, int y, int x)
 
 
 int Regles()
+/* \fn Regles()
+* \brief Affiche les règles dans un menu défilant
+*/
 {
 
 	int x, y, ch;
@@ -67,10 +80,8 @@ int Regles()
 	ZoneRegles = newwin(30, 120, (LINES-30)/2, (COLS-67)/2);
 	ZoneMessage = CreerFenetre(5,120, (LINES-30)/2+35, (COLS-120)/2);
 
-	keypad(ZoneRegles, TRUE);
-	/* Permet d'utiliser les fleches directionnelles */
-	curs_set(0);
-	/* Rend le curseur invisible */
+	keypad(ZoneRegles, TRUE);/**< Permet d'utiliser les fleches directionnelles */
+	curs_set(0);/**< Rend le curseur invisible */
 
 	mvwprintw(ZoneMessage, 2, 38, "Faites défiler avec les flèches ou la molette");
 	mvwprintw(ZoneMessage, 3, 38, "Appuyez sur [ENTREE] pour retourner au menu");
@@ -107,6 +118,4 @@ int Regles()
 	DetruireFenetre(ZoneRegles);
 	DetruireFenetre(ZoneMessage);
 	return 0;
-	/* Entrée fait sortir de l'affichage des règles */
-	/* Retour au menu */
 }
