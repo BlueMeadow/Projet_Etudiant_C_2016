@@ -69,7 +69,7 @@ void Garder(WINDOW *Fenetre, int Garde[5])
 	y = 5; 
 	x = 14;
 	keypad(Fenetre, TRUE); 
-	
+	curs_set(1);
 	wmove(Fenetre, y, x);
 	wrefresh(Fenetre);
 	do 
