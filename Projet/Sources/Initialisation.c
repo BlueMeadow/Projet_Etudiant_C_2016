@@ -271,7 +271,7 @@ void MiseEnPlace()
 	ZoneAide = CreerFenetre(30,30,(LINES-35)/2,(COLS+70)/2); /**< Genere la fenetre d'Aide à droite de la fenetre score */
 	ZoneMessage = CreerFenetre(10,70,(LINES+15)/2,(COLS-70)/2); /**< Genere la fentre par laquelle le systeme s'adresse à l'utilisateur pendant la partie */
 	FicheDeScore(ZoneScore,2,2); /**< Affiche le squelette de la fiche de score */
-	AffichageDe(De, ZoneDe); /**< Affiche les dés */
+	AffichageDe(De); /**< Affiche les dés */
 }
 
 
