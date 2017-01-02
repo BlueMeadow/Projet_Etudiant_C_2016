@@ -112,8 +112,7 @@ int Partie()
 	{
 		Aide(isAide, Joueur);
 		wattron(ZoneMessage, A_BOLD);
-		mvwprintw(ZoneMessage,1 ,2 ,"                                                                  ");
-		mvwprintw(ZoneMessage,3 ,2 ,"                                                                  ");
+		Nettoyer(ZoneMessage, 1, 2, 8, 87);
 		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", PseudoJ[Joueur]);
 		wattroff(ZoneMessage, A_BOLD);
 		Lancer();
@@ -122,7 +121,7 @@ int Partie()
 		do
 		{
 			if (NbLancers == 3) break; /**< Trois lancers posssibles seulement */
-			mvwprintw(ZoneMessage,2 ,2 ,"                                                                  ");
+			Nettoyer(ZoneMessage, 2, 2, 8, 87);
 			mvwprintw(ZoneMessage,2 ,2 ,"Voulez-vous relancer ? [O/N]");
 			wrefresh(ZoneMessage);
 			do{
@@ -130,9 +129,9 @@ int Partie()
 			}
 			while(tolower(ch) != 'o' && tolower(ch) != 'n');
 			if (tolower(ch) == 'n') break; /**< sort de la boucle si on ne relance pas */
-			mvwprintw(ZoneMessage, 2, 2, "                                                                  ");
-			mvwprintw(ZoneMessage, 2, 2, "Sélectionnez les dés à garder avec [ESPACE].");
-			mvwprintw(ZoneMessage, 2, 2, "Validez avec [ENTREE].");
+			Nettoyer(ZoneMessage, 2, 2, 8, 87);
+			mvwprintw(ZoneMessage, 3, 2, "Sélectionnez les dés à garder avec [ESPACE].");
+			mvwprintw(ZoneMessage, 4, 2, "Validez avec [ENTREE].");
 			wrefresh(ZoneMessage);
 
 			Garder(ZoneDe, Garde); /**< Choix des dés à garder avant de relancer */
