@@ -121,7 +121,7 @@ int Partie()
 		do
 		{
 			if (NbLancers == 3) break; /**< Trois lancers posssibles seulement */
-			Nettoyer(ZoneMessage, 2, 2, 8, 87);
+			Nettoyer(ZoneMessage, 2, 2, 8, 68);
 			mvwprintw(ZoneMessage,2 ,2 ,"Voulez-vous relancer ? [O/N]");
 			wrefresh(ZoneMessage);
 			do{
@@ -129,7 +129,7 @@ int Partie()
 			}
 			while(tolower(ch) != 'o' && tolower(ch) != 'n');
 			if (tolower(ch) == 'n') break; /**< sort de la boucle si on ne relance pas */
-			Nettoyer(ZoneMessage, 2, 2, 8, 87);
+			Nettoyer(ZoneMessage, 2, 2, 8, 68);
 			mvwprintw(ZoneMessage, 3, 2, "Sélectionnez les dés à garder avec [ESPACE].");
 			mvwprintw(ZoneMessage, 4, 2, "Validez avec [ENTREE].");
 			wrefresh(ZoneMessage);
