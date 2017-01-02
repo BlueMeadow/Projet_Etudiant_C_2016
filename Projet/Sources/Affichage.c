@@ -63,7 +63,7 @@ void FicheDeScore(WINDOW *Fenetre, int y, int x)
 	wrefresh(Fenetre);
 }
 
-void DeUn(WINDOW *Fenetre, int y, int x)
+void DeUn(int y, int x)
 {
 /* \fn DeUn()
 * \brief Dessine un dé de valeur 1  
@@ -71,15 +71,14 @@ void DeUn(WINDOW *Fenetre, int y, int x)
 * \param y Première ligne de l'affichage
 * \param x Première colonne de l'affichage
 */ 
-	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+1, x, " |       |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+2, x, " |   O   | [   ]"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+3, x, " |       |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+4, x, " +-------+"); wrefresh(Fenetre);
-	wrefresh(Fenetre);
+	mvwprintw(ZoneDe, y, x,   " +-------+");
+	mvwprintw(ZoneDe, y+1, x, " |       |");
+	mvwprintw(ZoneDe, y+2, x, " |   O   | [   ]");
+	mvwprintw(ZoneDe, y+3, x, " |       |");
+	mvwprintw(ZoneDe, y+4, x, " +-------+");
 }
 						
-void DeDeux(WINDOW *Fenetre, int y, int x)
+void DeDeux(int y, int x)
 {
 /* \fn DeDeux()
 * \brief Dessine un de de valeur 2  
@@ -87,14 +86,14 @@ void DeDeux(WINDOW *Fenetre, int y, int x)
 * \param y Première ligne de l'affichage
 * \param x Première colonne de l'affichage
 */
-	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+1, x, " | O     |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+2, x, " |       | [   ]"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+3, x, " |     O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+4, x, " +-------+"); wrefresh(Fenetre);
+	mvwprintw(ZoneDe, y, x,   " +-------+");
+	mvwprintw(ZoneDe, y+1, x, " | O     |");
+	mvwprintw(ZoneDe, y+2, x, " |       | [   ]");
+	mvwprintw(ZoneDe, y+3, x, " |     O |");
+	mvwprintw(ZoneDe, y+4, x, " +-------+");
 }
 					
-void DeTrois(WINDOW *Fenetre, int y, int x)
+void DeTrois(int y, int x)
 {
 /* \fn DeTrois()
 * \brief Dessine un de de valeur 3  
@@ -102,14 +101,14 @@ void DeTrois(WINDOW *Fenetre, int y, int x)
 * \param y Première ligne de l'affichage
 * \param x Première colonne de l'affichage
 */ 
-	mvwprintw(Fenetre, y, x, " +-------+"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+1, x, " | O     |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+2, x, " |   O   | [   ]"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+3, x, " |     O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+4, x, " +-------+"); wrefresh(Fenetre);
+	mvwprintw(ZoneDe, y, x, " +-------+");
+	mvwprintw(ZoneDe, y+1, x, " | O     |");
+	mvwprintw(ZoneDe, y+2, x, " |   O   | [   ]");
+	mvwprintw(ZoneDe, y+3, x, " |     O |");
+	mvwprintw(ZoneDe, y+4, x, " +-------+");
 }
 					
-void DeQuatre(WINDOW *Fenetre, int y, int x)
+void DeQuatre(int y, int x)
 {
 /* \fn DeQuatre()
 * \brief Dessine un de de valeur 4  
@@ -117,14 +116,14 @@ void DeQuatre(WINDOW *Fenetre, int y, int x)
 * \param y Première ligne de l'affichage
 * \param x Première colonne de l'affichage
 */ 
-	mvwprintw(Fenetre, y, x,   " +-------+");
-	mvwprintw(Fenetre, y+1, x, " | O   O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+2, x, " |       | [   ]"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+3, x, " | O   O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+4, x, " +-------+"); wrefresh(Fenetre);
+	mvwprintw(ZoneDe, y, x,   " +-------+");
+	mvwprintw(ZoneDe, y+1, x, " | O   O |");
+	mvwprintw(ZoneDe, y+2, x, " |       | [   ]");
+	mvwprintw(ZoneDe, y+3, x, " | O   O |");
+	mvwprintw(ZoneDe, y+4, x, " +-------+");
 }	
 				
-void DeCinq(WINDOW *Fenetre, int y, int x)
+void DeCinq(int y, int x)
 {
 /* \fn DeCinq()
 * \brief Dessine un de de valeur 5  
@@ -132,14 +131,14 @@ void DeCinq(WINDOW *Fenetre, int y, int x)
 * \param y Première ligne de l'affichage
 * \param x Première colonne de l'affichage
 */ 
-	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre); 
-	mvwprintw(Fenetre, y+1, x, " | O   O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+2, x, " |   O   | [   ]"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+3, x, " | O   O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+4, x, " +-------+"); wrefresh(Fenetre);
+	mvwprintw(ZoneDe, y, x,   " +-------+");
+	mvwprintw(ZoneDe, y+1, x, " | O   O |");
+	mvwprintw(ZoneDe, y+2, x, " |   O   | [   ]");
+	mvwprintw(ZoneDe, y+3, x, " | O   O |");
+	mvwprintw(ZoneDe, y+4, x, " +-------+");
 }
 					
-void DeSix(WINDOW *Fenetre, int y, int x)
+void DeSix(int y, int x)
 {
 /* \fn DeSix()
 * \brief Dessine un de de valeur 6  
@@ -147,14 +146,14 @@ void DeSix(WINDOW *Fenetre, int y, int x)
 * \param y Première ligne de l'affichage
 * \param x Première colonne de l'affichage
 */ 
-	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+1, x, " | O   O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+2, x, " | O   O | [   ]"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+3, x, " | O   O |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+4, x, " +-------+"); wrefresh(Fenetre);
+	mvwprintw(ZoneDe, y, x,   " +-------+");
+	mvwprintw(ZoneDe, y+1, x, " | O   O |");
+	mvwprintw(ZoneDe, y+2, x, " | O   O | [   ]");
+	mvwprintw(ZoneDe, y+3, x, " | O   O |");
+	mvwprintw(ZoneDe, y+4, x, " +-------+");
 }
 
-void DeVide(WINDOW *Fenetre, int y, int x)
+void DeVide(int y, int x)
 /* \fn DeVide()
 * \brief Dessine un de si on a pas encore de valeur 
 * \param Fenetre Pointeur de type WINDOW de ncurses, doit être initialisé et non NULL
@@ -162,15 +161,14 @@ void DeVide(WINDOW *Fenetre, int y, int x)
 * \param x Première colonne de l'affichage
 */
 {
-	mvwprintw(Fenetre, y, x,   " +-------+"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+1, x, " |       |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+2, x, " |   ?   | [   ]"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+3, x, " |       |"); wrefresh(Fenetre);
-	mvwprintw(Fenetre, y+4, x, " +-------+"); wrefresh(Fenetre);
-	wrefresh(Fenetre);
+	mvwprintw(ZoneDe, y, x,   " +-------+");
+	mvwprintw(ZoneDe, y+1, x, " |       |");
+	mvwprintw(ZoneDe, y+2, x, " |   ?   | [   ]");
+	mvwprintw(ZoneDe, y+3, x, " |       |");
+	mvwprintw(ZoneDe, y+4, x, " +-------+");
 }
 
-void AffichageDe(int De[5], WINDOW *Fenetre)
+void AffichageDe(int De[5])
 /* \fn DeDeux()
 * \brief Choisit quel de afficher et dessine les cinq obtenus après un lancer 
 */
@@ -182,13 +180,13 @@ void AffichageDe(int De[5], WINDOW *Fenetre)
 	{
 		switch(De[i])
 		{
-			case 0 : DeVide(Fenetre, y, x); break;
-			case 1 : DeUn(Fenetre, y, x); break;
-			case 2 : DeDeux(Fenetre, y, x); break;
-			case 3 : DeTrois(Fenetre, y, x); break;
-			case 4 : DeQuatre(Fenetre, y, x); break;
-			case 5 : DeCinq(Fenetre, y, x); break;
-			case 6 : DeSix(Fenetre, y, x); break;
+			case 0 : DeVide(ZoneDe, y, x); break;
+			case 1 : DeUn(ZoneDe, y, x); break;
+			case 2 : DeDeux(ZoneDe, y, x); break;
+			case 3 : DeTrois(ZoneDe, y, x); break;
+			case 4 : DeQuatre(ZoneDe, y, x); break;
+			case 5 : DeCinq(ZoneDe, y, x); break;
+			case 6 : DeSix(ZoneDe, y, x); break;
 		}
 		y+=5;
 	}
