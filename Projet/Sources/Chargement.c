@@ -109,11 +109,12 @@ int Charger()
 
 
 	keypad(ZoneChargement, TRUE);
-	mvwprintw(ZoneChargement, 2, ((COLS-85)/2-17)/2, "Sélectionnez la sauvegarde à charger");
+	mvwprintw(ZoneChargement, 2, (85-36)/2, "Sélectionnez la sauvegarde à charger");
 	if (!NbSav) /**< Si aucune sauvegarde n'a été trouvée */
 	{
-		mvwprintw(ZoneChargement, 2, ((COLS-85)/2-34)/2, "Il n'y a pas de sauvegarde à charger"); /**< Affiche un message d'erreur */
-		mvwprintw(ZoneChargement, 4, 16, "Appuyez sur une touche pour revenir au menu");
+		Nettoyer(ZoneChargement, 2, 2, 5, 83);
+		mvwprintw(ZoneChargement, 2, (85-36)/2, "Il n'y a pas de sauvegarde à charger"); /**< Affiche un message d'erreur */
+		mvwprintw(ZoneChargement, 4, (85-43)/2, "Appuyez sur une touche pour revenir au menu");
 		wgetch(ZoneChargement);
 		DetruireFenetre(ZoneChargement);
 		return 0;
