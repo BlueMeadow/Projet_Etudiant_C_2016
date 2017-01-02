@@ -185,7 +185,7 @@ void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
 	x = 4; /**< indice d'abscisse */
 	int ch; 
 	noecho();
-	curs_set(0)
+	curs_set(1);
 	keypad(Fenetre, TRUE); /**< Permet l'utilisation des touches directionnelles */
 	
 	wmove(Fenetre, y, x);
