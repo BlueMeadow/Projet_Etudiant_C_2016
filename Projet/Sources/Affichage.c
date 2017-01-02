@@ -190,6 +190,7 @@ void AffichageDe(int De[5])
 		}
 		y+=5;
 	}
+	wrefresh(ZoneDe);
 }
 
 void ChargementAffichage()
