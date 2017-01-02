@@ -112,7 +112,7 @@ int Partie()
 	{
 		Aide(isAide, Joueur);
 		wattron(ZoneMessage, A_BOLD);
-		Nettoyer(ZoneMessage, 1, 2, 8, 87);
+		Nettoyer(ZoneMessage, 1, 2, 8, 68);
 		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", PseudoJ[Joueur]);
 		wattroff(ZoneMessage, A_BOLD);
 		Lancer();
@@ -122,7 +122,7 @@ int Partie()
 		{
 			if (NbLancers == 3) break; /**< Trois lancers posssibles seulement */
 			Nettoyer(ZoneMessage, 2, 2, 8, 68);
-			mvwprintw(ZoneMessage,2 ,2 ,"Voulez-vous relancer ? [O/N]");
+			mvwprintw(ZoneMessage,3 ,2 ,"Voulez-vous relancer ? [O/N]");
 			wrefresh(ZoneMessage);
 			do{
 				ch=getch();
