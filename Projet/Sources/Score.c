@@ -23,8 +23,8 @@ int isBrelan()
 }
 
 int isCarre()
-/* \fn
-* \briefFonction booléenne calculant la présence d'un carré dans les dés
+/* \fn isCarre()
+* \brief Fonction booléenne calculant la présence d'un carré dans les dés
 * \return VRAI s'il y a un carré
 */
 {
@@ -39,7 +39,7 @@ int isCarre()
 }
 
 int isYahtzee()
-/* \fn
+/* \fn isYahtzee
 * \brief Fonction booléenne calculant la présence d'un brelan dans les dés
 * \return VRAI s'il y a un brelan
 */
@@ -53,7 +53,7 @@ int isYahtzee()
 }
 
 int isFull()
-/* \fn
+/* \fn isFull()
 * \brief Fonction booléenne calculant la présence d'un full dans les dés
 * \return VRAI s'il y a un brelan et une paire ( pas nécessairement de valeurs différentes )
 */
@@ -76,7 +76,7 @@ int isFull()
 
 
 int isPtSuite()
-/* \fn
+/* \fn isPtSuite()
 * \brief Fonction booléenne calculant la présence d'une petite suite dans les dés
 * \return VRAI si les valeurs de quatre dés se suivent
 */
@@ -91,7 +91,7 @@ int isPtSuite()
 }
 
 int isGdSuite()
-/* \fn
+/* \fn isGdSuite()
 * \brief Fonction booléenne calculant la présence d'une grande suite dans les dés
 * \return VRAI si les valeurs de cinq dés se suivent
 */
@@ -107,7 +107,7 @@ int isGdSuite()
 }
 
 void CalculScore(int Joueur, int Categorie)
-/* \fn
+/* \fn CalculScore(int Joueur, int Categorie)
 * \brief Calcul le score selon la catégorie
 * \param Joueur Permet d'insérer le score dans la bonne ligne du tableau Score
 * \param Categorie Permet de choisir seulement une catégorie pour ne pas faire 13 calculs
