@@ -16,7 +16,7 @@ void Menu()
 	ZoneMenu = CreerFenetre(15,90,(LINES-15)/2,(COLS-90)/2);
 	
 	keypad(ZoneMenu, TRUE); /**< Permet l'utilisation des touches directionnelles */
-
+	curs_set(1);
 	mvwprintw(ZoneMenu, 5, 30,  "[   ] Nouvelle Partie ?");
 	mvwprintw(ZoneMenu, 6, 30,  "[   ] Reprendre une partie.");
 	mvwprintw(ZoneMenu, 7, 30,  "[   ] Voir les règles.");
