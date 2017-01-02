@@ -70,20 +70,21 @@ void EntrerNbJoueur()
 	int y, ch;
 	keypad(ZoneMenu, TRUE);
 	noecho();
+	curs_set(1);
 	y = 5;
 	NbJoueurs = 0;
 	Nettoyer(ZoneMenu, 1, 1 , 13, 88);
 
-	mvwprintw(ZoneMenu, 2, 2, "Choisissez le nombre de joueurs (max. 4) avec les flèches.");
-	mvwprintw(ZoneMenu, 5, 2, "  |1 Joueur.");
-	mvwprintw(ZoneMenu, 6, 2, "  |2 Joueurs.");
-	mvwprintw(ZoneMenu, 7, 2, "  |3 Joueurs.");
-	mvwprintw(ZoneMenu, 8, 2, "  |4 Joueurs.");
-	mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+	mvwprintw(ZoneMenu, 2, (90-57)/2, "Choisissez le nombre de joueurs (max. 4) avec les flèches");
+	mvwprintw(ZoneMenu, 5, 38, "  |1 Joueur");
+	mvwprintw(ZoneMenu, 6, 38, "  |2 Joueurs");
+	mvwprintw(ZoneMenu, 7, 38, "  |3 Joueurs");
+	mvwprintw(ZoneMenu, 8, 38, "  |4 Joueurs");
+	mvwprintw(ZoneMenu, 10, (90-37)/2, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
 	
 	wrefresh(ZoneMenu);
 	
-	wmove(ZoneMenu, y, 2);
+	wmove(ZoneMenu, y, 38);
 	wrefresh(ZoneMenu);
 	
 	/** Selection du nombre de joueurs */
@@ -97,18 +98,15 @@ void EntrerNbJoueur()
 						if (y > 5)
 						{
 							y--;
-
-							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
-							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
-							wmove(ZoneMenu, y, 2);
+							mvwprintw(ZoneMenu, 10, (90-37)/2, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 38);
 							wrefresh(ZoneMenu);
 						}
 						else
 						{
 							y = 8;
-							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
-							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
-							wmove(ZoneMenu, y, 2);
+							mvwprintw(ZoneMenu, 10, (90-37)/2, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 38);
 							wrefresh(ZoneMenu);
 						}
 						break;	
@@ -116,17 +114,15 @@ void EntrerNbJoueur()
 						if (y < 8)
 						{
 							y++;
-							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
-							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
-							wmove(ZoneMenu, y, 2);
+							mvwprintw(ZoneMenu, 10, (90-37)/2, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 38);
 							wrefresh(ZoneMenu);
 						}
 						else
 						{
 							y = 5;
-							mvwprintw(ZoneMenu, 9, 1, "                                                             ");
-							mvwprintw(ZoneMenu, 9, 1, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
-							wmove(ZoneMenu, y, 2);
+							mvwprintw(ZoneMenu, 10, (90-37)/2, "%i Joueur(s) ? Confirmer avec [ENTREE]", y-4);
+							wmove(ZoneMenu, y, 38);
 							wrefresh(ZoneMenu);
 						}
 						break;	
@@ -147,21 +143,18 @@ void EntrerPseudo()
 	char temp[10]="";
 	keypad(ZoneMenu, TRUE);
 	echo(); /**< Affiche les touches saisies pour faciliter l'entrée du pseudo */
+	curs_set(0);
 	for ( i = 0; i < NbJoueurs; i++) /**< Pour chaque joueur */
 	{	
 		Nettoyer(ZoneMenu, 1, 1 , 12, 87);
-		mvwprintw(ZoneMenu, 2, 6, "Joueur %i : ", i+1);
-		mvwprintw(ZoneMenu, 3, 6, "Entrez votre Pseudo (entre 3 et 10 caractères)");
-		wmove(ZoneMenu, 4, 6);
+		mvwprintw(ZoneMenu, 2, 40, "Joueur %i : ", i+1);
+		mvwprintw(ZoneMenu, 3, (90-43)/2, "Entrez votre Pseudo (entre 3 et 10 caractères)");
+		mvwprintw(ZoneMenu, 4, 33, "-> ");
 		wrefresh(ZoneMenu);
 
 		do	
 		{
 			ch = wgetch(ZoneMenu);
-			mvwprintw(ZoneMenu, 8, 6, "%i", strlen(temp));
-			mvwprintw(ZoneMenu, 9,6, "%s", temp);
-			wmove(ZoneMenu, 4,7+j);
-			wrefresh(ZoneMenu);
 			if ( ch == 32 )
 				ch = '_'; /**< Remplace les ' ' par des '_' pour l'écriture dans les fichiers Highscore et sauvegarde*/
 			if ( ch == 10 )
@@ -178,11 +171,11 @@ void EntrerPseudo()
 		{
 			j = 0;
 			memset(temp, '\0', 10);	/**< Vide complètement la chaine de catactères */
-			mvwprintw(ZoneMenu, 3, 6, "Pseudo de plus de 10 caractères, recommencez la saisie");
-			
-			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
-			wmove(ZoneMenu, 4, 6);
+			Nettoyer(ZoneMenu, 3, 2 , 5, 88);
+			mvwprintw(ZoneMenu, 3, (90-53)/2, "Pseudo de plus de 10 caractères, recommencez la saisie");
+			mvwprintw(ZoneMenu, 4, 33, "-> ");
 			wrefresh(ZoneMenu);
+
 			do	/**< Recommence la saisie */
 			{
 				ch = wgetch(ZoneMenu);
@@ -199,10 +192,11 @@ void EntrerPseudo()
 		{
 			j = 0;
 			memset(temp, '\0', 10); /**< Vide complètement la chaine de catactères */
-			mvwprintw(ZoneMenu, 3, 6, "Pseudo de moins de 3 caractères, recommencez la saisie"); 
-			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
-			wmove(ZoneMenu, 4, 6);
+			Nettoyer(ZoneMenu, 3, 2 , 5, 88);
+			mvwprintw(ZoneMenu, 3, (90-53)/2, "Pseudo de moins de 3 caractères, recommencez la saisie");
+			mvwprintw(ZoneMenu, 4, 33, "-> ");
 			wrefresh(ZoneMenu);
+			
 			do	/**< Recommence la saisie */
 			{
 				ch = wgetch(ZoneMenu);
@@ -219,9 +213,9 @@ void EntrerPseudo()
 		{	
 			j = 0;
 			memset(temp, '\0', 10); /**< Vide complètement la chaine de catactères */
-			mvwprintw(ZoneMenu, 3, 6, "Ce pseudo est utilisé par le programme, recommencez la saisie");
-			Nettoyer(ZoneMenu, 4, 6 , 4, 16);
-			wmove(ZoneMenu, 4, 6);
+			Nettoyer(ZoneMenu, 3, 2 , 5, 88);
+			mvwprintw(ZoneMenu, 3, (90-53)/2, "Pseudo utilisé par le programme, recommencez la saisie");
+			mvwprintw(ZoneMenu, 4, 33, "-> ");
 			wrefresh(ZoneMenu);
 			
 			do	/**< Recommence la saisie */
@@ -242,7 +236,7 @@ void EntrerPseudo()
 			{
 				j = 0;
 				memset(temp, '\0', 10); /**< Vide complètement la chaine de catactères */
-				mvwprintw(ZoneMenu, 3, 6, "Ce pseudo est utilisé par un autre joueur, recommencez la saisie");
+				mvwprintw(ZoneMenu, 3, (90-64)/2, "Ce pseudo est utilisé par un autre joueur, recommencez la saisie");
 				Nettoyer(ZoneMenu, 4, 6 , 4, 16);
 				wmove(ZoneMenu, 4, 6);
 				wrefresh(ZoneMenu);
@@ -286,7 +280,7 @@ void DemandeAide()
 * \brief Demande à chaque joueur s'il veut afficher l'aide pendant la partie
 */
 {
-	int i, ch;
+		int i, ch;
 	keypad(ZoneMenu, TRUE);
 	noecho(); 
 
@@ -294,9 +288,9 @@ void DemandeAide()
 	for (i = 0 ; i < NbJoueurs ; i++)
 	{
 		Nettoyer(ZoneMenu, 2, 2, 13, 88);
-		mvwprintw(ZoneMenu, 2, 2, "Joueur %s : ", PseudoJ[i]);
-		mvwprintw(ZoneMenu, 3, 2, "Voulez-vous afficher l'aide ? [O/N]");
-		mvwprintw(ZoneMenu, 4, 2, "(Vous pourrez l'afficher ou la cacher pendant la partie à tout moment)");
+		mvwprintw(ZoneMenu, 2, (90-13)/2, "Joueur %s : ", PseudoJ[i]);
+		mvwprintw(ZoneMenu, 4, (90-35)/2, "Voulez-vous afficher l'aide ? [O/N]");
+		mvwprintw(ZoneMenu, 6, 10, "(Vous pourrez l'afficher ou la cacher pendant la partie à tout moment)");
 		wrefresh(ZoneMenu);
 		do
 		{
