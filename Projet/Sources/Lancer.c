@@ -21,8 +21,8 @@ void Lancer()
 
 	do
 	{
-	Nettoyer(ZoneMessage, 4, 2, 6, 68);
-	mvwprintw(ZoneMessage, 2, 2, "Appuyez sur [ENTREE] pour lancer les dés.");
+	Nettoyer(ZoneMessage, 2, 2, 6, 68);
+	mvwprintw(ZoneMessage, 3, 2, "Appuyez sur [ENTREE] pour lancer les dés.");
 	mvwprintw(ZoneMessage, 5, 2, "Vous pouvez sauvegarder et quitter en appuyant sur [S]");
 	wrefresh(ZoneMessage);
 	
