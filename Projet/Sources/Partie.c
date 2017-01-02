@@ -174,7 +174,8 @@ void Aide()
 	wrefresh(ZoneAide);
 	y+=2;
 	
-	if( isAide[Joueur] ){ /**< Affiche l'aide selon le choix de l'utilisateur */
+	if( isAide[Joueur] )/**< Affiche l'aide selon le choix de l'utilisateur */
+	{ 
 		mvwprintw(ZoneAide, y, x, "Pas de combinaison"); /**< Pas de combinaison */
 		wrefresh(ZoneAide);
 		if(isBrelan()) /**< Si brelan */
@@ -187,7 +188,7 @@ void Aide()
 					break;
 				}
 			}
-			mvwprintw(ZoneAide, y, x, "Brelan de %i", temp1+1); /**< Affiche la valeur des dés formant le brelan */
+			mvwprintw(ZoneAide, y, x, "Brelan de %i       ", temp1+1); /**< Affiche la valeur des dés formant le brelan */
 			wrefresh(ZoneAide);
 			y+=2;
 		}
@@ -213,7 +214,7 @@ void Aide()
 		} 
 		if(isPtSuite()) /**< Si petite suite*/
 		{
-			mvwprintw(ZoneAide, y, x, "Petite suite");
+			mvwprintw(ZoneAide, y, x, "Petite suite     ");
 			wrefresh(ZoneAide);
 			y+=2;
 		}
