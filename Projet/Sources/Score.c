@@ -247,9 +247,9 @@ void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
 		else *Categorie = y - 7;
 		if(Score[Joueur][*Categorie-1] != -1) /**< Empeche de choisir une catégorie déjà remplie */
 		{
-			Nettoyer(ZoneMessage, 2, 2, 2, 68);
-			mvwprintw(ZoneMessage, 2, 2, "Cette categorie est déja prise.");
-			mvwprintw(ZoneMessage, 3, 2, "Choisissez en une autre.");
+			Nettoyer(ZoneMessage, 2, 2, 8, 68);
+			mvwprintw(ZoneMessage, 3, 2, "Cette categorie est déja prise.");
+			mvwprintw(ZoneMessage, 4, 2, "Choisissez en une autre.");
 			wrefresh(ZoneMessage);
 			ch = '0';
 			wmove(ZoneScore, y, x);
@@ -257,7 +257,7 @@ void ChoixCategorie (int *Categorie, WINDOW *Fenetre, int Joueur)
 		}
 		else
 		{
-			Nettoyer(ZoneMessage, 2, 2, 2, 68);
+			Nettoyer(ZoneMessage, 2, 2, 8, 68);
 			wmove(ZoneScore, y, x);
 			wrefresh(ZoneScore);	
 		}
