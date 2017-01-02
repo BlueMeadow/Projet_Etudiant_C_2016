@@ -117,7 +117,7 @@ int Partie()
 		mvwprintw(ZoneMessage,1 ,2 ,"Tour de %s", PseudoJ[Joueur]);
 		wattroff(ZoneMessage, A_BOLD);
 		Lancer();
-		AffichageDe(De ,ZoneDe);
+		AffichageDe(De);
 		Aide(isAide, Joueur);
 		do
 		{
@@ -137,7 +137,7 @@ int Partie()
 
 			Garder(ZoneDe, Garde); /**< Choix des dés à garder avant de relancer */
 			Lancer(); /**< Relance */
-			AffichageDe(De ,ZoneDe);
+			AffichageDe(De);
 			Aide(isAide, Joueur);
 			NbLancers++;
 		
