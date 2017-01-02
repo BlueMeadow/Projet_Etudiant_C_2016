@@ -180,13 +180,13 @@ void AffichageDe(int De[5])
 	{
 		switch(De[i])
 		{
-			case 0 : DeVide(ZoneDe, y, x); break;
-			case 1 : DeUn(ZoneDe, y, x); break;
-			case 2 : DeDeux(ZoneDe, y, x); break;
-			case 3 : DeTrois(ZoneDe, y, x); break;
-			case 4 : DeQuatre(ZoneDe, y, x); break;
-			case 5 : DeCinq(ZoneDe, y, x); break;
-			case 6 : DeSix(ZoneDe, y, x); break;
+			case 0 : DeVide(y, x); break;
+			case 1 : DeUn( y, x); break;
+			case 2 : DeDeux( y, x); break;
+			case 3 : DeTrois( y, x); break;
+			case 4 : DeQuatre( y, x); break;
+			case 5 : DeCinq( y, x); break;
+			case 6 : DeSix( y, x); break;
 		}
 		y+=5;
 	}
