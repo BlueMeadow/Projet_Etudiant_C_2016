@@ -272,10 +272,9 @@ void EcrireScore(int Joueur)
 */
 {
 	int categorie;
-	int x = 2;
-	int y = 2;
-
-	mvwprintw(ZoneMessage ,y ,x ,"Veuillez choisir la catégorie");
+	int x, y;
+	Nettoyer(ZoneMessage, 2, 2, 8, 68);
+	mvwprintw(ZoneMessage ,3 ,2 ,"Veuillez choisir la catégorie");
 	wrefresh(ZoneMessage);
 	ChoixCategorie(&categorie ,ZoneScore,Joueur); 
 	CalculScore(Joueur, categorie);	
